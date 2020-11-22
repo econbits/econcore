@@ -1,6 +1,9 @@
 //Copyright (C) 2020  Germán Fuentes Capella
 package main
 
+// TODO these tests are very rudimentary. Rework them to increase test coverage
+// and testability of the code
+
 import (
 	"io/ioutil"
 	"os"
