@@ -119,6 +119,9 @@ func TestAddAndSub(t *testing.T) {
 	if c.String() != "0.00EUR" {
 		t.Errorf("Expected: 0.00EUR; got: %s", c.String())
 	}
+	if !c.IsPositive() {
+		t.Errorf("Zero is marked as negative: %s", c.String())
+	}
 }
 
 func TestDifferentCurrency(t *testing.T) {
