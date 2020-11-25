@@ -17,6 +17,31 @@ func TestParseOneEuro(t *testing.T) {
 		if m.Currency().Code() != "EUR" {
 			t.Errorf("Expected currency: EUR; got: %s", m.Currency().Code())
 		}
+		if m.AmountStr() != "1.00" {
+			t.Errorf("Expected amount: 1.00; got: %s", m.AmountStr())
+		}
+		if m.String() != "1.00EUR" {
+			t.Errorf("Expected string: 1.00EUR; got: %s", m.String())
+		}
+	}
+}
+
+func TestParseOneJPY(t *testing.T) {
+	ones := []string{"1JPY", "1 JPY"}
+	for _, one := range ones {
+		m, err := Parse(one)
+		if err != nil {
+			t.Errorf("Unexpected error: %s", err.Error())
+		}
+		if m.Currency().Code() != "JPY" {
+			t.Errorf("Expected currency: JPY; got: %s", m.Currency().Code())
+		}
+		if m.AmountStr() != "1" {
+			t.Errorf("Expected amount: 1; got: %s", m.AmountStr())
+		}
+		if m.String() != "1JPY" {
+			t.Errorf("Expected string: 1JPY; got: %s", m.String())
+		}
 	}
 }
 

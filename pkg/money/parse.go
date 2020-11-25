@@ -62,22 +62,22 @@ func Parse(numstr string) (Money, error) {
 	amountStr, gotUnits, currStr := decompose(numstr)
 	err := checkParsedStr(numstr, amountStr, currStr)
 	if err != nil {
-		return noMoney, err
+		return Money{}, err
 	}
 
 	amount, err := strconv.ParseUint(amountStr, 10, 64)
 	if err != nil {
-		return noMoney, AmountOverflowError(err.Error())
+		return Money{}, AmountOverflowError(err.Error())
 	}
 
 	m, err := New(amount, currStr)
 	if err != nil {
-		return noMoney, err
+		return Money{}, err
 	}
 
 	shift, err := getUnitShift(m, gotUnits)
 	if err != nil {
-		return noMoney, err
+		return Money{}, err
 	}
 	m.amount = m.amount * shift
 	return m, nil

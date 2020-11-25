@@ -25,3 +25,9 @@ type AmountOverflowError string
 func (e AmountOverflowError) Error() string {
 	return string(e)
 }
+
+type CurrencyMismatchError string
+
+func (e CurrencyMismatchError) Error() string {
+	return string(e)
+}
