@@ -79,3 +79,7 @@ func (c Counter) Sub(m Money) (Counter, error) {
 	c.m.amount += m.amount
 	return c, nil
 }
+
+func (c Counter) Money() Money {
+	return c.m
+}

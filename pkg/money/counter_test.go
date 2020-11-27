@@ -229,3 +229,25 @@ func TestMinAmount(t *testing.T) {
 		}
 	}
 }
+
+func TestImmutability(t *testing.T) {
+	one, err := New(100, "EUR")
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err.Error())
+	}
+	cone := one.Counter()
+	ctwo, err := cone.Add(one)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err.Error())
+	}
+	if ctwo.Money().IsEqual(one) {
+		t.Errorf("[Add] Immutability constraints broken for: %v", one)
+	}
+	czero, err := cone.Sub(one)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err.Error())
+	}
+	if czero.Money().IsEqual(one) {
+		t.Errorf("[Sub] Immutability constraints broken for: %v", one)
+	}
+}
