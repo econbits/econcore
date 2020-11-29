@@ -1,19 +1,21 @@
 //Copyright (C) 2020  Germán Fuentes Capella
+
 package main
 
 import (
 	"encoding/xml"
-	"fmt"
-	"io"
 	"io/ioutil"
-	"net/http"
-	"os"
 	"strings"
-	"text/template"
+
+	"github.com/econbits/econkit/private/files"
+)
+
+// var for testing purposes
+var (
+	iso4217Url = "https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
 )
 
 const (
-	iso4217Url         = "https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
 	dataPath           = "../../configs/iso4217.xml"
 	goPath             = "../../pkg/currency/init_iso4217.go"
 	currenciesTemplate = `//Copyright (C) 2020  Germán Fuentes Capella
@@ -53,15 +55,24 @@ type ISOXML struct {
 }
 
 func main() {
-	downloadISO4217XML()
-	currencies := loadCurrencies()
-	writeGoCurrencies(currencies)
+	err := files.Download(iso4217Url, dataPath)
+	if err != nil {
+		panic(err)
+	}
+	currencies, err := load(dataPath)
+	if err != nil {
+		panic(err)
+	}
+	err = files.WriteFromTemplate(goPath, currenciesTemplate, currencies)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func loadCurrencies() map[string]Currency {
-	data, err := ioutil.ReadFile(dataPath)
+func load(path string) (map[string]Currency, error) {
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		panic(err.Error())
+		return map[string]Currency{}, err
 	}
 	strdata := string(data)
 	strdata = strings.Replace(strdata, ">N.A.<", "><", -1)
@@ -69,7 +80,7 @@ func loadCurrencies() map[string]Currency {
 	var isoXML ISOXML
 	err = xml.Unmarshal(data, &isoXML)
 	if err != nil {
-		panic(err.Error())
+		return map[string]Currency{}, err
 	}
 	currencyMap := map[string]Currency{}
 	for _, c := range isoXML.Currencies.List {
@@ -81,46 +92,5 @@ func loadCurrencies() map[string]Currency {
 			currencyMap[c.Code] = c
 		}
 	}
-	return currencyMap
-}
-
-func writeGoCurrencies(currencyMap map[string]Currency) {
-	file, err := os.Create(goPath)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer file.Close()
-
-	tmpl, err := template.New("GoCurrencies").Parse(currenciesTemplate)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	err = tmpl.Execute(file, currencyMap)
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
-func downloadISO4217XML() {
-	resp, err := http.Get(iso4217Url)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		panic(fmt.Errorf("Received response code: %d", resp.StatusCode))
-	}
-
-	file, err := os.Create(dataPath)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer file.Close()
-
-	_, err = io.Copy(file, resp.Body)
-	if err != nil {
-		panic(err.Error())
-	}
+	return currencyMap, nil
 }

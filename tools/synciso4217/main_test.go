@@ -1,47 +1,20 @@
 //Copyright (C) 2020  Germán Fuentes Capella
 package main
 
-// TODO these tests are very rudimentary. Rework them to increase test coverage
-// and testability of the code
-
 import (
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"os"
-	"strings"
 	"testing"
 )
 
-func TestDownload(t *testing.T) {
-	err := os.Remove(dataPath)
-	if err != nil {
-		t.Errorf("Unexpected error deleting the file: %v", err)
-	}
-	defer func() {
-		if e := recover(); e != nil {
-			t.Errorf("Unexpected error downloading the file: %v", e)
-		}
-	}()
-	downloadISO4217XML()
-	data, err := ioutil.ReadFile(dataPath)
-	if err != nil {
-		t.Errorf("Unexpected error reading the file content: %v", err)
-	}
-	strdata := string(data)
-	if !strings.Contains(strdata, "<ISO_4217") {
-		t.Errorf("Data file does not contain start targ: <ISO_4217>")
-	}
-	if !strings.Contains(strdata, "</ISO_4217") {
-		t.Errorf("Data file does not contain end targ: </ISO_4217>")
-	}
-}
-
 func TestLoadCurrencyWithoutUnits(t *testing.T) {
-	defer func() {
-		if e := recover(); e != nil {
-			t.Errorf("Unexpected error loading currencies: %v", e)
-		}
-	}()
-	currencies := loadCurrencies()
+	currencies, err := load(dataPath)
+	if err != nil {
+		t.Errorf("Unexpected error: '%v'", err)
+	}
 	na_currency, exists := currencies["XBA"]
 	if !exists {
 		t.Errorf("XBA not found in ISO4217 currencies")
@@ -51,13 +24,47 @@ func TestLoadCurrencyWithoutUnits(t *testing.T) {
 	}
 }
 
+func TestLoadCurrencyWithWrongPath(t *testing.T) {
+	_, err := load("./adfa/asdfadf adfad")
+	if err == nil {
+		t.Errorf("Expected error; got none")
+	}
+}
+
+func TestLoadCurrencyWithWrongContent(t *testing.T) {
+	tmpFile, err := ioutil.TempFile(os.TempDir(), "econkit-tmp-")
+	if err != nil {
+		t.Errorf("Unexpected error: '%v'", err)
+	}
+	defer os.Remove(tmpFile.Name())
+
+	_, err = load(tmpFile.Name())
+	if err == nil {
+		t.Errorf("Expected error; got none")
+	}
+}
+
 func TestFullFlow(t *testing.T) {
 	defer func() {
 		if e := recover(); e != nil {
 			t.Errorf("Unexpected error creating Go file: %v", e)
 		}
 	}()
-	err := os.Remove(goPath)
+
+	bdata, err := ioutil.ReadFile(dataPath)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, string(bdata))
+	}))
+	defer ts.Close()
+
+	initialUrl := iso4217Url
+	iso4217Url = ts.URL
+	defer func() { iso4217Url = initialUrl }()
+
+	err = os.Remove(goPath)
 	if err != nil {
 		t.Errorf("Unexpected error deleting the Go file: %v", err)
 	}

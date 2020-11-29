@@ -24,8 +24,6 @@ func Download(fromURL string, toPath string) error {
 	file, err := os.Create(toPath)
 	if err != nil {
 		return err
-	} else {
-		fmt.Print(file.Name())
 	}
 	defer file.Close()
 
