@@ -1,3 +1,3 @@
-module github.com/econbits/econcore
+module github.com/econbits/econkit
 
 go 1.15

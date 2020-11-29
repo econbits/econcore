@@ -1,1 +1,1 @@
-# econcore
+# econkit

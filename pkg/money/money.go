@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/econbits/econcore/pkg/currency"
+	"github.com/econbits/econkit/pkg/currency"
 )
 
 // The representation of Money is key in any financial application.

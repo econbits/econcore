@@ -3,7 +3,7 @@
 package money
 
 import (
-	"github.com/econbits/econcore/pkg/currency"
+	"github.com/econbits/econkit/pkg/currency"
 )
 
 func New(amount uint64, currencyCode string) (Money, error) {
