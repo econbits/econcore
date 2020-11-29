@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//go:generate go run ../../tools/isosync/main.go
+//go:generate go run ../../tools/synciso4217/main.go
 var currencies = map[string]Currency{}
 
 var emptyCurrency = Currency{}
