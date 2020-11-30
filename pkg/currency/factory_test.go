@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestWrongCountryCodes(t *testing.T) {
+func TestWrongCurrencyCodes(t *testing.T) {
 	wrongCodes := []string{"", "___"}
 	for _, code := range wrongCodes {
 		c, err := Get(code)

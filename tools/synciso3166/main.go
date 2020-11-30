@@ -69,8 +69,6 @@ func load(path string) (map[string]Country, error) {
 	countryMap := map[string]Country{}
 	for {
 		record, err := r.Read()
-		fmt.Println(len(record))
-		fmt.Println(record)
 		if err == io.EOF {
 			break
 		}
