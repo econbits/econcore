@@ -17,3 +17,15 @@ func New(amount uint64, currencyCode string) (Money, error) {
 func Zero(currencyCode string) (Money, error) {
 	return New(0, currencyCode)
 }
+
+func MustNew(amount uint64, currencyCode string) Money {
+	m, err := New(amount, currencyCode)
+	if err != nil {
+		panic(err.Error())
+	}
+	return m
+}
+
+func MustZero(currencyCode string) Money {
+	return MustNew(0, currencyCode)
+}

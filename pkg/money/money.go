@@ -46,6 +46,10 @@ func (m Money) AmountStr() string {
 		amountstr = strings.Repeat("0", units+1)
 	}
 	decPoint := len(amountstr) - units
+	if decPoint < 0 {
+		amountstr = strings.Repeat("0", -decPoint+1) + amountstr
+		decPoint = len(amountstr) - units
+	}
 	lAmount := amountstr[0:decPoint]
 	rAmount := amountstr[decPoint:]
 	return lAmount + "." + rAmount
