@@ -1,0 +1,6 @@
+# Copyright (C) 2020  Germán Fuentes Capella
+
+DESCRIPTION = "this is a test module"
+URL = "https://econkit.org"
+AUTHORS = ["Mr. T", "Mr. L"]
+LICENSE = "MIT"

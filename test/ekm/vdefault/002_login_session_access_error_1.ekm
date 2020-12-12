@@ -1,0 +1,5 @@
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login(cred):
+    s = session()
+    s[1]
