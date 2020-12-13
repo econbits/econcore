@@ -11,11 +11,11 @@ import (
 
 func Test_001_Meta_Errors(t *testing.T) {
 	fnames := []string{
-		"../../test/ekm/vdefault/001_meta_authors_error_1.ekm",
-		"../../test/ekm/vdefault/001_meta_authors_error_2.ekm",
-		"../../test/ekm/vdefault/001_meta_description_error.ekm",
-		"../../test/ekm/vdefault/001_meta_license_error.ekm",
-		"../../test/ekm/vdefault/001_meta_url_error.ekm",
+		"../../test/ekm/vdefault/001_meta/authors_error_1.ekm",
+		"../../test/ekm/vdefault/001_meta/authors_error_2.ekm",
+		"../../test/ekm/vdefault/001_meta/description_error.ekm",
+		"../../test/ekm/vdefault/001_meta/license_error.ekm",
+		"../../test/ekm/vdefault/001_meta/url_error.ekm",
 	}
 	for _, fname := range fnames {
 		_, err := New(fname)
@@ -26,7 +26,7 @@ func Test_001_Meta_Errors(t *testing.T) {
 }
 
 func Test_001_Meta_Full(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta_full.ekm"
+	fname := "../../test/ekm/vdefault/001_meta/full.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -47,7 +47,7 @@ func Test_001_Meta_Full(t *testing.T) {
 }
 
 func Test_001_Meta_Empty(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta_empty.ekm"
+	fname := "../../test/ekm/vdefault/001_meta/empty.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -67,7 +67,7 @@ func Test_001_Meta_Empty(t *testing.T) {
 }
 
 func Test_001_Meta_Corrupt_Values(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta_full.ekm"
+	fname := "../../test/ekm/vdefault/001_meta/full.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)

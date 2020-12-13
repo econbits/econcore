@@ -55,3 +55,18 @@ func LtoIR(list *starlark.List) ([]int, error) {
 	}
 	return nlist, nil
 }
+
+// List of accounts to Account Range
+func LtoAR(list *starlark.List) ([]Account, error) {
+	llist := list.Len()
+	alist := make([]Account, llist)
+	for i := 0; i < llist; i++ {
+		v := list.Index(i)
+		va, ok := v.(Account)
+		if !ok {
+			return nil, fmt.Errorf("Expected List of Accounts; found: %T", v)
+		}
+		alist[i] = va
+	}
+	return alist, nil
+}

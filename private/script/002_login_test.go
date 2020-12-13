@@ -10,7 +10,7 @@ import (
 )
 
 func Test_002_Login_Empty(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/002_login_Empty.ekm"
+	fpath := "../../test/ekm/vdefault/002_login/empty.ekm"
 	sc, err := New(fpath)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -23,7 +23,7 @@ func Test_002_Login_Empty(t *testing.T) {
 }
 
 func Test_002_Login_fail(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/002_login_fail.ekm"
+	fpath := "../../test/ekm/vdefault/002_login/fail.ekm"
 	sc, err := New(fpath)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -41,8 +41,8 @@ func Test_002_Login_fail(t *testing.T) {
 
 func Test_002_Login_No_Params(t *testing.T) {
 	fpaths := []string{
-		"../../test/ekm/vdefault/002_login_no_params.ekm",
-		"../../test/ekm/vdefault/002_login_too_many_params.ekm",
+		"../../test/ekm/vdefault/002_login/no_params.ekm",
+		"../../test/ekm/vdefault/002_login/too_many_params.ekm",
 	}
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
@@ -62,7 +62,7 @@ func Test_002_Login_No_Params(t *testing.T) {
 }
 
 func Test_002_Login_success(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/002_login_success.ekm"
+	fpath := "../../test/ekm/vdefault/002_login/success.ekm"
 	sc, err := New(fpath)
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
@@ -80,8 +80,8 @@ func Test_002_Login_success(t *testing.T) {
 
 func Test_002_Login_Wrong_Returns(t *testing.T) {
 	fpaths := []string{
-		"../../test/ekm/vdefault/002_login_wrong_return_type.ekm",
-		"../../test/ekm/vdefault/002_login_no_session.ekm",
+		"../../test/ekm/vdefault/002_login/wrong_return_type.ekm",
+		"../../test/ekm/vdefault/002_login/no_session.ekm",
 	}
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
@@ -101,40 +101,45 @@ func Test_002_Login_Wrong_Returns(t *testing.T) {
 }
 
 func Test_002_Login_Set_Session_Param(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/002_login_set_session_param.ekm"
-	sc, err := New(fpath)
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+	fpaths := []string{
+		"../../test/ekm/vdefault/002_login/set_session_param_1.ekm",
+		"../../test/ekm/vdefault/002_login/set_session_param_2.ekm",
 	}
-	cred := Credentials{username: "mr_user"}
-	session, err := sc.Login(cred)
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-		return
+	for _, fpath := range fpaths {
+		sc, err := New(fpath)
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		cred := Credentials{username: "mr_user"}
+		session, err := sc.Login(cred)
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+			return
+		}
+		v, found, err := session.Get(starlark.String("key"))
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+			return
+		}
+		if !found {
+			t.Errorf("Expected key 'key' in session")
+		}
+		vs, ok := starlark.AsString(v)
+		if !ok {
+			t.Errorf("Expected string type for value; found '%T'", v)
+		}
+		if vs != "value" {
+			t.Errorf("Expected 'value'; found '%v'", vs)
+		}
 	}
-	v, found, err := session.Get(starlark.String("key"))
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-		return
-	}
-	if !found {
-		t.Errorf("Expected key 'key' in session")
-	}
-	vs, ok := starlark.AsString(v)
-	if !ok {
-		t.Errorf("Expected string type for value; found '%T'", v)
-	}
-	if vs != "value" {
-		t.Errorf("Expected 'value'; found '%v'", vs)
-	}
-
 }
 
-func Test_002_Login_Set_Wrong_Session_Key(t *testing.T) {
+func Test_002_Login_Wrong_Session_Use(t *testing.T) {
 	fpaths := []string{
-		"../../test/ekm/vdefault/002_login_set_wrong_session_key.ekm",
-		"../../test/ekm/vdefault/002_login_session_access_error_1.ekm",
-		"../../test/ekm/vdefault/002_login_session_access_error_2.ekm",
+		"../../test/ekm/vdefault/002_login/set_wrong_session_key.ekm",
+		"../../test/ekm/vdefault/002_login/session_access_error_1.ekm",
+		"../../test/ekm/vdefault/002_login/session_access_error_2.ekm",
+		"../../test/ekm/vdefault/002_login/session_with_unnamed_param.ekm",
 	}
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)

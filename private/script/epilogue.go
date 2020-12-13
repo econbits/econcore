@@ -9,5 +9,6 @@ import (
 var (
 	epilogue = starlark.StringDict{
 		"session": starlark.NewBuiltin("session", builtin_session),
+		"account": starlark.NewBuiltin("account", builtin_account),
 	}
 )

@@ -65,20 +65,39 @@ func (s Script) Authors() []string {
 func (s Script) Login(cred Credentials) (Session, error) {
 	login := s.globals["login"]
 	if login == nil {
-		return Session{}, fmt.Errorf("[%s][login] missing login function", fname(s.fpath))
+		return Session{}, newLoginError(fname(s.fpath), "missing login function")
 	}
 
 	vsession, err := starlark.Call(s.tn, login, starlark.Tuple{cred}, nil)
 	if err != nil {
-		return Session{}, fmt.Errorf("[%s][login] %v", fname(s.fpath), err)
+		return Session{}, newLoginError(fname(s.fpath), err.Error())
 	}
 	session, ok := vsession.(Session)
 	if !ok {
-		return Session{}, fmt.Errorf(
-			"[%s][login] login function returned object of type '%T' instead of a session",
+		return Session{}, newLoginError(
 			fname(s.fpath),
-			vsession,
+			fmt.Sprintf("login function returned object of type '%T' instead of a session", vsession),
 		)
 	}
 	return session, nil
+}
+
+func (s Script) Accounts(session Session) ([]Account, error) {
+	faccounts := s.globals["accounts"]
+	if faccounts == nil {
+		return []Account{}, newAccountError(fname(s.fpath), "missing accounts function")
+	}
+
+	value, err := starlark.Call(s.tn, faccounts, starlark.Tuple{session}, nil)
+	if err != nil {
+		return []Account{}, newAccountError(fname(s.fpath), err.Error())
+	}
+	accountList, ok := value.(*starlark.List)
+	if !ok {
+		return []Account{}, newAccountError(
+			fname(s.fpath),
+			fmt.Sprintf("account function returned object of type '%T' instead of a list of accounts", value),
+		)
+	}
+	return LtoAR(accountList)
 }
