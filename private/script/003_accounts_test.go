@@ -11,12 +11,12 @@ import (
 func getAccounts(t *testing.T, fpath string) ([]Account, error) {
 	sc, err := New(fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	cred := Credentials{username: "mr_user"}
 	session, err := sc.Login(cred)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	accounts, err := sc.Accounts(session)
 	return accounts, err
@@ -36,7 +36,7 @@ func Test_003_Accounts_Errors(t *testing.T) {
 	for _, fpath := range fpaths {
 		_, err := getAccounts(t, fpath)
 		if err == nil {
-			t.Errorf("Expected error; none found")
+			t.Fatalf("Expected error; none found")
 		}
 	}
 }
@@ -45,10 +45,10 @@ func Test_003_Accounts_Empty_List(t *testing.T) {
 	fpath := "../../test/ekm/vdefault/003_accounts/empty_list.ekm"
 	accounts, err := getAccounts(t, fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	if len(accounts) > 0 {
-		t.Errorf("Expected empty accounts slice; found '%v'", accounts)
+		t.Fatalf("Expected empty accounts slice; found '%v'", accounts)
 	}
 }
 
@@ -56,15 +56,13 @@ func Test_003_Accounts_Empty_Account(t *testing.T) {
 	fpath := "../../test/ekm/vdefault/003_accounts/empty_account.ekm"
 	accounts, err := getAccounts(t, fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-		return
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	if len(accounts) != 1 {
-		t.Errorf("Expected 1 account; found '%v'", accounts)
-		return
+		t.Fatalf("Expected 1 account; found '%v'", accounts)
 	}
 	if accounts[0].Truth() {
-		t.Errorf("Expected '%v'.Truth() false; found true", accounts[0])
+		t.Fatalf("Expected '%v'.Truth() false; found true", accounts[0])
 	}
 }
 
@@ -76,28 +74,24 @@ func Test_003_Accounts_Name_Param(t *testing.T) {
 	for _, fpath := range fpaths {
 		accounts, err := getAccounts(t, fpath)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-			return
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		if len(accounts) != 1 {
-			t.Errorf("Expected 1 account; found '%v'", accounts)
-			return
+			t.Fatalf("Expected 1 account; found '%v'", accounts)
 		}
 		if !accounts[0].Truth() {
-			t.Errorf("Expected '%v'.Truth() true; found false", accounts[0])
+			t.Fatalf("Expected '%v'.Truth() true; found false", accounts[0])
 		}
 		namevalue, err := accounts[0].Attr("name")
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-			return
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		namestr, ok := starlark.AsString(namevalue)
 		if !ok {
-			t.Errorf("Unexpected error getting string value from '%v'", namevalue)
-			return
+			t.Fatalf("Unexpected error getting string value from '%v'", namevalue)
 		}
 		if namestr != "test name" {
-			t.Errorf("Expected name 'test name'; found '%v'", namestr)
+			t.Fatalf("Expected name 'test name'; found '%v'", namestr)
 		}
 		for _, attrname := range accounts[0].AttrNames() {
 			if attrname == "name" {
@@ -105,19 +99,19 @@ func Test_003_Accounts_Name_Param(t *testing.T) {
 			}
 			value, err := accounts[0].Attr(attrname)
 			if err != nil {
-				t.Errorf("Unexpected error: %v", err)
+				t.Fatalf("Unexpected error: %v", err)
 			}
 			valuestr, ok := starlark.AsString(value)
 			if !ok {
-				t.Errorf("Unexpected error getting string value from '%v'", value)
+				t.Fatalf("Unexpected error getting string value from '%v'", value)
 			}
 			if valuestr != "" {
-				t.Errorf("Expected ''; found '%v'", valuestr)
+				t.Fatalf("Expected ''; found '%v'", valuestr)
 			}
 		}
 		_, err = accounts[0].Attr("this attr does not exist")
 		if err != nil {
-			t.Errorf("Unxpected error; found: '%v'", err)
+			t.Fatalf("Unxpected error; found: '%v'", err)
 		}
 	}
 }

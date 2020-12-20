@@ -13,12 +13,12 @@ func Test_002_Login_Empty(t *testing.T) {
 	fpath := "../../test/ekm/vdefault/002_login/empty.ekm"
 	sc, err := New(fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	cred := Credentials{username: "mr_user"}
 	_, err = sc.Login(cred)
 	if err == nil {
-		t.Errorf("Expected error; none found")
+		t.Fatalf("Expected error; none found")
 	}
 }
 
@@ -26,16 +26,15 @@ func Test_002_Login_fail(t *testing.T) {
 	fpath := "../../test/ekm/vdefault/002_login/fail.ekm"
 	sc, err := New(fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	cred := Credentials{username: "mr_user"}
 	_, err = sc.Login(cred)
 	if err == nil {
-		t.Errorf("Expected error; none found")
-		return
+		t.Fatalf("Expected error; none found")
 	}
 	if !strings.Contains(err.Error(), "[mr_user]") {
-		t.Errorf("Expected '[mr_user]' in error; found: %s", err.Error())
+		t.Fatalf("Expected '[mr_user]' in error; found: %s", err.Error())
 	}
 }
 
@@ -47,16 +46,15 @@ func Test_002_Login_No_Params(t *testing.T) {
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		cred := Credentials{username: "mr_user"}
 		_, err = sc.Login(cred)
 		if err == nil {
-			t.Errorf("Expected error; none found")
-			return
+			t.Fatalf("Expected error; none found")
 		}
 		if !strings.Contains(err.Error(), "function login") {
-			t.Errorf("Expected 'function login' in error; found: %s", err.Error())
+			t.Fatalf("Expected 'function login' in error; found: %s", err.Error())
 		}
 	}
 }
@@ -65,16 +63,15 @@ func Test_002_Login_success(t *testing.T) {
 	fpath := "../../test/ekm/vdefault/002_login/success.ekm"
 	sc, err := New(fpath)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	cred := Credentials{username: "mr_user"}
 	session, err := sc.Login(cred)
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
-		return
+		t.Fatalf("Unexpected error: %v", err)
 	}
 	if session.Truth() {
-		t.Errorf("Expected empty session; found: %v", session)
+		t.Fatalf("Expected empty session; found: %v", session)
 	}
 }
 
@@ -86,16 +83,15 @@ func Test_002_Login_Wrong_Returns(t *testing.T) {
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		cred := Credentials{username: "mr_user"}
 		_, err = sc.Login(cred)
 		if err == nil {
-			t.Errorf("Expected error; none found")
-			return
+			t.Fatalf("Expected error; none found")
 		}
 		if !strings.Contains(err.Error(), "instead of a session") {
-			t.Errorf("Expected 'instead of a session' in error; found: %s", err.Error())
+			t.Fatalf("Expected 'instead of a session' in error; found: %s", err.Error())
 		}
 	}
 }
@@ -108,28 +104,26 @@ func Test_002_Login_Set_Session_Param(t *testing.T) {
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		cred := Credentials{username: "mr_user"}
 		session, err := sc.Login(cred)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-			return
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		v, found, err := session.Get(starlark.String("key"))
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-			return
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		if !found {
-			t.Errorf("Expected key 'key' in session")
+			t.Fatalf("Expected key 'key' in session")
 		}
 		vs, ok := starlark.AsString(v)
 		if !ok {
-			t.Errorf("Expected string type for value; found '%T'", v)
+			t.Fatalf("Expected string type for value; found '%T'", v)
 		}
 		if vs != "value" {
-			t.Errorf("Expected 'value'; found '%v'", vs)
+			t.Fatalf("Expected 'value'; found '%v'", vs)
 		}
 	}
 }
@@ -144,12 +138,12 @@ func Test_002_Login_Wrong_Session_Use(t *testing.T) {
 	for _, fpath := range fpaths {
 		sc, err := New(fpath)
 		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
+			t.Fatalf("Unexpected error: %v", err)
 		}
 		cred := Credentials{username: "mr_user"}
 		_, err = sc.Login(cred)
 		if err == nil {
-			t.Errorf("Expected error; none found")
+			t.Fatalf("Expected error; none found")
 		}
 	}
 }
