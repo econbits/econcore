@@ -15,7 +15,11 @@ func builtin_session(
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
 	if len(args) > 0 {
-		return Session{}, newBuiltinError(b.Name(), fmt.Sprintf("unnamed arguments are not allowed: %v", args))
+		return Session{}, newBuiltinError(
+			b.Name(),
+			SessionError,
+			fmt.Sprintf("unnamed arguments are not allowed: %v", args),
+		)
 	}
 	s := Session{d: starlark.StringDict{}}
 	if len(kwargs) > 0 {
@@ -46,6 +50,7 @@ func builtin_account(
 				if !ok {
 					return Account{}, newBuiltinError(
 						b.Name(),
+						AccountError,
 						fmt.Sprintf("'%s' is a non-string param", args[i]),
 					)
 				}
@@ -58,12 +63,14 @@ func builtin_account(
 		if !ok {
 			return Account{}, newBuiltinError(
 				b.Name(),
+				AccountError,
 				fmt.Sprintf("'%s' is a non-string keyword argument", tuple[0]),
 			)
 		}
 		if params[argname].Len() > 0 {
 			return Account{}, newBuiltinError(
 				b.Name(),
+				AccountError,
 				fmt.Sprintf("'%s' appears as positional argument and keyword argument", argname),
 			)
 		}
@@ -71,6 +78,7 @@ func builtin_account(
 		if !ok {
 			return Account{}, newBuiltinError(
 				b.Name(),
+				AccountError,
 				fmt.Sprintf("'%s' is a non-string param", tuple[1]),
 			)
 		}

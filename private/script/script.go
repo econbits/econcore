@@ -65,17 +65,18 @@ func (s Script) Authors() []string {
 func (s Script) Login(cred Credentials) (Session, error) {
 	login := s.globals["login"]
 	if login == nil {
-		return Session{}, newLoginError(fname(s.fpath), "missing login function")
+		return Session{}, newLoginError(fname(s.fpath), MissingFunctionError, "missing login function")
 	}
 
 	vsession, err := starlark.Call(s.tn, login, starlark.Tuple{cred}, nil)
 	if err != nil {
-		return Session{}, newLoginError(fname(s.fpath), err.Error())
+		return Session{}, newLoginError(fname(s.fpath), FunctionCallError, err.Error())
 	}
 	session, ok := vsession.(Session)
 	if !ok {
 		return Session{}, newLoginError(
 			fname(s.fpath),
+			SessionError,
 			fmt.Sprintf("login function returned object of type '%T' instead of a session", vsession),
 		)
 	}
@@ -85,19 +86,36 @@ func (s Script) Login(cred Credentials) (Session, error) {
 func (s Script) Accounts(session Session) ([]Account, error) {
 	faccounts := s.globals["accounts"]
 	if faccounts == nil {
-		return []Account{}, newAccountError(fname(s.fpath), "missing accounts function")
+		return []Account{}, newAccountError(fname(s.fpath), MissingFunctionError, "missing accounts function")
 	}
 
 	value, err := starlark.Call(s.tn, faccounts, starlark.Tuple{session}, nil)
 	if err != nil {
-		return []Account{}, newAccountError(fname(s.fpath), err.Error())
+		evalErr, ok := err.(*starlark.EvalError)
+		if ok {
+			err = evalErr.Unwrap()
+			scErr, ok := err.(ScriptError)
+			if ok {
+				return []Account{}, scErr
+			}
+		}
+		return []Account{}, newAccountError(fname(s.fpath), FunctionCallError, err.Error())
 	}
 	accountList, ok := value.(*starlark.List)
 	if !ok {
 		return []Account{}, newAccountError(
 			fname(s.fpath),
+			AccountListError,
 			fmt.Sprintf("account function returned object of type '%T' instead of a list of accounts", value),
 		)
 	}
-	return LtoAR(accountList)
+	accounts, err := LtoAR(accountList)
+	if err != nil {
+		return []Account{}, newAccountError(
+			fname(s.fpath),
+			AccountListError,
+			err.Error(),
+		)
+	}
+	return accounts, nil
 }

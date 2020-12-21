@@ -9,24 +9,16 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func Test_001_Meta_Errors(t *testing.T) {
-	fnames := []string{
-		"../../test/ekm/vdefault/001_meta/authors_error_1.ekm",
-		"../../test/ekm/vdefault/001_meta/authors_error_2.ekm",
-		"../../test/ekm/vdefault/001_meta/description_error.ekm",
-		"../../test/ekm/vdefault/001_meta/license_error.ekm",
-		"../../test/ekm/vdefault/001_meta/url_error.ekm",
-	}
-	for _, fname := range fnames {
-		_, err := New(fname)
-		if err == nil {
-			t.Fatalf("[%s] Expected error; none found", fname)
-		}
-	}
+func Test_001_Errors(t *testing.T) {
+	root := "../../test/ekm/vdefault/001_globals/"
+	testErrorFiles(t, root, func(path string) error {
+		_, err := New(path)
+		return err
+	})
 }
 
 func Test_001_Meta_Full(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta/full.ekm"
+	fname := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -47,7 +39,7 @@ func Test_001_Meta_Full(t *testing.T) {
 }
 
 func Test_001_Meta_Empty(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta/empty.ekm"
+	fname := "../../test/ekm/vdefault/001_globals/OK_empty.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -67,7 +59,7 @@ func Test_001_Meta_Empty(t *testing.T) {
 }
 
 func Test_001_Meta_Corrupt_Values(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_meta/full.ekm"
+	fname := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
 	sc, err := New(fname)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

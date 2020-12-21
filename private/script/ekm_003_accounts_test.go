@@ -22,27 +22,16 @@ func getAccounts(t *testing.T, fpath string) ([]Account, error) {
 	return accounts, err
 }
 
-func Test_003_Accounts_Errors(t *testing.T) {
-	fpaths := []string{
-		"../../test/ekm/vdefault/003_accounts/missing_function.ekm",
-		"../../test/ekm/vdefault/003_accounts/no_session_param.ekm",
-		"../../test/ekm/vdefault/003_accounts/too_many_params.ekm",
-		"../../test/ekm/vdefault/003_accounts/return_none.ekm",
-		"../../test/ekm/vdefault/003_accounts/int_list.ekm",
-		"../../test/ekm/vdefault/003_accounts/positional_param_error.ekm",
-		"../../test/ekm/vdefault/003_accounts/positional_and_keyword_param_conflict.ekm",
-		"../../test/ekm/vdefault/003_accounts/keyword_param_error.ekm",
-	}
-	for _, fpath := range fpaths {
-		_, err := getAccounts(t, fpath)
-		if err == nil {
-			t.Fatalf("Expected error; none found")
-		}
-	}
+func Test_003_Errors(t *testing.T) {
+	root := "../../test/ekm/vdefault/003_accounts/"
+	testErrorFiles(t, root, func(path string) error {
+		_, err := getAccounts(t, path)
+		return err
+	})
 }
 
 func Test_003_Accounts_Empty_List(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/003_accounts/empty_list.ekm"
+	fpath := "../../test/ekm/vdefault/003_accounts/OK_empty_list.ekm"
 	accounts, err := getAccounts(t, fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -53,7 +42,7 @@ func Test_003_Accounts_Empty_List(t *testing.T) {
 }
 
 func Test_003_Accounts_Empty_Account(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/003_accounts/empty_account.ekm"
+	fpath := "../../test/ekm/vdefault/003_accounts/OK_empty_account.ekm"
 	accounts, err := getAccounts(t, fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -68,8 +57,8 @@ func Test_003_Accounts_Empty_Account(t *testing.T) {
 
 func Test_003_Accounts_Name_Param(t *testing.T) {
 	fpaths := []string{
-		"../../test/ekm/vdefault/003_accounts/positional_param.ekm",
-		"../../test/ekm/vdefault/003_accounts/keyword_param.ekm",
+		"../../test/ekm/vdefault/003_accounts/OK_positional_param.ekm",
+		"../../test/ekm/vdefault/003_accounts/OK_keyword_param.ekm",
 	}
 	for _, fpath := range fpaths {
 		accounts, err := getAccounts(t, fpath)
