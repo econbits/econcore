@@ -19,3 +19,13 @@ var (
 		hAuthors,
 	}
 )
+
+const (
+	defDescription = "Module under construction"
+	defUrl         = "https://econbits.org/"
+	defLicense     = ""
+)
+
+var (
+	defAuthors = []string{}
+)
