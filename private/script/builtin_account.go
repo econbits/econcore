@@ -8,29 +8,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func builtin_session(
-	thread *starlark.Thread,
-	b *starlark.Builtin,
-	args starlark.Tuple,
-	kwargs []starlark.Tuple,
-) (starlark.Value, error) {
-	if len(args) > 0 {
-		return Session{}, newBuiltinError(
-			b.Name(),
-			SessionError,
-			fmt.Sprintf("unnamed arguments are not allowed: %v", args),
-		)
-	}
-	s := Session{d: starlark.StringDict{}}
-	if len(kwargs) > 0 {
-		for _, tuple := range kwargs {
-			s.SetKey(tuple[0], tuple[1])
-		}
-	}
-	return s, nil
-}
-
-func builtin_account(
+func builtinAccounts(
 	thread *starlark.Thread,
 	b *starlark.Builtin,
 	args starlark.Tuple,
@@ -48,7 +26,7 @@ func builtin_account(
 			if len(args) >= (i + 1) {
 				argvalue, ok := args[i].(starlark.String)
 				if !ok {
-					return Account{}, newBuiltinError(
+					return nil, newBuiltinError(
 						b.Name(),
 						AccountError,
 						fmt.Sprintf("'%s' is a non-string param", args[i]),
@@ -61,14 +39,14 @@ func builtin_account(
 	for _, tuple := range kwargs {
 		argname, ok := starlark.AsString(tuple[0])
 		if !ok {
-			return Account{}, newBuiltinError(
+			return nil, newBuiltinError(
 				b.Name(),
 				AccountError,
 				fmt.Sprintf("'%s' is a non-string keyword argument", tuple[0]),
 			)
 		}
 		if params[argname].Len() > 0 {
-			return Account{}, newBuiltinError(
+			return nil, newBuiltinError(
 				b.Name(),
 				AccountError,
 				fmt.Sprintf("'%s' appears as positional argument and keyword argument", argname),
@@ -76,7 +54,7 @@ func builtin_account(
 		}
 		argvalue, ok := tuple[1].(starlark.String)
 		if !ok {
-			return Account{}, newBuiltinError(
+			return nil, newBuiltinError(
 				b.Name(),
 				AccountError,
 				fmt.Sprintf("'%s' is a non-string param", tuple[1]),
@@ -84,10 +62,5 @@ func builtin_account(
 		}
 		params[argname] = argvalue
 	}
-	return Account{
-		name: params["name"],
-		typ:  params["type"],
-		iban: params["iban"],
-		bic:  params["bic"],
-	}, nil
+	return NewAccountValue(params["name"], params["type"], params["iban"], params["bic"]), nil
 }

@@ -15,7 +15,7 @@ func Test_002_Errors(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)
 		}
-		cred := Credentials{username: "mr_user"}
+		cred := NewCredentials("mr_user", "a_password", "an_account")
 		_, err = sc.Login(cred)
 		return err
 	})
@@ -27,7 +27,7 @@ func Test_002_Login_success(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	cred := Credentials{username: "mr_user"}
+	cred := NewCredentials("mr_user", "a_password", "an_account")
 	session, err := sc.Login(cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -47,7 +47,7 @@ func Test_002_Login_Set_Session_Param(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)
 		}
-		cred := Credentials{username: "mr_user"}
+		cred := NewCredentials("mr_user", "a_password", "an_account")
 		session, err := sc.Login(cred)
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)

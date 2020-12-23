@@ -47,6 +47,9 @@ func listErrorFiles(t *testing.T, dpath string) []string {
 		if strings.HasPrefix(fname(path), "OK_") {
 			return nil
 		}
+		if !strings.HasSuffix(path, ".ekm") {
+			return nil
+		}
 		files = append(files, path)
 		return nil
 	})
@@ -70,10 +73,11 @@ func testErrorFile(t *testing.T, errorFile string, loadTestFn loadTest) {
 	}
 	if scriptErr.errorType != ecase.errorType {
 		t.Fatalf(
-			"[%s] Expected Error Type '%s'; found: '%s'",
+			"[%s] Expected Error Type '%s'; found '%s' (Error msg: '%v'",
 			errorFile,
-			scriptErr.errorType.mustTypeString(),
 			ecase.errorType.mustTypeString(),
+			scriptErr.errorType.mustTypeString(),
+			scriptErr,
 		)
 	}
 	if len(err.Error()) == 0 {

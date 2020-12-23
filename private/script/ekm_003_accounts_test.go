@@ -8,12 +8,12 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func getAccounts(t *testing.T, fpath string) ([]Account, error) {
+func getAccounts(t *testing.T, fpath string) ([]*Account, error) {
 	sc, err := New(fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	cred := Credentials{username: "mr_user"}
+	cred := NewCredentials("mr_user", "a_password", "an_account")
 	session, err := sc.Login(cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -99,8 +99,8 @@ func Test_003_Accounts_Name_Param(t *testing.T) {
 			}
 		}
 		_, err = accounts[0].Attr("this attr does not exist")
-		if err != nil {
-			t.Fatalf("Unxpected error; found: '%v'", err)
+		if err == nil {
+			t.Fatal("Expected error; found none")
 		}
 	}
 }

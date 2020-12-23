@@ -57,16 +57,31 @@ func LtoIR(list *starlark.List) ([]int, error) {
 }
 
 // List of accounts to Account Range
-func LtoAR(list *starlark.List) ([]Account, error) {
+func LtoAR(list *starlark.List) ([]*Account, error) {
 	llist := list.Len()
-	alist := make([]Account, llist)
+	alist := make([]*Account, llist)
 	for i := 0; i < llist; i++ {
 		v := list.Index(i)
-		va, ok := v.(Account)
+		va, ok := v.(*Account)
 		if !ok {
 			return nil, fmt.Errorf("Expected List of Accounts; found: %T", v)
 		}
 		alist[i] = va
 	}
 	return alist, nil
+}
+
+// List of transactions to Transaction Range
+func LtoTR(list *starlark.List) ([]*Transaction, error) {
+	llist := list.Len()
+	tlist := make([]*Transaction, llist)
+	for i := 0; i < llist; i++ {
+		v := list.Index(i)
+		vt, ok := v.(*Transaction)
+		if !ok {
+			return nil, fmt.Errorf("Expected List of Transactions; found: %T", v)
+		}
+		tlist[i] = vt
+	}
+	return tlist, nil
 }

@@ -8,7 +8,8 @@ import (
 
 var (
 	epilogue = starlark.StringDict{
-		"session": starlark.NewBuiltin("session", builtin_session),
-		"account": starlark.NewBuiltin("account", builtin_account),
+		"session":     starlark.NewBuiltin("session", builtinSession),
+		"account":     starlark.NewBuiltin("account", builtinAccounts),
+		"transaction": starlark.NewBuiltin("transaction", builtinTransactions),
 	}
 )

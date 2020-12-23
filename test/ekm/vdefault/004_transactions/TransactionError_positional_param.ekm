@@ -1,0 +1,12 @@
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [account("test")]
+
+def transactions(session, account, since):
+    srcIBAN = "BE71096123456769"
+    return [transaction(srcIBAN)]
+

@@ -1,32 +1,92 @@
-// Copyright (C) 2020  Germán Fuentes Capella
+//Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
 import (
-	"strings"
 	"testing"
 
 	"go.starlark.net/starlark"
 )
 
-func TestSessionEasyMethods(t *testing.T) {
-	s := Session{starlark.StringDict{}}
-
-	s.Freeze()
-
-	if s.Type() != "Session" {
-		t.Errorf("Expected Session Type='Session'; got %s", s.Type())
+func TestSessionFreeze(t *testing.T) {
+	s := NewSession()
+	err := s.SetKey(starlark.String("key"), starlark.String("value"))
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
 	}
-
-	if !strings.Contains(s.String(), "Session") {
-		t.Errorf("Expected Session String to contain 'Session'; got %s", s.String())
+	s.Freeze()
+	err = s.SetKey(starlark.String("key"), starlark.String("value"))
+	if err == nil {
+		t.Fatal("Expected error; none found")
 	}
 }
 
-func TestSessionHashError(t *testing.T) {
-	s := Session{starlark.StringDict{}}
-	_, err := s.Hash()
-	if err == nil {
-		t.Errorf("Expected error; got none")
+func TestSessionAttr(t *testing.T) {
+	s := NewSession()
+	key := starlark.String("key")
+	expect := starlark.String("value")
+	err := s.SetKey(key, expect)
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	got, found, err := s.Get(key)
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	if !found {
+		t.Fatalf("Key '%v' was not found in session '%v'", key, s)
+	}
+	equal, err := starlark.Equal(got, expect)
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	if !equal {
+		t.Fatalf("Expected '%v'; got '%v'", expect, got)
+	}
+	//
+	got, err = s.Attr("key")
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	equal, err = starlark.Equal(got, expect)
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	if !equal {
+		t.Fatalf("Expected '%v'; got '%v'", expect, got)
+	}
+	//
+	attrs := s.AttrNames()
+	if len(attrs) != 1 {
+		t.Fatalf("Expected 1 attribute; got '%v' with len %d", attrs, len(attrs))
+	}
+	if attrs[0] != "key" {
+		t.Fatalf("Expected attribute 'key'; got '%v'", attrs[0])
+	}
+}
+
+func TestSessionNonExistingAttr(t *testing.T) {
+	s := NewSession()
+	v, err := s.Attr("this_attr_does_not_exist")
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	if v != nil {
+		t.Fatalf("Unexpected value '%v'", v)
+	}
+}
+
+func TestSessionEmpty(t *testing.T) {
+	s := NewSession()
+	key := starlark.String("key")
+	value := starlark.String("value")
+	err := s.SetKey(key, value)
+	if err != nil {
+		t.Fatalf("Unexpected error '%v'", err)
+	}
+	expect := "Session{key=\"value\"}"
+	got := s.String()
+	if got != expect {
+		t.Fatalf("Expected session '%v'; got '%s'", expect, got)
 	}
 }

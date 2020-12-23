@@ -33,15 +33,33 @@ func TestNewCredentials(t *testing.T) {
 	}
 }
 
-func TestWrongAttrInCredentials(t *testing.T) {
+func TestGetWrongAttrInCredentials(t *testing.T) {
 	username, pwd, account := "username", "pwd", "account"
 	c := NewCredentials(username, pwd, account)
 	v, err := c.Attr("this_attr_does_not_exist")
-	if err != nil {
-		t.Errorf("Unexpected error; got '%v'", err)
+	if err == nil {
+		t.Fatal("Expected error; got none")
 	}
 	if v != nil {
 		t.Errorf("Unexpected value; got '%v'", v)
+	}
+}
+
+func TestSetWrongAttrInCredentials(t *testing.T) {
+	username, pwd, account := "username", "pwd", "account"
+	c := NewCredentials(username, pwd, account)
+	err := c.SetField("this_attr_does_not_exist", starlark.String(""))
+	if err == nil {
+		t.Fatal("Expected error; got none")
+	}
+}
+
+func TestSetWrongValueInCredentials(t *testing.T) {
+	username, pwd, account := "username", "pwd", "account"
+	c := NewCredentials(username, pwd, account)
+	err := c.SetField("username", starlark.MakeInt(1))
+	if err == nil {
+		t.Fatal("Expected error; got none")
 	}
 }
 
@@ -60,24 +78,56 @@ func TestCredentialsTruth(t *testing.T) {
 	if !c.Truth() {
 		t.Errorf("Expected Credentials Truth=true; got false")
 	}
-	c = Credentials{}
+	c = NewCredentials("", "", "")
 	if c.Truth() {
 		t.Errorf("Expected Credentials Truth=false; got true")
 	}
 }
 
-func TestCredentialsEasyMethods(t *testing.T) {
+func TestCredentialsFreeze(t *testing.T) {
 	username, pwd, account := "username", "pwd", "account"
 	c := NewCredentials(username, pwd, account)
-
-	// this should do nothing. As long as it does not panic, we are fine
+	expect := "a username"
+	err := c.SetField(username, starlark.String(expect))
+	if err != nil {
+		t.Fatalf("username update failed for '%v', with error: %v", c, err)
+	}
+	got, err := c.Attr(username)
+	if err != nil {
+		t.Fatalf("getting username failed for '%v', with error: %v", c, err)
+	}
+	equal, err := starlark.Equal(got, starlark.String(expect))
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !equal {
+		t.Fatalf("Expected '%v', got: %v", expect, got)
+	}
 	c.Freeze()
+	err = c.SetField(username, starlark.String(""))
+	if err == nil {
+		t.Fatal("username update was successful, expected failure")
+	}
+}
+
+func TestCredentialsType(t *testing.T) {
+	username, pwd, account := "username", "pwd", "account"
+	c := NewCredentials(username, pwd, account)
 
 	if c.Type() != "Credentials" {
 		t.Errorf("Expected Credentials Type='Credentials'; got %s", c.Type())
 	}
+}
 
-	if !strings.Contains(c.String(), "username") {
-		t.Errorf("Expected Credentials String to contain the username; got %s", c.String())
+func TestCredentialsString(t *testing.T) {
+	username, pwd, account := "username", "pwd", "account"
+	c := NewCredentials(username, pwd, account)
+
+	if !strings.Contains(c.String(), "pwd=\"*****\"") {
+		t.Errorf("Password in Credentials's string is unmasked: %s", c.String())
+	}
+
+	if !strings.Contains(c.String(), "account=\"*****\"") {
+		t.Errorf("Account in Credentials's string is unmasked: %s", c.String())
 	}
 }

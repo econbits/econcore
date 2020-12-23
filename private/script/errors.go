@@ -17,6 +17,8 @@ const (
 	SessionError         = ErrorType(5)
 	AccountListError     = ErrorType(6)
 	AccountError         = ErrorType(7)
+	TransactionListError = ErrorType(8)
+	TransactionError     = ErrorType(9)
 )
 
 var (
@@ -28,6 +30,8 @@ var (
 		SessionError,
 		AccountListError,
 		AccountError,
+		TransactionListError,
+		TransactionError,
 	}
 )
 
@@ -52,6 +56,12 @@ func (et ErrorType) mustTypeString() string {
 	}
 	if et == AccountError {
 		return "AccountError"
+	}
+	if et == TransactionListError {
+		return "TransactionListError"
+	}
+	if et == TransactionError {
+		return "TransactionError"
 	}
 	panic(fmt.Sprintf("ErrorType(%d) not defined", uint32(et)))
 }
