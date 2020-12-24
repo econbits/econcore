@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -15,11 +15,12 @@ func builtinSession(
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
 	if len(args) > 0 {
-		return nil, newBuiltinError(
-			b.Name(),
-			SessionError,
-			fmt.Sprintf("unnamed arguments are not allowed: %v", args),
-		)
+		return nil, ScriptError{
+			fpath:     "",
+			function:  b.Name(),
+			errorType: SessionError,
+			text:      fmt.Sprintf("unnamed arguments are not allowed: %v", args),
+		}
 	}
 	s := NewSession()
 	if len(kwargs) > 0 {

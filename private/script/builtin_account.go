@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -26,11 +26,12 @@ func builtinAccounts(
 			if len(args) >= (i + 1) {
 				argvalue, ok := args[i].(starlark.String)
 				if !ok {
-					return nil, newBuiltinError(
-						b.Name(),
-						AccountError,
-						fmt.Sprintf("'%s' is a non-string param", args[i]),
-					)
+					return nil, ScriptError{
+						fpath:     "",
+						function:  b.Name(),
+						errorType: AccountError,
+						text:      fmt.Sprintf("'%s' is a non-string param", args[i]),
+					}
 				}
 				params[argname] = argvalue
 			}
@@ -39,26 +40,29 @@ func builtinAccounts(
 	for _, tuple := range kwargs {
 		argname, ok := starlark.AsString(tuple[0])
 		if !ok {
-			return nil, newBuiltinError(
-				b.Name(),
-				AccountError,
-				fmt.Sprintf("'%s' is a non-string keyword argument", tuple[0]),
-			)
+			return nil, ScriptError{
+				fpath:     "",
+				function:  b.Name(),
+				errorType: AccountError,
+				text:      fmt.Sprintf("'%s' is a non-string keyword argument", tuple[0]),
+			}
 		}
 		if params[argname].Len() > 0 {
-			return nil, newBuiltinError(
-				b.Name(),
-				AccountError,
-				fmt.Sprintf("'%s' appears as positional argument and keyword argument", argname),
-			)
+			return nil, ScriptError{
+				fpath:     "",
+				function:  b.Name(),
+				errorType: AccountError,
+				text:      fmt.Sprintf("'%s' appears as positional argument and keyword argument", argname),
+			}
 		}
 		argvalue, ok := tuple[1].(starlark.String)
 		if !ok {
-			return nil, newBuiltinError(
-				b.Name(),
-				AccountError,
-				fmt.Sprintf("'%s' is a non-string param", tuple[1]),
-			)
+			return nil, ScriptError{
+				fpath:     "",
+				function:  b.Name(),
+				errorType: AccountError,
+				text:      fmt.Sprintf("'%s' is a non-string param", tuple[1]),
+			}
 		}
 		params[argname] = argvalue
 	}

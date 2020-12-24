@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -16,18 +16,18 @@ func builtinTransactions(
 ) (starlark.Value, error) {
 	if len(args) > 0 {
 		return nil, ScriptError{
-			scriptName: "",
-			function:   b.Name(),
-			errorType:  TransactionError,
-			text:       fmt.Sprintf("unnamed arguments are not allowed: %v", args),
+			fpath:     "",
+			function:  b.Name(),
+			errorType: TransactionError,
+			text:      fmt.Sprintf("unnamed arguments are not allowed: %v", args),
 		}
 	}
 	if len(kwargs) == 0 {
 		return nil, ScriptError{
-			scriptName: "",
-			function:   b.Name(),
-			errorType:  TransactionError,
-			text:       "Missing mandatory named arguments: {src_iban, dst_iban, amount, currency, value_date}",
+			fpath:     "",
+			function:  b.Name(),
+			errorType: TransactionError,
+			text:      "Missing mandatory named arguments: {src_iban, dst_iban, amount, currency, value_date}",
 		}
 	}
 	t := NewTransaction()
@@ -36,19 +36,19 @@ func builtinTransactions(
 			key, ok := starlark.AsString(tuple[0])
 			if !ok {
 				return nil, ScriptError{
-					scriptName: "",
-					function:   b.Name(),
-					errorType:  TransactionError,
-					text:       fmt.Sprintf("kwargs indexed with type: %T; value: %v", tuple[0], tuple[0]),
+					fpath:     "",
+					function:  b.Name(),
+					errorType: TransactionError,
+					text:      fmt.Sprintf("kwargs indexed with type: %T; value: %v", tuple[0], tuple[0]),
 				}
 			}
 			err := t.SetField(key, tuple[1])
 			if err != nil {
 				return nil, ScriptError{
-					scriptName: "",
-					function:   b.Name(),
-					errorType:  TransactionError,
-					text:       err.Error(),
+					fpath:     "",
+					function:  b.Name(),
+					errorType: TransactionError,
+					text:      err.Error(),
 				}
 			}
 		}

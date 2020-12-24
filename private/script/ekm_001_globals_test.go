@@ -18,8 +18,8 @@ func Test_001_Errors(t *testing.T) {
 }
 
 func Test_001_Meta_Full(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
-	sc, err := New(fname)
+	fpath := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
+	sc, err := New(fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -39,8 +39,8 @@ func Test_001_Meta_Full(t *testing.T) {
 }
 
 func Test_001_Meta_Empty(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_globals/OK_empty.ekm"
-	sc, err := New(fname)
+	fpath := "../../test/ekm/vdefault/001_globals/OK_empty.ekm"
+	sc, err := New(fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -59,8 +59,8 @@ func Test_001_Meta_Empty(t *testing.T) {
 }
 
 func Test_001_Meta_Corrupt_Values(t *testing.T) {
-	fname := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
-	sc, err := New(fname)
+	fpath := "../../test/ekm/vdefault/001_globals/OK_full.ekm"
+	sc, err := New(fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

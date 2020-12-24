@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -71,11 +71,12 @@ func (s Script) Login(cred *Credentials) (*Session, error) {
 	}
 	session, ok := value.(*Session)
 	if !ok {
-		return nil, newLoginError(
-			fname(s.fpath),
-			SessionError,
-			fmt.Sprintf("login function returned object of type '%T' instead of a session", value),
-		)
+		return nil, ScriptError{
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: SessionError,
+			text:      fmt.Sprintf("login function returned object of type '%T' instead of a session", value),
+		}
 	}
 	return session, nil
 }
@@ -84,23 +85,28 @@ func (s Script) Accounts(session *Session) ([]*Account, error) {
 	nameFn := "accounts"
 	value, err := s.runFn(nameFn, starlark.Tuple{session})
 	if err != nil {
-		return []*Account{}, err
+		return nil, err
 	}
 	accountList, ok := value.(*starlark.List)
 	if !ok {
-		return []*Account{}, newAccountError(
-			fname(s.fpath),
-			AccountListError,
-			fmt.Sprintf("account function returned object of type '%T' instead of a list of accounts", value),
-		)
+		return nil, ScriptError{
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: AccountListError,
+			text: fmt.Sprintf(
+				"account function returned object of type '%T' instead of a list of accounts",
+				value,
+			),
+		}
 	}
 	accounts, err := LtoAR(accountList)
 	if err != nil {
-		return []*Account{}, newAccountError(
-			fname(s.fpath),
-			AccountListError,
-			err.Error(),
-		)
+		return nil, ScriptError{
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: AccountListError,
+			text:      err.Error(),
+		}
 	}
 	return accounts, nil
 }
@@ -109,10 +115,10 @@ func (s Script) runFn(nameFn string, params starlark.Tuple) (starlark.Value, err
 	fn := s.globals[nameFn]
 	if fn == nil {
 		return nil, ScriptError{
-			scriptName: fname(s.fpath),
-			function:   nameFn,
-			errorType:  MissingFunctionError,
-			text:       fmt.Sprintf("missing %s function", nameFn),
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: MissingFunctionError,
+			text:      fmt.Sprintf("missing %s function", nameFn),
 		}
 	}
 
@@ -127,10 +133,10 @@ func (s Script) runFn(nameFn string, params starlark.Tuple) (starlark.Value, err
 			}
 		}
 		return nil, ScriptError{
-			scriptName: fname(s.fpath),
-			function:   nameFn,
-			errorType:  FunctionCallError,
-			text:       err.Error(),
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: FunctionCallError,
+			text:      err.Error(),
 		}
 	}
 	return value, nil
@@ -145,19 +151,19 @@ func (s Script) Transactions(session *Session, account *Account, since time.Time
 	txList, ok := value.(*starlark.List)
 	if !ok {
 		return nil, ScriptError{
-			scriptName: fname(s.fpath),
-			function:   nameFn,
-			errorType:  TransactionListError,
-			text:       fmt.Sprintf("account function returned object of type '%T' instead of a list of accounts", value),
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: TransactionListError,
+			text:      fmt.Sprintf("account function returned object of type '%T' instead of a list of accounts", value),
 		}
 	}
 	txs, err := LtoTR(txList)
 	if err != nil {
 		return nil, ScriptError{
-			scriptName: fname(s.fpath),
-			function:   nameFn,
-			errorType:  TransactionListError,
-			text:       err.Error(),
+			fpath:     s.fpath,
+			function:  nameFn,
+			errorType: TransactionListError,
+			text:      err.Error(),
 		}
 	}
 	return txs, nil

@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -9,24 +9,24 @@ import (
 )
 
 func New(fpath string) (Script, error) {
-	name := fname(fpath)
+	name := scriptid(fpath)
 	thread := &starlark.Thread{Name: name}
 	globals, err := starlark.ExecFile(thread, fpath, nil, epilogue)
 	if err != nil {
 		return Script{}, ScriptError{
-			scriptName: name,
-			function:   "load",
-			errorType:  LoadError,
-			text:       err.Error(),
+			fpath:     fpath,
+			function:  "load",
+			errorType: LoadError,
+			text:      err.Error(),
 		}
 	}
 	err = validateGlobals(globals)
 	if err != nil {
 		return Script{}, ScriptError{
-			scriptName: name,
-			function:   "globals",
-			errorType:  ReservedVarError,
-			text:       err.Error(),
+			fpath:     fpath,
+			function:  "globals",
+			errorType: ReservedVarError,
+			text:      err.Error(),
 		}
 	}
 	return Script{tn: thread, fpath: fpath, globals: globals}, nil

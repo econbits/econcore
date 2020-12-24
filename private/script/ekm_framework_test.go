@@ -24,7 +24,7 @@ func errorTypeFromString(errstring string) ErrorType {
 }
 
 func parseErrorCase(t *testing.T, fpath string) errorCase {
-	name := fname(fpath)
+	name := scriptid(fpath)
 	strs := strings.SplitN(name, "_", 2)
 	if len(strs) != 2 {
 		t.Fatalf("filename '%s' does not follow convention: ErrorType_case_name.ekm", name)
@@ -44,7 +44,7 @@ func listErrorFiles(t *testing.T, dpath string) []string {
 		if path == dpath {
 			return nil
 		}
-		if strings.HasPrefix(fname(path), "OK_") {
+		if strings.HasPrefix(scriptid(path), "OK_") {
 			return nil
 		}
 		if !strings.HasSuffix(path, ".ekm") {

@@ -1,4 +1,4 @@
-//Copyright (C) 2020  Germán Fuentes Capella
+// Copyright (C) 2020  Germán Fuentes Capella
 
 package script
 
@@ -67,27 +67,15 @@ func (et ErrorType) mustTypeString() string {
 }
 
 type ScriptError struct {
-	scriptName string
-	function   string
-	errorType  ErrorType
-	text       string
+	fpath     string
+	function  string
+	errorType ErrorType
+	text      string
 }
 
 func (se ScriptError) Error() string {
-	if len(se.scriptName) > 0 {
-		return fmt.Sprintf("[%s][%s] %s", se.scriptName, se.function, se.text)
+	if len(se.fpath) > 0 {
+		return fmt.Sprintf("[%s][%s] %s", scriptid(se.fpath), se.function, se.text)
 	}
 	return fmt.Sprintf("{%s} %s", se.function, se.text)
-}
-
-func newLoginError(scriptName string, errorType ErrorType, text string) error {
-	return ScriptError{scriptName: scriptName, function: "login", errorType: errorType, text: text}
-}
-
-func newAccountError(scriptName string, errorType ErrorType, text string) error {
-	return ScriptError{scriptName: scriptName, function: "account", errorType: errorType, text: text}
-}
-
-func newBuiltinError(function string, errorType ErrorType, text string) error {
-	return ScriptError{scriptName: "", function: function, errorType: errorType, text: text}
 }
