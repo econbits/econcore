@@ -91,3 +91,27 @@ func TestGetIntAsOptionalStringFromDict(t *testing.T) {
 		t.Fatal("expected error; got none")
 	}
 }
+
+func TestGetBool(t *testing.T) {
+	key1 := "key1"
+	key2 := "key2"
+	sd := StringDict{key1: starlark.True, key2: starlark.String("a")}
+	for _, k := range []string{key1, key2} {
+		ok, err := sd.GetBool(k)
+		if err != nil {
+			t.Fatalf("unexpected error %v", err)
+		}
+		if !ok {
+			t.Fatal("expected true; got false")
+		}
+	}
+}
+
+func TestGetMissingBool(t *testing.T) {
+	k := "key1"
+	sd := StringDict{}
+	_, err := sd.GetBool(k)
+	if err == nil {
+		t.Fatal("expected error; none found")
+	}
+}

@@ -10,6 +10,14 @@ import (
 
 type StringDict starlark.StringDict
 
+func (sd StringDict) GetBool(key string) (bool, error) {
+	value, ok := sd[key]
+	if !ok {
+		return false, fmt.Errorf("key '%s' not in dict", key)
+	}
+	return bool(value.Truth()), nil
+}
+
 func (sd StringDict) GetString(key string) (string, error) {
 	value, ok := sd[key]
 	if !ok {
