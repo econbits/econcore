@@ -41,7 +41,7 @@ func TestRun(
 	testFn TestFn,
 	failFn func(t *testing.T, err error),
 ) {
-	filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
+	err := filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
 		if isScript(dirPath, filePath) {
 			t.Run(filePath, func(t *testing.T) {
 				err := testRunner(filePath, epilogue, testFn)
@@ -52,4 +52,7 @@ func TestRun(
 		}
 		return nil
 	})
+	if err != nil {
+		failFn(t, err)
+	}
 }

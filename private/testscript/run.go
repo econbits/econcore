@@ -15,6 +15,13 @@ func ExecScriptFn(path string, epilogue starlark.StringDict) *eklark.EKError {
 	thread := eklark.NewThread(path)
 	_, err := starlark.ExecFile(thread, path, nil, epilogue)
 	if err != nil {
+		evalerr, ok := err.(*starlark.EvalError)
+		if ok {
+			ekerr, ok := evalerr.Unwrap().(*eklark.EKError)
+			if ok {
+				return ekerr
+			}
+		}
 		return &eklark.EKError{
 			FilePath:    path,
 			Function:    "ExecScriptFn",

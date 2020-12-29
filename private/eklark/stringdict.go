@@ -15,6 +15,9 @@ func (sd StringDict) GetBool(key string) (bool, error) {
 	if !ok {
 		return false, fmt.Errorf("key '%s' not in dict", key)
 	}
+	if value == starlark.None {
+		return false, fmt.Errorf("Missing value for key '%s'", key)
+	}
 	return bool(value.Truth()), nil
 }
 
@@ -24,7 +27,7 @@ func (sd StringDict) GetString(key string) (string, error) {
 		return "", fmt.Errorf("key '%s' not in dict", key)
 	}
 	if value == starlark.None {
-		return "", fmt.Errorf("value None for key '%s' can't be converted to string", key)
+		return "", fmt.Errorf("Missing value for key '%s'", key)
 	}
 	str, ok := starlark.AsString(value)
 	if !ok {
