@@ -37,3 +37,37 @@ func TestTestRunnerOnErrorFile(t *testing.T) {
 		t.Fatal("Expected error; none found")
 	}
 }
+
+func TestSuccessfulTestRunScript(t *testing.T) {
+	TestRun(
+		t,
+		"../../test/ekm/vdefault/000_smalltests/testscript/OK_empty.ekm",
+		func(path string) *eklark.EKError {
+			return nil
+		},
+		Fail,
+	)
+}
+
+func TestErrorTestRunScript(t *testing.T) {
+	fpath := "../../test/ekm/vdefault/000_smalltests/testscript/OK_empty.ekm"
+	failed := false
+	TestRun(
+		t,
+		fpath,
+		func(path string) *eklark.EKError {
+			return &eklark.EKError{
+				FilePath:    fpath,
+				Function:    "TestErrorTestRunScript",
+				ErrorType:   eklark.ErrorType("Test"),
+				Description: "Test Error",
+			}
+		},
+		func(t *testing.T, err error) {
+			failed = true
+		},
+	)
+	if !failed {
+		t.Fatal("Expected test failure; it succeeded")
+	}
+}

@@ -27,14 +27,20 @@ func testRunner(filePath string, testFn TestFn) *eklark.EKError {
 	return testCase.GotError
 }
 
-func TestRun(t *testing.T, dirPath string, testFn TestFn) {
+type FailFn func(t *testing.T, err error)
+
+func Fail(t *testing.T, err error) {
+	t.Fatal(err.Error())
+}
+
+func TestRun(t *testing.T, dirPath string, testFn TestFn, failFn func(t *testing.T, err error)) {
 	filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
 		if isScript(dirPath, filePath) {
 		}
 		t.Run(filePath, func(t *testing.T) {
 			err := testRunner(filePath, testFn)
 			if err != nil {
-				t.Fatal(err.Error())
+				failFn(t, err)
 			}
 		})
 		return nil
