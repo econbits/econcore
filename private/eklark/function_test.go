@@ -15,7 +15,7 @@ func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) 
 		Callback: func(
 			thread *starlark.Thread,
 			builtin *starlark.Builtin,
-			sdict starlark.StringDict,
+			sdict StringDict,
 		) (starlark.Value, error) {
 			return sdict["arg1"], nil
 		},
