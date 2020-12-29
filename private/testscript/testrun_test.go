@@ -50,14 +50,14 @@ func TestSuccessfulTestRunScript(t *testing.T) {
 }
 
 func TestErrorTestRunScript(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/000_smalltests/testscript/OK_empty.ekm"
+	dpath := "../../test/ekm/vdefault/000_smalltests/testscript/"
 	failed := false
 	TestRun(
 		t,
-		fpath,
+		dpath,
 		func(path string) *eklark.EKError {
 			return &eklark.EKError{
-				FilePath:    fpath,
+				FilePath:    path,
 				Function:    "TestErrorTestRunScript",
 				ErrorType:   eklark.ErrorType("Test"),
 				Description: "Test Error",
