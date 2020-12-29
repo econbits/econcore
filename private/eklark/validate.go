@@ -25,12 +25,3 @@ func IsInt(v starlark.Value) error {
 	}
 	return nil
 }
-
-// TODO move this function to the date package
-//func IsDateValue(v starlark.Value) error {
-//	_, ok := v.(*Date)
-//	if !ok {
-//		return fmt.Errorf("'%v' is not a date", v)
-//	}
-//	return nil
-//}
