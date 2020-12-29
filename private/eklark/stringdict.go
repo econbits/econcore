@@ -24,3 +24,18 @@ func (sd StringDict) GetString(key string) (string, error) {
 	}
 	return str, nil
 }
+
+func (sd StringDict) GetStringOr(key string, defaultString string) (string, error) {
+	value, ok := sd[key]
+	if !ok {
+		return "", fmt.Errorf("key '%s' not in dict", key)
+	}
+	if value == starlark.None {
+		return defaultString, nil
+	}
+	str, ok := starlark.AsString(value)
+	if !ok {
+		return "", fmt.Errorf("value '%v' for key '%s' isn't a string", value, key)
+	}
+	return str, nil
+}
