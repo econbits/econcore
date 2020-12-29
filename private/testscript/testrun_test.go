@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/econbits/econkit/private/eklark"
+	"go.starlark.net/starlark"
 )
 
 func TestIsScript(t *testing.T) {
@@ -21,18 +22,24 @@ func TestIsScript(t *testing.T) {
 }
 
 func TestTestRunner(t *testing.T) {
-	err := testRunner("OK_script.ekm", func(path string) *eklark.EKError {
-		return nil
-	})
+	err := testRunner(
+		"OK_script.ekm",
+		starlark.StringDict{},
+		func(path string, epilogue starlark.StringDict) *eklark.EKError {
+			return nil
+		})
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
 }
 
 func TestTestRunnerOnErrorFile(t *testing.T) {
-	err := testRunner("script.ekm", func(path string) *eklark.EKError {
-		return nil
-	})
+	err := testRunner(
+		"script.ekm",
+		starlark.StringDict{},
+		func(path string, epilogue starlark.StringDict) *eklark.EKError {
+			return nil
+		})
 	if err == nil {
 		t.Fatal("Expected error; none found")
 	}
@@ -41,10 +48,9 @@ func TestTestRunnerOnErrorFile(t *testing.T) {
 func TestSuccessfulTestRunScript(t *testing.T) {
 	TestRun(
 		t,
-		"../../test/ekm/vdefault/000_smalltests/testscript/OK_empty.ekm",
-		func(path string) *eklark.EKError {
-			return nil
-		},
+		"../../test/ekm/vdefault/000_smalltests/testscript",
+		starlark.StringDict{},
+		ExecScriptFn,
 		Fail,
 	)
 }
@@ -55,7 +61,8 @@ func TestErrorTestRunScript(t *testing.T) {
 	TestRun(
 		t,
 		dpath,
-		func(path string) *eklark.EKError {
+		starlark.StringDict{},
+		func(path string, epilogue starlark.StringDict) *eklark.EKError {
 			return &eklark.EKError{
 				FilePath:    path,
 				Function:    "TestErrorTestRunScript",

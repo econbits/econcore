@@ -6,12 +6,27 @@ import (
 	"fmt"
 
 	"github.com/econbits/econkit/private/eklark"
+	"go.starlark.net/starlark"
 )
 
-type TestFn func(path string) *eklark.EKError
+type TestFn func(path string, epilogue starlark.StringDict) *eklark.EKError
 
-func Run(testCase *TestCase, testFn TestFn) {
-	err := testFn(testCase.FilePath)
+func ExecScriptFn(path string, epilogue starlark.StringDict) *eklark.EKError {
+	thread := eklark.NewThread(path)
+	_, err := starlark.ExecFile(thread, path, nil, epilogue)
+	if err != nil {
+		return &eklark.EKError{
+			FilePath:    path,
+			Function:    "ExecScriptFn",
+			ErrorType:   eklark.ErrorType("TestExecScript"),
+			Description: err.Error(),
+		}
+	}
+	return nil
+}
+
+func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
+	err := testFn(testCase.FilePath, epilogue)
 	if testCase.ExpectedOK {
 		if err != nil {
 			testCase.GotError = err
