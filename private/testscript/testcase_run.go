@@ -29,7 +29,7 @@ func ExecScriptFn(path string, epilogue starlark.StringDict) error {
 	return nil
 }
 
-func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
+func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
 	err := testFn(testCase.FilePath, epilogue)
 	if testCase.ExpectedOK {
 		if err != nil {
@@ -39,7 +39,7 @@ func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
 		if err == nil {
 			testCase.GotError = &eklark.EKError{
 				FilePath:  testCase.FilePath,
-				Function:  "Run",
+				Function:  "RunTestCase",
 				ErrorType: eklark.ErrorType("Test"),
 				Description: fmt.Sprintf(
 					"[%s] Expected Error Type %v; none found",
@@ -52,7 +52,7 @@ func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
 			if !ok {
 				testCase.GotError = &eklark.EKError{
 					FilePath:  testCase.FilePath,
-					Function:  "Run",
+					Function:  "RunTestCase",
 					ErrorType: eklark.ErrorType("Test"),
 					Description: fmt.Sprintf(
 						"[%s] Expected Error Type %v; found %v",
@@ -64,7 +64,7 @@ func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
 			} else if ekerr.ErrorType != testCase.ExpectedErrorType {
 				testCase.GotError = &eklark.EKError{
 					FilePath:  testCase.FilePath,
-					Function:  "Run",
+					Function:  "RunTestCase",
 					ErrorType: eklark.ErrorType("Test"),
 					Description: fmt.Sprintf(
 						"[%s] Expected Error Type '%v'; found '%v' (Error msg: '%v')",

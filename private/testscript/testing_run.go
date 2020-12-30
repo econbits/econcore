@@ -23,7 +23,7 @@ func testRunner(filePath string, epilogue starlark.StringDict, testFn TestFn) er
 	if testCase.GotError != nil {
 		return testCase.GotError
 	}
-	Run(testCase, epilogue, testFn)
+	RunTestCase(testCase, epilogue, testFn)
 	return testCase.GotError
 }
 
@@ -33,7 +33,7 @@ func Fail(t *testing.T, err error) {
 	t.Fatal(err.Error())
 }
 
-func TestRun(
+func TestingRun(
 	t *testing.T,
 	dirPath string,
 	epilogue starlark.StringDict,

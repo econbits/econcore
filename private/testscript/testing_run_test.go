@@ -46,7 +46,7 @@ func TestTestRunnerOnErrorFile(t *testing.T) {
 }
 
 func TestSuccessfulTestRunScript(t *testing.T) {
-	TestRun(
+	TestingRun(
 		t,
 		"../../test/ekm/vdefault/000_smalltests/testscript",
 		starlark.StringDict{},
@@ -58,7 +58,7 @@ func TestSuccessfulTestRunScript(t *testing.T) {
 func TestErrorTestRunScript(t *testing.T) {
 	dpath := "../../test/ekm/vdefault/000_smalltests/testscript/"
 	failed := false
-	TestRun(
+	TestingRun(
 		t,
 		dpath,
 		starlark.StringDict{},

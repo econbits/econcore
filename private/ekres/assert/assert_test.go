@@ -12,5 +12,5 @@ import (
 func TestScripts(t *testing.T) {
 	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/assert/"
 	epilogue := starlark.StringDict{"assert": AssertFn.Builtin()}
-	testscript.TestRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
 }

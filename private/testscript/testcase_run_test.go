@@ -15,7 +15,7 @@ func TestSuccessOnRunOKFile(t *testing.T) {
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error { return nil },
 	)
@@ -30,12 +30,12 @@ func TestErrorOnRunOKFile(t *testing.T) {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
 
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
 			return &eklark.EKError{
 				FilePath:    testCase.FilePath,
-				Function:    "Run",
+				Function:    "RunTestCase",
 				ErrorType:   eklark.ErrorType("Test"),
 				Description: "Error",
 			}
@@ -53,7 +53,7 @@ func TestNonEKErrorOnRunErrorFile(t *testing.T) {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
 
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
 			return fmt.Errorf("this is an error")
@@ -71,12 +71,12 @@ func TestErrorWrongTypeOnRunErrorFile(t *testing.T) {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
 
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
 			return &eklark.EKError{
 				FilePath:    testCase.FilePath,
-				Function:    "Run",
+				Function:    "RunTestCase",
 				ErrorType:   eklark.ErrorType("Test"),
 				Description: "Error",
 			}
@@ -94,12 +94,12 @@ func TestErrorOnRunErrorFile(t *testing.T) {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
 
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
 			return &eklark.EKError{
 				FilePath:    testCase.FilePath,
-				Function:    "Run",
+				Function:    "RunTestCase",
 				ErrorType:   eklark.ErrorType("ERROR"),
 				Description: "Error",
 			}
@@ -117,7 +117,7 @@ func TestNoErrorOnRunErrorFile(t *testing.T) {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
 
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error { return nil },
 	)
@@ -132,7 +132,7 @@ func TestErrorOnMissingFile(t *testing.T) {
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
-	Run(testCase,
+	RunTestCase(testCase,
 		starlark.StringDict{},
 		ExecScriptFn,
 	)
