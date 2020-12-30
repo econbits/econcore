@@ -8,7 +8,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func TestMustGetFilePathPanic(t *testing.T) {
+func TestThreadMustGetFilePathPanic(t *testing.T) {
 	defer func() {
 		if e := recover(); e == nil {
 			t.Errorf("Expected error; none found")
@@ -16,5 +16,5 @@ func TestMustGetFilePathPanic(t *testing.T) {
 	}()
 
 	thread := &starlark.Thread{Name: "TestThread"}
-	MustGetFilePath(thread)
+	ThreadMustGetFilePath(thread)
 }

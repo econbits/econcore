@@ -25,7 +25,7 @@ func (fn *Fn) validateNumArgs(
 ) error {
 	if len(fn.ArgNames) < len(args)+len(kwargs) {
 		return &EKError{
-			FilePath:  MustGetFilePath(thread),
+			FilePath:  ThreadMustGetFilePath(thread),
 			Function:  builtin.Name(),
 			ErrorType: fn.ArgError,
 			Description: fmt.Sprintf(
@@ -47,7 +47,7 @@ func (fn *Fn) value2string(
 	str, ok := starlark.AsString(v)
 	if !ok {
 		return "", &EKError{
-			FilePath:  MustGetFilePath(thread),
+			FilePath:  ThreadMustGetFilePath(thread),
 			Function:  builtin.Name(),
 			ErrorType: fn.ArgError,
 			Description: fmt.Sprintf(
@@ -72,7 +72,7 @@ func (fn *Fn) popArgName(
 		}
 	}
 	return nil, &EKError{
-		FilePath:  MustGetFilePath(thread),
+		FilePath:  ThreadMustGetFilePath(thread),
 		Function:  builtin.Name(),
 		ErrorType: fn.ArgError,
 		Description: fmt.Sprintf(

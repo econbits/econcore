@@ -17,7 +17,7 @@ func NewThread(fpath string) *starlark.Thread {
 	return t
 }
 
-func MustGetFilePath(t *starlark.Thread) string {
+func ThreadMustGetFilePath(t *starlark.Thread) string {
 	ifce := t.Local(localFilePath)
 	str, ok := ifce.(string)
 	if !ok {
