@@ -102,13 +102,16 @@ func (ev *EKValue) isValidAttr(name string) bool {
 
 func (ev *EKValue) Attr(name string) (starlark.Value, error) {
 	if !ev.isValidAttr(name) {
-		return nil, fmt.Errorf("Attribute '%s' is not valid. Options: %v", name, ev.attrs)
+		return nil, starlark.NoSuchAttrError(
+			fmt.Sprintf("type object '%s' has no attribute '%s'", ev.valueType, name),
+		)
 	}
 	value, ok := ev.data[name]
-	if ok {
-		return value, nil
+	if !ok {
+		// value not present
+		return nil, nil
 	}
-	return nil, nil
+	return value, nil
 }
 
 func (ev *EKValue) AttrNames() []string {
@@ -131,7 +134,9 @@ func (ev *EKValue) SetField(name string, val starlark.Value) error {
 		return fmt.Errorf("%s is frozen", ev.valueType)
 	}
 	if !ev.isValidAttr(name) {
-		return fmt.Errorf("Attribute '%s' is not valid. Options: %v", name, ev.attrs)
+		return starlark.NoSuchAttrError(
+			fmt.Sprintf("type object '%s' has no attribute '%s'", ev.valueType, name),
+		)
 	}
 	validFn, ok := ev.validators[name]
 	if ok {
