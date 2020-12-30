@@ -16,6 +16,9 @@ func TestOKTestCase(t *testing.T) {
 	if tc.GotError != nil {
 		t.Fatalf("Unexpected error %v", tc.GotError)
 	}
+	if tc.EKError() != nil {
+		t.Fatalf("Unexpected error %v", tc.EKError())
+	}
 }
 
 func TestErrorTestCase(t *testing.T) {
@@ -29,6 +32,9 @@ func TestErrorTestCase(t *testing.T) {
 	if tc.GotError != nil {
 		t.Fatalf("Unexpected error %v", tc.GotError)
 	}
+	if tc.EKError() != nil {
+		t.Fatalf("Unexpected error %v", tc.EKError())
+	}
 }
 
 func TestInitializationErrorTestCase(t *testing.T) {
@@ -37,6 +43,9 @@ func TestInitializationErrorTestCase(t *testing.T) {
 		t.Fatal("test case is expected to be not ok; found ok")
 	}
 	if tc.GotError == nil {
+		t.Fatal("Expecting error initializing test case; got none")
+	}
+	if tc.EKError() == nil {
 		t.Fatal("Expecting error initializing test case; got none")
 	}
 }

@@ -1,0 +1,3 @@
+# Copyright (C) 2020  Germán Fuentes Capella
+
+assert(False, msg=1)

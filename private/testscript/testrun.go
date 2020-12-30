@@ -8,7 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/econbits/econkit/private/eklark"
 	"go.starlark.net/starlark"
 )
 
@@ -19,7 +18,7 @@ func isScript(dirPath, filePath string) bool {
 	return strings.HasSuffix(filePath, ".ekm")
 }
 
-func testRunner(filePath string, epilogue starlark.StringDict, testFn TestFn) *eklark.EKError {
+func testRunner(filePath string, epilogue starlark.StringDict, testFn TestFn) error {
 	testCase := ParseTestCase(filePath)
 	if testCase.GotError != nil {
 		return testCase.GotError
@@ -41,7 +40,7 @@ func TestRun(
 	testFn TestFn,
 	failFn func(t *testing.T, err error),
 ) {
-	err := filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
+	filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
 		if isScript(dirPath, filePath) {
 			t.Run(filePath, func(t *testing.T) {
 				err := testRunner(filePath, epilogue, testFn)
@@ -52,7 +51,4 @@ func TestRun(
 		}
 		return nil
 	})
-	if err != nil {
-		failFn(t, err)
-	}
 }

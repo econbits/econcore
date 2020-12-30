@@ -14,14 +14,30 @@ type TestCase struct {
 	FilePath          string
 	ExpectedOK        bool
 	ExpectedErrorType eklark.ErrorType
-	GotError          *eklark.EKError
+	GotError          error
+}
+
+func (tc *TestCase) EKError() *eklark.EKError {
+	if tc.GotError == nil {
+		return nil
+	}
+	err, ok := tc.GotError.(*eklark.EKError)
+	if !ok {
+		return &eklark.EKError{
+			FilePath:    tc.FilePath,
+			Function:    "EKError",
+			ErrorType:   eklark.ErrorType("MaskedEKError"),
+			Description: tc.GotError.Error(),
+		}
+	}
+	return err
 }
 
 func ParseTestCase(fpath string) *TestCase {
 	name := eklark.ScriptId(fpath)
 	strs := strings.SplitN(name, "_", 2)
 
-	var gotErr *eklark.EKError = nil
+	var gotErr error = nil
 	if len(strs) != 2 {
 		gotErr = &eklark.EKError{
 			FilePath:  fpath,

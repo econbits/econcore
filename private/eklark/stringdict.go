@@ -8,9 +8,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-type StringDict starlark.StringDict
-
-func (sd StringDict) GetBool(key string) (bool, error) {
+func StringDictGetBool(sd starlark.StringDict, key string) (bool, error) {
 	value, ok := sd[key]
 	if !ok {
 		return false, fmt.Errorf("key '%s' not in dict", key)
@@ -21,7 +19,7 @@ func (sd StringDict) GetBool(key string) (bool, error) {
 	return bool(value.Truth()), nil
 }
 
-func (sd StringDict) GetString(key string) (string, error) {
+func StringDictGetString(sd starlark.StringDict, key string) (string, error) {
 	value, ok := sd[key]
 	if !ok {
 		return "", fmt.Errorf("key '%s' not in dict", key)
@@ -36,7 +34,11 @@ func (sd StringDict) GetString(key string) (string, error) {
 	return str, nil
 }
 
-func (sd StringDict) GetStringOr(key string, defaultString string) (string, error) {
+func StringDictGetStringOr(
+	sd starlark.StringDict,
+	key string,
+	defaultString string,
+) (string, error) {
 	value, ok := sd[key]
 	if !ok {
 		return "", fmt.Errorf("key '%s' not in dict", key)

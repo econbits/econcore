@@ -8,7 +8,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-type Callback func(*starlark.Thread, *starlark.Builtin, StringDict) (starlark.Value, error)
+type Callback func(*starlark.Thread, *starlark.Builtin, starlark.StringDict) (starlark.Value, error)
 
 type Fn struct {
 	Name     string
@@ -94,7 +94,7 @@ func (fn *Fn) starlarkCallback(
 		return nil, err
 	}
 	argnames := fn.ArgNames // avoid changing Fn ArgNames
-	sdict := StringDict{}
+	sdict := starlark.StringDict{}
 	for _, value := range args {
 		argname := argnames[0]
 		argnames = argnames[1:]

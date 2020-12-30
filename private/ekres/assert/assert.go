@@ -25,8 +25,8 @@ var (
 	}
 )
 
-func assertCb(thread *starlark.Thread, builtin *starlark.Builtin, sdict eklark.StringDict) (starlark.Value, error) {
-	ok, err := sdict.GetBool(argOk)
+func assertCb(thread *starlark.Thread, builtin *starlark.Builtin, sdict starlark.StringDict) (starlark.Value, error) {
+	ok, err := eklark.StringDictGetBool(sdict, argOk)
 	if err != nil {
 		return nil, &eklark.EKError{
 			FilePath:    eklark.MustGetFilePath(thread),
@@ -36,7 +36,7 @@ func assertCb(thread *starlark.Thread, builtin *starlark.Builtin, sdict eklark.S
 		}
 	}
 	if !ok {
-		msg, err := sdict.GetStringOr(argMsg, defaultMsg)
+		msg, err := eklark.StringDictGetStringOr(sdict, argMsg, defaultMsg)
 		if err != nil {
 			return nil, &eklark.EKError{
 				FilePath:    eklark.MustGetFilePath(thread),

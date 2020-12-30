@@ -25,7 +25,7 @@ func TestTestRunner(t *testing.T) {
 	err := testRunner(
 		"OK_script.ekm",
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) *eklark.EKError {
+		func(path string, epilogue starlark.StringDict) error {
 			return nil
 		})
 	if err != nil {
@@ -37,7 +37,7 @@ func TestTestRunnerOnErrorFile(t *testing.T) {
 	err := testRunner(
 		"script.ekm",
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) *eklark.EKError {
+		func(path string, epilogue starlark.StringDict) error {
 			return nil
 		})
 	if err == nil {
@@ -62,7 +62,7 @@ func TestErrorTestRunScript(t *testing.T) {
 		t,
 		dpath,
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) *eklark.EKError {
+		func(path string, epilogue starlark.StringDict) error {
 			return &eklark.EKError{
 				FilePath:    path,
 				Function:    "TestErrorTestRunScript",

@@ -11,8 +11,8 @@ import (
 func TestGetStringFromDict(t *testing.T) {
 	key := "key"
 	expect := "test"
-	sd := StringDict{key: starlark.String(expect)}
-	got, err := sd.GetString(key)
+	sd := starlark.StringDict{key: starlark.String(expect)}
+	got, err := StringDictGetString(sd, key)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -23,8 +23,8 @@ func TestGetStringFromDict(t *testing.T) {
 
 func TestGetMissingStringFromDict(t *testing.T) {
 	key := "key"
-	sd := StringDict{}
-	_, err := sd.GetString(key)
+	sd := starlark.StringDict{}
+	_, err := StringDictGetString(sd, key)
 	if err == nil {
 		t.Fatal("expected error; got none")
 	}
@@ -32,8 +32,8 @@ func TestGetMissingStringFromDict(t *testing.T) {
 
 func TestGetNoneAsStringFromDict(t *testing.T) {
 	key := "key"
-	sd := StringDict{key: starlark.None}
-	_, err := sd.GetString(key)
+	sd := starlark.StringDict{key: starlark.None}
+	_, err := StringDictGetString(sd, key)
 	if err == nil {
 		t.Fatal("expected error; got none")
 	}
@@ -41,8 +41,8 @@ func TestGetNoneAsStringFromDict(t *testing.T) {
 
 func TestGetIntAsStringFromDict(t *testing.T) {
 	key := "key"
-	sd := StringDict{key: starlark.MakeInt(1)}
-	_, err := sd.GetString(key)
+	sd := starlark.StringDict{key: starlark.MakeInt(1)}
+	_, err := StringDictGetString(sd, key)
 	if err == nil {
 		t.Fatal("expected error; got none")
 	}
@@ -51,8 +51,8 @@ func TestGetIntAsStringFromDict(t *testing.T) {
 func TestGetNonOptionalStringFromDict(t *testing.T) {
 	key := "key"
 	expect := "test"
-	sd := StringDict{key: starlark.String(expect)}
-	got, err := sd.GetStringOr(key, "alt")
+	sd := starlark.StringDict{key: starlark.String(expect)}
+	got, err := StringDictGetStringOr(sd, key, "alt")
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -63,8 +63,8 @@ func TestGetNonOptionalStringFromDict(t *testing.T) {
 
 func TestGetMissingOptionalStringFromDict(t *testing.T) {
 	key := "key"
-	sd := StringDict{}
-	_, err := sd.GetStringOr(key, "alt")
+	sd := starlark.StringDict{}
+	_, err := StringDictGetStringOr(sd, key, "alt")
 	if err == nil {
 		t.Fatal("expected error; got none")
 	}
@@ -73,8 +73,8 @@ func TestGetMissingOptionalStringFromDict(t *testing.T) {
 func TestGetOptionalStringFromDict(t *testing.T) {
 	key := "key"
 	expect := "alt"
-	sd := StringDict{key: starlark.None}
-	got, err := sd.GetStringOr(key, expect)
+	sd := starlark.StringDict{key: starlark.None}
+	got, err := StringDictGetStringOr(sd, key, expect)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -85,8 +85,8 @@ func TestGetOptionalStringFromDict(t *testing.T) {
 
 func TestGetIntAsOptionalStringFromDict(t *testing.T) {
 	key := "key"
-	sd := StringDict{key: starlark.MakeInt(1)}
-	_, err := sd.GetStringOr(key, "alt")
+	sd := starlark.StringDict{key: starlark.MakeInt(1)}
+	_, err := StringDictGetStringOr(sd, key, "alt")
 	if err == nil {
 		t.Fatal("expected error; got none")
 	}
@@ -95,9 +95,9 @@ func TestGetIntAsOptionalStringFromDict(t *testing.T) {
 func TestGetBool(t *testing.T) {
 	key1 := "key1"
 	key2 := "key2"
-	sd := StringDict{key1: starlark.True, key2: starlark.String("a")}
+	sd := starlark.StringDict{key1: starlark.True, key2: starlark.String("a")}
 	for _, k := range []string{key1, key2} {
-		ok, err := sd.GetBool(k)
+		ok, err := StringDictGetBool(sd, k)
 		if err != nil {
 			t.Fatalf("unexpected error %v", err)
 		}
@@ -107,10 +107,19 @@ func TestGetBool(t *testing.T) {
 	}
 }
 
+func TestGetBoolFromNone(t *testing.T) {
+	key := "key1"
+	sd := starlark.StringDict{key: starlark.None}
+	_, err := StringDictGetBool(sd, key)
+	if err == nil {
+		t.Fatal("expected error; none found")
+	}
+}
+
 func TestGetMissingBool(t *testing.T) {
 	k := "key1"
-	sd := StringDict{}
-	_, err := sd.GetBool(k)
+	sd := starlark.StringDict{}
+	_, err := StringDictGetBool(sd, k)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

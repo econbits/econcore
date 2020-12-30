@@ -9,18 +9,15 @@ import (
 	"go.starlark.net/starlark"
 )
 
-type TestFn func(path string, epilogue starlark.StringDict) *eklark.EKError
+type TestFn func(path string, epilogue starlark.StringDict) error
 
-func ExecScriptFn(path string, epilogue starlark.StringDict) *eklark.EKError {
+func ExecScriptFn(path string, epilogue starlark.StringDict) error {
 	thread := eklark.NewThread(path)
-	_, err := starlark.ExecFile(thread, path, nil, epilogue)
+	_, err := eklark.Exec(thread, path, epilogue)
 	if err != nil {
-		evalerr, ok := err.(*starlark.EvalError)
+		ekerr, ok := err.(*eklark.EKError)
 		if ok {
-			ekerr, ok := evalerr.Unwrap().(*eklark.EKError)
-			if ok {
-				return ekerr
-			}
+			return ekerr
 		}
 		return &eklark.EKError{
 			FilePath:    path,
@@ -50,18 +47,33 @@ func Run(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
 					testCase.ExpectedErrorType,
 				),
 			}
-		} else if err.ErrorType != testCase.ExpectedErrorType {
-			testCase.GotError = &eklark.EKError{
-				FilePath:  testCase.FilePath,
-				Function:  "Run",
-				ErrorType: eklark.ErrorType("Test"),
-				Description: fmt.Sprintf(
-					"[%s] Expected Error Type '%v'; found '%v' (Error msg: '%v')",
-					testCase.FilePath,
-					testCase.ExpectedErrorType,
-					err.ErrorType,
-					err,
-				),
+		} else {
+			ekerr, ok := err.(*eklark.EKError)
+			if !ok {
+				testCase.GotError = &eklark.EKError{
+					FilePath:  testCase.FilePath,
+					Function:  "Run",
+					ErrorType: eklark.ErrorType("Test"),
+					Description: fmt.Sprintf(
+						"[%s] Expected Error Type %v; found %v",
+						testCase.FilePath,
+						testCase.ExpectedErrorType,
+						err,
+					),
+				}
+			} else if ekerr.ErrorType != testCase.ExpectedErrorType {
+				testCase.GotError = &eklark.EKError{
+					FilePath:  testCase.FilePath,
+					Function:  "Run",
+					ErrorType: eklark.ErrorType("Test"),
+					Description: fmt.Sprintf(
+						"[%s] Expected Error Type '%v'; found '%v' (Error msg: '%v')",
+						testCase.FilePath,
+						testCase.ExpectedErrorType,
+						ekerr.ErrorType,
+						ekerr,
+					),
+				}
 			}
 		}
 	}
