@@ -11,11 +11,11 @@ import (
 )
 
 type TestCase struct {
-	Name              string
-	FilePath          string
-	ExpectedOK        bool
-	ExpectedErrorType *ekerrors.Class
-	AbortError        error
+	Name               string
+	FilePath           string
+	ExpectedOK         bool
+	ExpectedErrorClass *ekerrors.Class
+	AbortError         error
 }
 
 var (
@@ -44,10 +44,10 @@ func ParseTestCase(fpath string) *TestCase {
 	}
 
 	return &TestCase{
-		Name:              name,
-		FilePath:          fpath,
-		ExpectedOK:        errstring == "OK",
-		ExpectedErrorType: errorClass,
-		AbortError:        abortErr,
+		Name:               name,
+		FilePath:           fpath,
+		ExpectedOK:         errstring == "OK",
+		ExpectedErrorClass: errorClass,
+		AbortError:         abortErr,
 	}
 }

@@ -21,8 +21,8 @@ func TestErrorTestCase(t *testing.T) {
 	if tc.ExpectedOK {
 		t.Fatal("test case is expected to be not ok; found ok")
 	}
-	if tc.ExpectedErrorType != testscriptErrorClass {
-		t.Fatalf("Expected Error Type 'TestScriptError'; got %v", tc.ExpectedErrorType)
+	if tc.ExpectedErrorClass != testscriptErrorClass {
+		t.Fatalf("Expected Error Type 'TestScriptError'; got %v", tc.ExpectedErrorClass)
 	}
 	if tc.AbortError != nil {
 		t.Fatalf("Unexpected error %v", tc.AbortError)
