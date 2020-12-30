@@ -26,11 +26,11 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn
 	err := testFn(testCase.FilePath, epilogue)
 	if testCase.ExpectedOK {
 		if err != nil {
-			testCase.GotError = err
+			testCase.AbortError = err
 		}
 	} else {
 		if err == nil {
-			testCase.GotError = ekerrors.New(
+			testCase.AbortError = ekerrors.New(
 				runTCErrorClass,
 				fmt.Sprintf(
 					"[%s] Expected Error Type %v; none found",
@@ -42,7 +42,7 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn
 			var ekerr *ekerrors.EKError
 			if errors.As(err, &ekerr) {
 				if !ekerr.HasClass(testCase.ExpectedErrorType) {
-					testCase.GotError = ekerrors.New(
+					testCase.AbortError = ekerrors.New(
 						runTCErrorClass,
 						fmt.Sprintf(
 							"[%s] Expected Error '%v'; found '%v')",
@@ -53,7 +53,7 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn
 					)
 				}
 			} else {
-				testCase.GotError = ekerrors.Wrap(
+				testCase.AbortError = ekerrors.Wrap(
 					runTCErrorClass,
 					fmt.Sprintf(
 						"[%s] Expected Error Type %v; found %v",

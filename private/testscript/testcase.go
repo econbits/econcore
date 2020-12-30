@@ -15,7 +15,7 @@ type TestCase struct {
 	FilePath          string
 	ExpectedOK        bool
 	ExpectedErrorType *ekerrors.Class
-	GotError          error
+	AbortError        error
 }
 
 var (
@@ -27,12 +27,12 @@ func ParseTestCase(fpath string) *TestCase {
 	name := eklark.ScriptId(fpath)
 	strs := strings.SplitN(name, "_", 2)
 
-	var gotErr error = nil
+	var abortErr error = nil
 	var errorClass *ekerrors.Class
 	errstring := strs[0]
 
 	if len(strs) != 2 {
-		gotErr = ekerrors.New(
+		abortErr = ekerrors.New(
 			parseErrorClass,
 			fmt.Sprintf(
 				"filename '%s' does not follow convention: [ErrorType|OK]_case_name.ekm",
@@ -48,6 +48,6 @@ func ParseTestCase(fpath string) *TestCase {
 		FilePath:          fpath,
 		ExpectedOK:        errstring == "OK",
 		ExpectedErrorType: errorClass,
-		GotError:          gotErr,
+		AbortError:        abortErr,
 	}
 }

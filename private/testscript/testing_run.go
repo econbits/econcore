@@ -20,11 +20,11 @@ func isScript(dirPath, filePath string) bool {
 
 func testRunner(filePath string, epilogue starlark.StringDict, testFn TestFn) error {
 	testCase := ParseTestCase(filePath)
-	if testCase.GotError != nil {
-		return testCase.GotError
+	if testCase.AbortError != nil {
+		return testCase.AbortError
 	}
 	RunTestCase(testCase, epilogue, testFn)
-	return testCase.GotError
+	return testCase.AbortError
 }
 
 type FailFn func(t *testing.T, err error)

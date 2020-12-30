@@ -11,8 +11,8 @@ func TestOKTestCase(t *testing.T) {
 	if !tc.ExpectedOK {
 		t.Fatal("test case is expected to be ok; found error")
 	}
-	if tc.GotError != nil {
-		t.Fatalf("Unexpected error %v", tc.GotError)
+	if tc.AbortError != nil {
+		t.Fatalf("Unexpected error %v", tc.AbortError)
 	}
 }
 
@@ -24,8 +24,8 @@ func TestErrorTestCase(t *testing.T) {
 	if tc.ExpectedErrorType != testscriptErrorClass {
 		t.Fatalf("Expected Error Type 'TestScriptError'; got %v", tc.ExpectedErrorType)
 	}
-	if tc.GotError != nil {
-		t.Fatalf("Unexpected error %v", tc.GotError)
+	if tc.AbortError != nil {
+		t.Fatalf("Unexpected error %v", tc.AbortError)
 	}
 }
 
@@ -34,7 +34,7 @@ func TestInitializationErrorTestCase(t *testing.T) {
 	if tc.ExpectedOK {
 		t.Fatal("test case is expected to be not ok; found ok")
 	}
-	if tc.GotError == nil {
+	if tc.AbortError == nil {
 		t.Fatal("Expecting error initializing test case; got none")
 	}
 }
