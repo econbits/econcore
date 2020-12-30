@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/eklark"
 )
 
@@ -13,48 +14,40 @@ type TestCase struct {
 	Name              string
 	FilePath          string
 	ExpectedOK        bool
-	ExpectedErrorType eklark.ErrorType
+	ExpectedErrorType *ekerrors.Class
 	GotError          error
 }
 
-func (tc *TestCase) EKError() *eklark.EKError {
-	if tc.GotError == nil {
-		return nil
-	}
-	err, ok := tc.GotError.(*eklark.EKError)
-	if !ok {
-		return &eklark.EKError{
-			FilePath:    tc.FilePath,
-			Function:    "EKError",
-			ErrorType:   eklark.ErrorType("MaskedEKError"),
-			Description: tc.GotError.Error(),
-		}
-	}
-	return err
-}
+var (
+	maskedErrorClass = ekerrors.MustRegisterClass("Masked Error")
+	parseErrorClass  = ekerrors.MustRegisterClass("Parsing Error")
+)
 
 func ParseTestCase(fpath string) *TestCase {
 	name := eklark.ScriptId(fpath)
 	strs := strings.SplitN(name, "_", 2)
 
 	var gotErr error = nil
+	var errorClass *ekerrors.Class
+	errstring := strs[0]
+
 	if len(strs) != 2 {
-		gotErr = &eklark.EKError{
-			FilePath:  fpath,
-			Function:  "ParseTestCase",
-			ErrorType: eklark.ErrorType("Test"),
-			Description: fmt.Sprintf(
+		gotErr = ekerrors.New(
+			parseErrorClass,
+			fmt.Sprintf(
 				"filename '%s' does not follow convention: [ErrorType|OK]_case_name.ekm",
 				name,
 			),
-		}
+		)
+	} else if errstring != "OK" {
+		errorClass = ekerrors.MustGetClass(errstring)
 	}
-	errstring := strs[0]
+
 	return &TestCase{
 		Name:              name,
 		FilePath:          fpath,
 		ExpectedOK:        errstring == "OK",
-		ExpectedErrorType: eklark.ErrorType(errstring),
+		ExpectedErrorType: errorClass,
 		GotError:          gotErr,
 	}
 }

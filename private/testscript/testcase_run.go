@@ -3,30 +3,23 @@
 package testscript
 
 import (
+	"errors"
 	"fmt"
 
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/ekerrors"
 	"go.starlark.net/starlark"
+)
+
+var (
+	runTCErrorClass = ekerrors.MustRegisterClass("TestScript TestCase")
 )
 
 type TestFn func(path string, epilogue starlark.StringDict) error
 
 func ExecScriptFn(path string, epilogue starlark.StringDict) error {
-	thread := eklark.NewThread(path)
-	_, err := eklark.Exec(thread, path, epilogue)
-	if err != nil {
-		ekerr, ok := err.(*eklark.EKError)
-		if ok {
-			return ekerr
-		}
-		return &eklark.EKError{
-			FilePath:    path,
-			Function:    "ExecScriptFn",
-			ErrorType:   eklark.ErrorType("TestExecScript"),
-			Description: err.Error(),
-		}
-	}
-	return nil
+	thread := &starlark.Thread{Name: path}
+	_, err := starlark.ExecFile(thread, path, nil, epilogue)
+	return err
 }
 
 func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
@@ -37,43 +30,39 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn
 		}
 	} else {
 		if err == nil {
-			testCase.GotError = &eklark.EKError{
-				FilePath:  testCase.FilePath,
-				Function:  "RunTestCase",
-				ErrorType: eklark.ErrorType("Test"),
-				Description: fmt.Sprintf(
+			testCase.GotError = ekerrors.New(
+				runTCErrorClass,
+				fmt.Sprintf(
 					"[%s] Expected Error Type %v; none found",
 					testCase.FilePath,
 					testCase.ExpectedErrorType,
 				),
-			}
+			)
 		} else {
-			ekerr, ok := err.(*eklark.EKError)
-			if !ok {
-				testCase.GotError = &eklark.EKError{
-					FilePath:  testCase.FilePath,
-					Function:  "RunTestCase",
-					ErrorType: eklark.ErrorType("Test"),
-					Description: fmt.Sprintf(
+			var ekerr *ekerrors.EKError
+			if errors.As(err, &ekerr) {
+				if !ekerr.HasClass(testCase.ExpectedErrorType) {
+					testCase.GotError = ekerrors.New(
+						runTCErrorClass,
+						fmt.Sprintf(
+							"[%s] Expected Error '%v'; found '%v')",
+							testCase.FilePath,
+							testCase.ExpectedErrorType,
+							ekerr,
+						),
+					)
+				}
+			} else {
+				testCase.GotError = ekerrors.Wrap(
+					runTCErrorClass,
+					fmt.Sprintf(
 						"[%s] Expected Error Type %v; found %v",
 						testCase.FilePath,
 						testCase.ExpectedErrorType,
 						err,
 					),
-				}
-			} else if ekerr.ErrorType != testCase.ExpectedErrorType {
-				testCase.GotError = &eklark.EKError{
-					FilePath:  testCase.FilePath,
-					Function:  "RunTestCase",
-					ErrorType: eklark.ErrorType("Test"),
-					Description: fmt.Sprintf(
-						"[%s] Expected Error Type '%v'; found '%v' (Error msg: '%v')",
-						testCase.FilePath,
-						testCase.ExpectedErrorType,
-						ekerr.ErrorType,
-						ekerr,
-					),
-				}
+					err,
+				)
 			}
 		}
 	}

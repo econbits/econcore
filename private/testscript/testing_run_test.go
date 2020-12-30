@@ -5,7 +5,7 @@ package testscript
 import (
 	"testing"
 
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/ekerrors"
 	"go.starlark.net/starlark"
 )
 
@@ -63,12 +63,10 @@ func TestErrorTestRunScript(t *testing.T) {
 		dpath,
 		starlark.StringDict{},
 		func(path string, epilogue starlark.StringDict) error {
-			return &eklark.EKError{
-				FilePath:    path,
-				Function:    "TestErrorTestRunScript",
-				ErrorType:   eklark.ErrorType("Test"),
-				Description: "Test Error",
-			}
+			return ekerrors.New(
+				testscriptErrorClass,
+				"Test Error",
+			)
 		},
 		func(t *testing.T, err error) {
 			failed = true

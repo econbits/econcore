@@ -217,6 +217,10 @@ func TestAttrNames(t *testing.T) {
 		if str != attrvalue {
 			t.Fatalf("Expected '%s'; got '%s'", attrvalue, str)
 		}
+		expectstr := "TestValue{attrname=\"value\"}"
+		if tv.String() != expectstr {
+			t.Fatalf("expected '%s'; got '%s'", expectstr, tv.String())
+		}
 	}
 }
 

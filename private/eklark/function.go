@@ -5,16 +5,17 @@ package eklark
 import (
 	"fmt"
 
+	"github.com/econbits/econkit/private/ekerrors"
 	"go.starlark.net/starlark"
 )
 
 type Callback func(*starlark.Thread, *starlark.Builtin, starlark.StringDict) (starlark.Value, error)
 
 type Fn struct {
-	Name     string
-	ArgNames []string
-	Callback Callback
-	ArgError ErrorType
+	Name          string
+	ArgNames      []string
+	Callback      Callback
+	ArgErrorClass *ekerrors.Class
 }
 
 func (fn *Fn) validateNumArgs(
@@ -24,17 +25,15 @@ func (fn *Fn) validateNumArgs(
 	kwargs []starlark.Tuple,
 ) error {
 	if len(fn.ArgNames) < len(args)+len(kwargs) {
-		return &EKError{
-			FilePath:  ThreadMustGetFilePath(thread),
-			Function:  builtin.Name(),
-			ErrorType: fn.ArgError,
-			Description: fmt.Sprintf(
+		return ekerrors.New(
+			fn.ArgErrorClass,
+			fmt.Sprintf(
 				"%s() takes %d arguments but %d were provided",
-				fn.Name,
+				builtin.Name(),
 				len(fn.ArgNames),
 				len(args)+len(kwargs),
 			),
-		}
+		)
 	}
 	return nil
 }
@@ -46,16 +45,14 @@ func (fn *Fn) value2string(
 ) (string, error) {
 	str, ok := starlark.AsString(v)
 	if !ok {
-		return "", &EKError{
-			FilePath:  ThreadMustGetFilePath(thread),
-			Function:  builtin.Name(),
-			ErrorType: fn.ArgError,
-			Description: fmt.Sprintf(
+		return "", ekerrors.New(
+			fn.ArgErrorClass,
+			fmt.Sprintf(
 				"%s(): invalid argument '%v'",
-				fn.Name,
+				builtin.Name(),
 				v,
 			),
-		}
+		)
 	}
 	return str, nil
 }
@@ -71,16 +68,14 @@ func (fn *Fn) popArgName(
 			return append(argnames[:i], argnames[i+1:]...), nil
 		}
 	}
-	return nil, &EKError{
-		FilePath:  ThreadMustGetFilePath(thread),
-		Function:  builtin.Name(),
-		ErrorType: fn.ArgError,
-		Description: fmt.Sprintf(
+	return nil, ekerrors.New(
+		fn.ArgErrorClass,
+		fmt.Sprintf(
 			"%s(): argument '%v' does not exist",
-			fn.Name,
+			builtin.Name(),
 			key,
 		),
-	}
+	)
 }
 
 func (fn *Fn) starlarkCallback(

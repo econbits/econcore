@@ -4,8 +4,6 @@ package testscript
 
 import (
 	"testing"
-
-	"github.com/econbits/econkit/private/eklark"
 )
 
 func TestOKTestCase(t *testing.T) {
@@ -16,24 +14,18 @@ func TestOKTestCase(t *testing.T) {
 	if tc.GotError != nil {
 		t.Fatalf("Unexpected error %v", tc.GotError)
 	}
-	if tc.EKError() != nil {
-		t.Fatalf("Unexpected error %v", tc.EKError())
-	}
 }
 
 func TestErrorTestCase(t *testing.T) {
-	tc := ParseTestCase("ERROR_testcase.ekm")
+	tc := ParseTestCase("TestScriptError_testcase.ekm")
 	if tc.ExpectedOK {
 		t.Fatal("test case is expected to be not ok; found ok")
 	}
-	if tc.ExpectedErrorType != eklark.ErrorType("ERROR") {
-		t.Fatalf("Expected Error Type 'ERROR'; got %v", tc.ExpectedErrorType)
+	if tc.ExpectedErrorType != testscriptErrorClass {
+		t.Fatalf("Expected Error Type 'TestScriptError'; got %v", tc.ExpectedErrorType)
 	}
 	if tc.GotError != nil {
 		t.Fatalf("Unexpected error %v", tc.GotError)
-	}
-	if tc.EKError() != nil {
-		t.Fatalf("Unexpected error %v", tc.EKError())
 	}
 }
 
@@ -43,9 +35,6 @@ func TestInitializationErrorTestCase(t *testing.T) {
 		t.Fatal("test case is expected to be not ok; found ok")
 	}
 	if tc.GotError == nil {
-		t.Fatal("Expecting error initializing test case; got none")
-	}
-	if tc.EKError() == nil {
 		t.Fatal("Expecting error initializing test case; got none")
 	}
 }

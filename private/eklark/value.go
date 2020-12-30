@@ -45,10 +45,16 @@ func NewEKValue(
 
 func (ev *EKValue) String() string {
 	fields := make([]string, len(ev.data))
-	i := 0
-	for field, value := range ev.data {
-		fields[i] = fmt.Sprintf("%s=%v", field, ev.mask(field, value))
-		i++
+	if len(ev.attrs) > 0 {
+		for i, field := range ev.attrs {
+			fields[i] = fmt.Sprintf("%s=%v", field, ev.mask(field, ev.data[field]))
+		}
+	} else {
+		i := 0
+		for field, value := range ev.data {
+			fields[i] = fmt.Sprintf("%s=%v", field, ev.mask(field, value))
+			i++
+		}
 	}
 	return fmt.Sprintf("%s{%s}", ev.valueType, strings.Join(fields, ", "))
 }

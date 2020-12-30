@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/ekerrors"
 	"go.starlark.net/starlark"
 )
 
@@ -33,12 +33,10 @@ func TestErrorOnRunOKFile(t *testing.T) {
 	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
-			return &eklark.EKError{
-				FilePath:    testCase.FilePath,
-				Function:    "RunTestCase",
-				ErrorType:   eklark.ErrorType("Test"),
-				Description: "Error",
-			}
+			return ekerrors.New(
+				testscriptErrorClass,
+				"Error",
+			)
 		},
 	)
 
@@ -48,7 +46,7 @@ func TestErrorOnRunOKFile(t *testing.T) {
 }
 
 func TestNonEKErrorOnRunErrorFile(t *testing.T) {
-	testCase := ParseTestCase("ERROR_file.ekm")
+	testCase := ParseTestCase("TestScriptError_file.ekm")
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
@@ -66,7 +64,7 @@ func TestNonEKErrorOnRunErrorFile(t *testing.T) {
 }
 
 func TestErrorWrongTypeOnRunErrorFile(t *testing.T) {
-	testCase := ParseTestCase("ERROR_file.ekm")
+	testCase := ParseTestCase("TestScriptError_file.ekm")
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
@@ -74,12 +72,10 @@ func TestErrorWrongTypeOnRunErrorFile(t *testing.T) {
 	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
-			return &eklark.EKError{
-				FilePath:    testCase.FilePath,
-				Function:    "RunTestCase",
-				ErrorType:   eklark.ErrorType("Test"),
-				Description: "Error",
-			}
+			return ekerrors.New(
+				altTestscriptErrorClass,
+				"Error",
+			)
 		},
 	)
 
@@ -89,7 +85,7 @@ func TestErrorWrongTypeOnRunErrorFile(t *testing.T) {
 }
 
 func TestErrorOnRunErrorFile(t *testing.T) {
-	testCase := ParseTestCase("ERROR_file.ekm")
+	testCase := ParseTestCase("TestScriptError_file.ekm")
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}
@@ -97,12 +93,10 @@ func TestErrorOnRunErrorFile(t *testing.T) {
 	RunTestCase(testCase,
 		starlark.StringDict{},
 		func(fpath string, epilogue starlark.StringDict) error {
-			return &eklark.EKError{
-				FilePath:    testCase.FilePath,
-				Function:    "RunTestCase",
-				ErrorType:   eklark.ErrorType("ERROR"),
-				Description: "Error",
-			}
+			return ekerrors.New(
+				testscriptErrorClass,
+				"Error",
+			)
 		},
 	)
 
@@ -112,7 +106,7 @@ func TestErrorOnRunErrorFile(t *testing.T) {
 }
 
 func TestNoErrorOnRunErrorFile(t *testing.T) {
-	testCase := ParseTestCase("ERROR_file.ekm")
+	testCase := ParseTestCase("TestScriptError_file.ekm")
 	if testCase.GotError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.GotError)
 	}

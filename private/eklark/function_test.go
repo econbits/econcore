@@ -5,7 +5,12 @@ package eklark
 import (
 	"testing"
 
+	"github.com/econbits/econkit/private/ekerrors"
 	"go.starlark.net/starlark"
+)
+
+var (
+	errorClass = ekerrors.MustRegisterClass("eklark/function_test")
 )
 
 func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
@@ -19,9 +24,9 @@ func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) 
 		) (starlark.Value, error) {
 			return sdict["arg1"], nil
 		},
-		ArgError: ErrorType("FnError"),
+		ArgErrorClass: errorClass,
 	}
-	thread := NewThread("TestThread")
+	thread := &starlark.Thread{Name: "TestThread"}
 	return fn.Builtin().CallInternal(thread, args, kwargs)
 }
 
