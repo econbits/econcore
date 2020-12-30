@@ -13,7 +13,7 @@ func StringDictGetBool(sd starlark.StringDict, key string) (bool, error) {
 	if !ok {
 		return false, fmt.Errorf("key '%s' not in dict", key)
 	}
-	if value == starlark.None {
+	if value == nil {
 		return false, fmt.Errorf("Missing value for key '%s'", key)
 	}
 	return bool(value.Truth()), nil
@@ -24,7 +24,7 @@ func StringDictGetString(sd starlark.StringDict, key string) (string, error) {
 	if !ok {
 		return "", fmt.Errorf("key '%s' not in dict", key)
 	}
-	if value == starlark.None {
+	if value == nil || value == starlark.None {
 		return "", fmt.Errorf("Missing value for key '%s'", key)
 	}
 	str, ok := starlark.AsString(value)
@@ -43,7 +43,7 @@ func StringDictGetStringOr(
 	if !ok {
 		return "", fmt.Errorf("key '%s' not in dict", key)
 	}
-	if value == starlark.None {
+	if value == nil || value == starlark.None {
 		return defaultString, nil
 	}
 	str, ok := starlark.AsString(value)

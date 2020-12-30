@@ -112,7 +112,7 @@ func (fn *Fn) starlarkCallback(
 		sdict[key] = kvpair[1]
 	}
 	for _, argname := range argnames {
-		sdict[argname] = starlark.None
+		sdict[argname] = nil
 	}
 	return fn.Callback(thread, builtin, sdict)
 }

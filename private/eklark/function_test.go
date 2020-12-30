@@ -84,12 +84,8 @@ func TestFnCallbackEmptyArgs(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error %v", err)
 	}
-	_, ok := value.(starlark.NoneType)
-	if !ok {
-		t.Fatalf("value %v is not None", value)
-	}
-	if value.Truth() {
-		t.Fatalf("value %v is not false", value)
+	if value != nil {
+		t.Fatalf("Unexpected value %v", value)
 	}
 }
 

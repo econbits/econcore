@@ -110,6 +110,18 @@ func TestGetBool(t *testing.T) {
 func TestGetBoolFromNone(t *testing.T) {
 	key := "key1"
 	sd := starlark.StringDict{key: starlark.None}
+	value, err := StringDictGetBool(sd, key)
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	if value {
+		t.Fatal("expected false; found true")
+	}
+}
+
+func TestGetBoolFromNil(t *testing.T) {
+	key := "key1"
+	sd := starlark.StringDict{key: nil}
 	_, err := StringDictGetBool(sd, key)
 	if err == nil {
 		t.Fatal("expected error; none found")
