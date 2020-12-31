@@ -15,16 +15,20 @@ var (
 
 func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	fn := &Fn{
-		Name:     "TestFn",
-		ArgNames: []string{"arg1"},
+		Name: "TestFn",
 		Callback: func(
 			thread *starlark.Thread,
 			builtin *starlark.Builtin,
-			sdict starlark.StringDict,
+			args starlark.Tuple,
+			kwargs []starlark.Tuple,
 		) (starlark.Value, error) {
-			return sdict["arg1"], nil
+			var arg starlark.Value
+			err := starlark.UnpackArgs(builtin.Name(), args, kwargs, "arg1", &arg)
+			if err != nil {
+				return nil, err
+			}
+			return arg, nil
 		},
-		ArgErrorClass: errorClass,
 	}
 	thread := &starlark.Thread{Name: "TestThread"}
 	return fn.Builtin().CallInternal(thread, args, kwargs)
@@ -82,15 +86,12 @@ func TestFnCallbackKWArgsWithWrongKeyName(t *testing.T) {
 }
 
 func TestFnCallbackEmptyArgs(t *testing.T) {
-	value, err := call(
+	_, err := call(
 		starlark.Tuple{},
 		[]starlark.Tuple{},
 	)
-	if err != nil {
-		t.Fatalf("Unexpected error %v", err)
-	}
-	if value != nil {
-		t.Fatalf("Unexpected value %v", value)
+	if err == nil {
+		t.Fatal("expected error; none found")
 	}
 }
 

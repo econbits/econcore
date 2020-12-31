@@ -10,24 +10,26 @@ import (
 
 const (
 	fnName     = "assert"
-	argOk      = "ok"
-	argMsg     = "msg"
 	defaultMsg = "Assertion Error"
 )
 
 var (
-	fnArgNames   = []string{argOk, argMsg}
 	fnErrorClass = ekerrors.MustRegisterClass("AssertionError")
 	AssertFn     = &eklark.Fn{
-		Name:          fnName,
-		ArgNames:      fnArgNames,
-		Callback:      assertCb,
-		ArgErrorClass: fnErrorClass,
+		Name:     fnName,
+		Callback: assertCb,
 	}
 )
 
-func assertCb(thread *starlark.Thread, builtin *starlark.Builtin, sdict starlark.StringDict) (starlark.Value, error) {
-	ok, err := eklark.StringDictGetBool(sdict, argOk)
+func assertCb(
+	thread *starlark.Thread,
+	builtin *starlark.Builtin,
+	args starlark.Tuple,
+	kwargs []starlark.Tuple,
+) (starlark.Value, error) {
+	var ok starlark.Bool
+	var msg starlark.String
+	err := starlark.UnpackArgs(builtin.Name(), args, kwargs, "ok", &ok, "msg?", &msg)
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			fnErrorClass,
@@ -35,18 +37,16 @@ func assertCb(thread *starlark.Thread, builtin *starlark.Builtin, sdict starlark
 			err,
 		)
 	}
-	if !ok {
-		msg, err := eklark.StringDictGetStringOr(sdict, argMsg, defaultMsg)
-		if err != nil {
-			return nil, ekerrors.Wrap(
+	if !ok.Truth() {
+		if !msg.Truth() {
+			return nil, ekerrors.New(
 				fnErrorClass,
-				err.Error(),
-				err,
+				defaultMsg,
 			)
 		}
 		return nil, ekerrors.New(
 			fnErrorClass,
-			msg,
+			string(msg),
 		)
 	}
 	return starlark.None, nil
