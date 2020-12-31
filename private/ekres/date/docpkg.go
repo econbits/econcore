@@ -2,7 +2,6 @@
 
 // This package provides the starlark function:
 //
-// def assert(ok, msg="AssertionError"):
-//     if !ok:
-//         fail(msg)
-package assert
+// def date(layout, value):
+//     pass
+package date
