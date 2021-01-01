@@ -20,7 +20,7 @@ func getValueType(type_, attrname, attrvalue string) *TestValue {
 			[]string{attrname},
 			map[string]starlark.Value{},
 			map[string]ValidateFn{
-				attrname: IsString,
+				attrname: AssertString,
 			},
 			NoMaskFn,
 		),
@@ -40,7 +40,7 @@ func getMapValueType(type_, attrname, attrvalue string) *TestValue {
 				attrname: starlark.String(attrvalue),
 			},
 			map[string]ValidateFn{
-				attrname: IsString,
+				attrname: AssertString,
 			},
 			NoMaskFn,
 		),
@@ -88,14 +88,6 @@ func TestValueGetAttr(t *testing.T) {
 	if strvalue != attrvalue {
 		t.Fatalf("Expected '%s'; got '%s'", attrvalue, strvalue)
 	}
-
-	strvalue, ok = starlark.AsString(HasAttrsMustGetString(tv, attrname))
-	if !ok {
-		t.Fatalf("Expected string; found '%T'", value)
-	}
-	if strvalue != attrvalue {
-		t.Fatalf("Expected '%s'; got '%s'", attrvalue, strvalue)
-	}
 }
 
 func TestValueGetInvalidAttrName(t *testing.T) {
@@ -107,21 +99,6 @@ func TestValueGetInvalidAttrName(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected error; none found")
 	}
-}
-
-func TestHasAttrsMustGetStringWithInvalidAttrName(t *testing.T) {
-	type_ := "TestValue"
-	attrname := "attr"
-	attrvalue := "value"
-	tv := getValueType(type_, attrname, attrvalue)
-
-	defer func() {
-		if e := recover(); e == nil {
-			t.Errorf("Expected error; none found")
-		}
-	}()
-
-	HasAttrsMustGetString(tv, "this attr name does not exist")
 }
 
 func TestValueGetDynamicAttrName(t *testing.T) {
@@ -180,32 +157,6 @@ func TestSetFieldInvalidType(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected error; none found")
 	}
-}
-
-func TestHasAttrsMustGetStringWithInvalidType(t *testing.T) {
-	type_ := "TestValue"
-	attrname := "attr"
-	tv := &TestValue{
-		NewEKValue(
-			type_,
-			[]string{attrname},
-			map[string]starlark.Value{
-				attrname: starlark.MakeInt(1),
-			},
-			map[string]ValidateFn{
-				attrname: IsInt,
-			},
-			NoMaskFn,
-		),
-	}
-
-	defer func() {
-		if e := recover(); e == nil {
-			t.Errorf("Expected error; none found")
-		}
-	}()
-
-	HasAttrsMustGetString(tv, attrname)
 }
 
 func TestSetFieldOnFrozenObj(t *testing.T) {
@@ -348,7 +299,7 @@ func TestIntValidator(t *testing.T) {
 			[]string{attrname},
 			map[string]starlark.Value{},
 			map[string]ValidateFn{
-				attrname: IsInt,
+				attrname: AssertInt,
 			},
 			NoMaskFn,
 		),

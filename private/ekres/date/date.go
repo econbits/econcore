@@ -44,8 +44,8 @@ func NewFromValues(layout starlark.String, value starlark.String) *Date {
 				fDateValue:  value,
 			},
 			map[string]eklark.ValidateFn{
-				fDateLayout: eklark.IsString,
-				fDateValue:  eklark.IsString,
+				fDateLayout: eklark.AssertString,
+				fDateValue:  eklark.AssertString,
 			},
 			eklark.NoMaskFn,
 		),
@@ -82,7 +82,7 @@ func dateFn(
 	return NewFromValues(layout, value), nil
 }
 
-func IsDate(v starlark.Value) error {
+func AssertDate(v starlark.Value) error {
 	_, ok := v.(*Date)
 	if !ok {
 		return fmt.Errorf("'%v' is not a date", v)

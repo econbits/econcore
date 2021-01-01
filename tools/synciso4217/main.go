@@ -17,21 +17,19 @@ var (
 
 const (
 	dataPath           = "../../configs/iso4217.xml"
-	goPath             = "../../pkg/currency/init_iso4217.go"
-	currenciesTemplate = `//Copyright (C) 2020  Germán Fuentes Capella
+	goPath             = "../../private/ekres/currency/init_iso4217.go"
+	currenciesTemplate = `// Copyright (C) 2020  Germán Fuentes Capella
 // This file is auto-generated. DO NOT EDIT
 
 package currency
 
 func init() {
+    var c *Currency
 {{- range $key, $value := . }}
-	currencies["{{ $key }}"] = Currency{
-		name:  "{{$value.Name}}",
-		code:  "{{$value.Code}}",
-		id:    {{$value.Id}},
-		units: {{$value.Units}},
-	}
-{{- end }}
+	c = new_({{$value.Id}}, "{{$value.Code}}", "{{$value.Name}}", {{$value.Units}})
+	c.Freeze()
+	currencies["{{ $key }}"] = c
+{{ end }}
 }
 `
 )

@@ -16,14 +16,14 @@ func TestScripts(t *testing.T) {
 	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
 }
 
-func TestIsDate(t *testing.T) {
+func TestAssertDate(t *testing.T) {
 	intv := starlark.MakeInt(1)
-	err := IsDate(intv)
+	err := AssertDate(intv)
 	if err == nil {
 		t.Error("1 is not a date")
 	}
 	datev := New("2006-01-02", "2020-01-30")
-	err = IsDate(datev)
+	err = AssertDate(datev)
 	if err != nil {
 		t.Error("a date is not identified a date")
 	}

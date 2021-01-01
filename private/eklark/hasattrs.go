@@ -33,3 +33,35 @@ func HasAttrsMustGetString(ha starlark.HasAttrs, attrname string) starlark.Strin
 	}
 	return str
 }
+
+func HasAttrsGetInt(ha starlark.HasAttrs, attrname string) (starlark.Int, error) {
+	value, err := ha.Attr(attrname)
+	if err != nil {
+		return starlark.MakeInt(0), err
+	}
+	n, ok := value.(starlark.Int)
+	if !ok {
+		return starlark.MakeInt(0), ekerrors.New(
+			hasAttrsErrorClass,
+			attrname+" is not of type int",
+		)
+	}
+	return n, nil
+}
+
+func HasAttrsMustGetInt(ha starlark.HasAttrs, attrname string) starlark.Int {
+	n, err := HasAttrsGetInt(ha, attrname)
+	if err != nil {
+		panic(err.Error())
+	}
+	return n
+}
+
+func HasAttrsMustGetGoInt(ha starlark.HasAttrs, attrname string) int {
+	nvalue := HasAttrsMustGetInt(ha, attrname)
+	n, err := starlark.AsInt32(nvalue)
+	if err != nil {
+		panic(err.Error())
+	}
+	return n
+}
