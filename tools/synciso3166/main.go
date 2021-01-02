@@ -16,19 +16,19 @@ const (
 	waybackSnapshot = "https://web.archive.org/web/20161122071627id_/"
 	iso3166OrigUrl  = "http://www.iso.org/iso/home/standards/country_codes/country_names_and_code_elements_txt-temp.htm"
 	dataPath        = "../../configs/iso3166.csv"
-	goPath          = "../../pkg/country/init_iso3166.go"
-	templateTxt     = `//Copyright (C) 2020  Germán Fuentes Capella
+	goPath          = "../../private/ekres/country/init_iso3166.go"
+	templateTxt     = `// Copyright (C) 2021  Germán Fuentes Capella
 // This file is auto-generated. DO NOT EDIT
 
 package country
 
 func init() {
+    var c *Country
 {{- range $key, $value := . }}
-	countries["{{ $key }}"] = Country{
-		name:   "{{$value.Name}}",
-		alpha2: "{{$value.Alpha2}}",
-	}
-{{- end }}
+	c = new_("{{$value.Alpha2}}", "{{$value.Name}}")
+	c.Freeze()
+	countries["{{ $key }}"] = c
+{{ end }}
 }
 `
 )

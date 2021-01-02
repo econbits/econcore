@@ -6,7 +6,6 @@ import (
 	"fmt"
 )
 
-//go:generate go run ../../tools/synciso3166/main.go
 var countries = map[string]Country{}
 
 func Get(alpha2 string) (Country, error) {
