@@ -1,5 +1,0 @@
-# Copyright (C) 2020  Germán Fuentes Capella
-
-date("2006-01-02", "2020-01-30")
-date("2006-01-02", value="2020-01-30")
-date(layout="2006-01-02", value="2020-01-30")

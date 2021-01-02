@@ -2,6 +2,6 @@
 
 // This package provides the starlark function:
 //
-// def date(layout, value):
+// def datetime(layout, value):
 //     pass
-package date
+package datetime

@@ -1,0 +1,5 @@
+# Copyright (C) 2020  Germán Fuentes Capella
+
+datetime("2006-01-02", "2020-01-30")
+datetime("2006-01-02", value="2020-01-30")
+datetime(layout="2006-01-02", value="2020-01-30")
