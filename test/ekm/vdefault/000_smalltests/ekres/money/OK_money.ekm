@@ -1,0 +1,4 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+eur = currency("EUR")
+money(1, eur)

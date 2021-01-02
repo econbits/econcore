@@ -24,6 +24,9 @@ type EKValue struct {
 	mask       MaskFn
 }
 
+// Important: the data map must comply with a number of requirements:
+// - it should not be edited after instantiation
+// - any non-immutable Value must be cloned
 func NewEKValue(
 	valueType string,
 	attrs []string,
@@ -39,6 +42,24 @@ func NewEKValue(
 		frozen:     false,
 		mask:       mask,
 	}
+}
+
+// starlark.Int's interface is mostly immutable, except for the method:
+//
+//   // BigInt returns the value as a big.Int.
+//   // The returned variable must not be modified by the client.
+//   func (i Int) BigInt() *big.Int {
+//   ...
+//   }
+// This method is used to guarantee that a EKValue can't be modified except
+// through its interface
+
+func cloneIfInt(v starlark.Value) starlark.Value {
+	intv, ok := v.(starlark.Int)
+	if ok {
+		return starlark.MakeInt(0).Add(intv)
+	}
+	return v
 }
 
 // Implementing starlark Value interface
@@ -111,7 +132,7 @@ func (ev *EKValue) Attr(name string) (starlark.Value, error) {
 		// value not present
 		return nil, nil
 	}
-	return value, nil
+	return cloneIfInt(value), nil
 }
 
 func (ev *EKValue) AttrNames() []string {
@@ -145,7 +166,7 @@ func (ev *EKValue) SetField(name string, val starlark.Value) error {
 			return err
 		}
 	}
-	ev.data[name] = val
+	ev.data[name] = cloneIfInt(val)
 	return nil
 }
 
@@ -160,7 +181,7 @@ func (ev *EKValue) Get(k starlark.Value) (v starlark.Value, found bool, err erro
 	if !found {
 		return nil, false, nil
 	}
-	return v, true, nil
+	return cloneIfInt(v), true, nil
 }
 
 // Implementing starlark HasSetKey interface
@@ -173,6 +194,6 @@ func (ev *EKValue) SetKey(k, v starlark.Value) error {
 	if !ok {
 		return fmt.Errorf("%s only accepts string keys; found: '%v'", ev.valueType, k)
 	}
-	ev.data[ks] = v
+	ev.data[ks] = cloneIfInt(v)
 	return nil
 }

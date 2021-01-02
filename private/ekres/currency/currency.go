@@ -72,6 +72,14 @@ func Get(code string) (*Currency, error) {
 	return currency, nil
 }
 
+func MustGet(code string) *Currency {
+	currency, err := Get(code)
+	if err != nil {
+		panic(err.Error())
+	}
+	return currency
+}
+
 func currencyFn(
 	thread *starlark.Thread,
 	builtin *starlark.Builtin,

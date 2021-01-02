@@ -54,3 +54,17 @@ func TestEqual(t *testing.T) {
 		t.Fatalf("ERROR %s != %s", eur.Code(), eur.Code())
 	}
 }
+
+func TestMustGet(t *testing.T) {
+	MustGet("EUR")
+}
+
+func TestMustGetPanic(t *testing.T) {
+	defer func() {
+		if e := recover(); e == nil {
+			t.Errorf("Expected error; none found")
+		}
+	}()
+
+	MustGet("blabla")
+}
