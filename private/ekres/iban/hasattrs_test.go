@@ -1,6 +1,6 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package currency
+package iban
 
 import (
 	"testing"
@@ -30,23 +30,23 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 	return tv
 }
 
-func TestHasAttrsMustGetCurrency(t *testing.T) {
+func TestHasAttrsMustGetIBAN(t *testing.T) {
 	attrname := "attr"
-	attrvalue, err := Get("EUR")
+	attrvalue, err := Parse(SampleDE)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
-	gotvalue := HasAttrsMustGetCurrency(tv, attrname)
+	gotvalue := HasAttrsMustGetIBAN(tv, attrname)
 	if !gotvalue.Equal(attrvalue) {
 		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
 	}
 }
 
-func TestHasAttrsMustGetCurrencyMissingAttr(t *testing.T) {
+func TestHasAttrsMustGetIBANMissingAttr(t *testing.T) {
 	attrname := "attr"
-	attrvalue, err := Get("EUR")
+	attrvalue, err := Parse(SampleDE)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -59,10 +59,10 @@ func TestHasAttrsMustGetCurrencyMissingAttr(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetCurrency(tv, "this attr does not exist")
+	HasAttrsMustGetIBAN(tv, "this attr does not exist")
 }
 
-func TestHasAttrsMustGetCurrencyNotACurrency(t *testing.T) {
+func TestHasAttrsMustGetIBANNotAIBAN(t *testing.T) {
 	attrname := "attr"
 	attrvalue := starlark.String("")
 
@@ -74,5 +74,5 @@ func TestHasAttrsMustGetCurrencyNotACurrency(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetCurrency(tv, attrname)
+	HasAttrsMustGetIBAN(tv, attrname)
 }

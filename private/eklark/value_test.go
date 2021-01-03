@@ -22,6 +22,11 @@ func getValueType(type_, attrname, attrvalue string) *TestValue {
 			map[string]ValidateFn{
 				attrname: AssertString,
 			},
+			map[string]FormatterFn{
+				attrname: func(v starlark.Value) starlark.Value {
+					return v
+				},
+			},
 			NoMaskFn,
 		),
 	}
@@ -42,6 +47,7 @@ func getMapValueType(type_, attrname, attrvalue string) *TestValue {
 			map[string]ValidateFn{
 				attrname: AssertString,
 			},
+			map[string]FormatterFn{},
 			NoMaskFn,
 		),
 	}
@@ -266,6 +272,11 @@ func TestSetKeyWithInvalidType(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected error; none found")
 	}
+
+	err = tv.SetKey(starlark.String(attrname), starlark.MakeInt(1))
+	if err == nil {
+		t.Fatal("Expected error; none found")
+	}
 }
 
 func TestSetKey(t *testing.T) {
@@ -301,6 +312,7 @@ func TestIntValidator(t *testing.T) {
 			map[string]ValidateFn{
 				attrname: AssertInt,
 			},
+			map[string]FormatterFn{},
 			NoMaskFn,
 		),
 	}

@@ -50,6 +50,7 @@ func New(amount *big.Int, curr *currency.Currency) *Money {
 				fAmount:   eklark.AssertInt,
 				fCurrency: currency.AssertCurrency,
 			},
+			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

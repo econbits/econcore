@@ -40,6 +40,7 @@ func New(username string, pwd string, account string) *Credentials {
 				credPwd:      eklark.AssertString,
 				credAccount:  eklark.AssertString,
 			},
+			map[string]eklark.FormatterFn{},
 			maskSensitive,
 		),
 	}

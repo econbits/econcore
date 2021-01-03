@@ -1,9 +1,10 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package bic
+package iban
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/eklark"
@@ -11,31 +12,33 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func AssertBIC(v starlark.Value) error {
-	_, ok := v.(*BIC)
+func AssertIBAN(v starlark.Value) error {
+	_, ok := v.(*IBAN)
 	if !ok {
-		return fmt.Errorf("'%v' is not a BIC", v)
+		return fmt.Errorf("'%v' is not an IBAN", v)
 	}
 	return nil
 }
 
-func assertFormat(code string) error {
-	lbic := len(code)
-	if lbic != 8 && lbic != 11 {
+var (
+	ibanRE = regexp.MustCompile(`[A-Z]{2}[0-9]{2}[0-9A-Z]{4,30}`)
+)
+
+func assertFormat(ibanstr string) error {
+	if !ibanRE.MatchString(ibanstr) {
 		return ekerrors.New(
 			errorClass,
-			fmt.Sprintf("BIC length must be 8 or 11 characters, found %d in %s", lbic, code),
+			fmt.Sprintf("'%s' is not a valid IBAN", ibanstr),
 		)
 	}
-	alpha2 := code[4:6]
-	_, err := country.Get(alpha2)
+	_, err := country.Get(ibanstr[0:2])
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func AssertBICString(v starlark.Value) error {
+func AssertIBANString(v starlark.Value) error {
 	err := eklark.AssertString(v)
 	if err != nil {
 		return err

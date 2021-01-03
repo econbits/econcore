@@ -56,6 +56,7 @@ func new_(id int, code string, name string, units int) *Currency {
 				fCurrencyId:    eklark.AssertInt32,
 				fCurrencyUnits: eklark.AssertInt32,
 			},
+			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

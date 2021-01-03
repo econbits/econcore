@@ -45,6 +45,7 @@ func new_(alpha2, name string) *Country {
 				fName:   eklark.AssertString,
 				fAlpha2: eklark.AssertString,
 			},
+			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

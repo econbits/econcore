@@ -34,6 +34,7 @@ func New() *Session {
 			[]string{},
 			map[string]starlark.Value{},
 			map[string]eklark.ValidateFn{},
+			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

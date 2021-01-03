@@ -56,6 +56,7 @@ func NewFromValues(layout starlark.String, value starlark.String, t time.Time) *
 				fLayout: eklark.AssertString,
 				fValue:  eklark.AssertString,
 			},
+			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 		t,

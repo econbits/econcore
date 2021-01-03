@@ -28,24 +28,38 @@ var (
 	}
 )
 
-func Parse(code string) (*BIC, error) {
-	code = strings.ToUpper(code)
-	err := assertFormat(code)
-	if err != nil {
-		return nil, err
+func format(value starlark.Value) starlark.Value {
+	vstr, ok := starlark.AsString(value)
+	if !ok {
+		return value
 	}
+	code := strings.ToUpper(string(vstr))
+
 	if len(code) == 8 {
 		code = code + "XXX"
+	}
+
+	return starlark.String(code)
+}
+
+func Parse(code string) (*BIC, error) {
+	vcode := format(starlark.String(code))
+	err := AssertBICString(vcode)
+	if err != nil {
+		return nil, err
 	}
 	return &BIC{
 		eklark.NewEKValue(
 			typeName,
 			[]string{fCode},
 			map[string]starlark.Value{
-				fCode: starlark.String(code),
+				fCode: vcode,
 			},
 			map[string]eklark.ValidateFn{
 				fCode: AssertBICString,
+			},
+			map[string]eklark.FormatterFn{
+				fCode: format,
 			},
 			eklark.NoMaskFn,
 		),

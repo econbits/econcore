@@ -15,11 +15,14 @@ func NoMaskFn(field string, value starlark.Value) string {
 	return value.String()
 }
 
+type FormatterFn func(starlark.Value) starlark.Value
+
 type EKValue struct {
 	valueType  string
 	attrs      []string
 	data       map[string]starlark.Value
 	validators map[string]ValidateFn
+	formatters map[string]FormatterFn
 	frozen     bool
 	mask       MaskFn
 }
@@ -32,6 +35,7 @@ func NewEKValue(
 	attrs []string,
 	data map[string]starlark.Value,
 	validators map[string]ValidateFn,
+	formatters map[string]FormatterFn,
 	mask MaskFn,
 ) EKValue {
 	return EKValue{
@@ -39,6 +43,7 @@ func NewEKValue(
 		attrs:      attrs,
 		data:       data,
 		validators: validators,
+		formatters: formatters,
 		frozen:     false,
 		mask:       mask,
 	}
@@ -159,6 +164,10 @@ func (ev *EKValue) SetField(name string, val starlark.Value) error {
 			fmt.Sprintf("type object '%s' has no attribute '%s'", ev.valueType, name),
 		)
 	}
+	formatter, ok := ev.formatters[name]
+	if ok {
+		val = formatter(val)
+	}
 	validFn, ok := ev.validators[name]
 	if ok {
 		err := validFn(val)
@@ -193,6 +202,17 @@ func (ev *EKValue) SetKey(k, v starlark.Value) error {
 	ks, ok := starlark.AsString(k)
 	if !ok {
 		return fmt.Errorf("%s only accepts string keys; found: '%v'", ev.valueType, k)
+	}
+	formatter, ok := ev.formatters[ks]
+	if ok {
+		v = formatter(v)
+	}
+	validFn, ok := ev.validators[ks]
+	if ok {
+		err := validFn(v)
+		if err != nil {
+			return err
+		}
 	}
 	ev.data[ks] = cloneIfInt(v)
 	return nil
