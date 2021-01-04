@@ -41,11 +41,10 @@ func new_(alpha2, name string) *Country {
 				fName:   starlark.String(name),
 				fAlpha2: starlark.String(alpha2),
 			},
-			map[string]eklark.ValidateFn{
+			map[string]eklark.PreProcessFn{
 				fName:   eklark.AssertString,
 				fAlpha2: eklark.AssertString,
 			},
-			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

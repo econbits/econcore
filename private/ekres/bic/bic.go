@@ -3,8 +3,6 @@
 package bic
 
 import (
-	"strings"
-
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/country"
@@ -28,23 +26,8 @@ var (
 	}
 )
 
-func format(value starlark.Value) starlark.Value {
-	vstr, ok := starlark.AsString(value)
-	if !ok {
-		return value
-	}
-	code := strings.ToUpper(string(vstr))
-
-	if len(code) == 8 {
-		code = code + "XXX"
-	}
-
-	return starlark.String(code)
-}
-
 func Parse(code string) (*BIC, error) {
-	vcode := format(starlark.String(code))
-	err := AssertBICString(vcode)
+	vcode, err := preprocess(starlark.String(code))
 	if err != nil {
 		return nil, err
 	}
@@ -55,11 +38,8 @@ func Parse(code string) (*BIC, error) {
 			map[string]starlark.Value{
 				fCode: vcode,
 			},
-			map[string]eklark.ValidateFn{
-				fCode: AssertBICString,
-			},
-			map[string]eklark.FormatterFn{
-				fCode: format,
+			map[string]eklark.PreProcessFn{
+				fCode: preprocess,
 			},
 			eklark.NoMaskFn,
 		),

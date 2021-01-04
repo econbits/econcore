@@ -46,11 +46,10 @@ func New(amount *big.Int, curr *currency.Currency) *Money {
 				fAmount:   starlark.MakeBigInt(amount),
 				fCurrency: curr,
 			},
-			map[string]eklark.ValidateFn{
+			map[string]eklark.PreProcessFn{
 				fAmount:   eklark.AssertInt,
 				fCurrency: currency.AssertCurrency,
 			},
-			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

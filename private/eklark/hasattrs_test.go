@@ -17,8 +17,7 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 			map[string]starlark.Value{
 				attrname: attrvalue,
 			},
-			map[string]ValidateFn{},
-			map[string]FormatterFn{},
+			map[string]PreProcessFn{},
 			NoMaskFn,
 		),
 	}

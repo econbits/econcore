@@ -15,13 +15,16 @@ func TestAssertCountry(t *testing.T) {
 		t.Fatalf("unexpected error %v", err)
 	}
 
-	err = AssertCountry(value)
+	newvalue, err := AssertCountry(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
+	}
 
 	value = starlark.String("")
-	err = AssertCountry(value)
+	_, err = AssertCountry(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

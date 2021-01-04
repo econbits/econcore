@@ -50,13 +50,12 @@ func new_(id int, code string, name string, units int) *Currency {
 				fCurrencyId:    starlark.MakeInt(id),
 				fCurrencyUnits: starlark.MakeInt(units),
 			},
-			map[string]eklark.ValidateFn{
+			map[string]eklark.PreProcessFn{
 				fCurrencyName:  eklark.AssertString,
 				fCurrencyCode:  eklark.AssertString,
 				fCurrencyId:    eklark.AssertInt32,
 				fCurrencyUnits: eklark.AssertInt32,
 			},
-			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 	}

@@ -12,12 +12,15 @@ import (
 func TestAssertString(t *testing.T) {
 	var value starlark.Value
 	value = starlark.String("")
-	err := AssertString(value)
+	newvalue, err := AssertString(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
+	}
 	value = starlark.MakeInt(1)
-	err = AssertString(value)
+	_, err = AssertString(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
@@ -26,12 +29,15 @@ func TestAssertString(t *testing.T) {
 func TestAssertInt(t *testing.T) {
 	var value starlark.Value
 	value = starlark.MakeInt(1)
-	err := AssertInt(value)
+	newvalue, err := AssertInt(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
+	}
 	value = starlark.String("")
-	err = AssertInt(value)
+	_, err = AssertInt(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
@@ -40,19 +46,22 @@ func TestAssertInt(t *testing.T) {
 func TestAssertInt32(t *testing.T) {
 	var value starlark.Value
 	value = starlark.MakeInt(1)
-	err := AssertInt32(value)
+	newvalue, err := AssertInt32(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
+	}
 
 	value = starlark.MakeInt64(int64(^uint64(0) >> 1))
-	err = AssertInt32(value)
+	_, err = AssertInt32(value)
 	if err == nil {
 		t.Fatal("[Int64 -> Int] expected error; none found")
 	}
 
 	value = starlark.String("")
-	err = AssertInt32(value)
+	_, err = AssertInt32(value)
 	if err == nil {
 		t.Fatal("[string -> int] expected error; none found")
 	}
@@ -61,21 +70,24 @@ func TestAssertInt32(t *testing.T) {
 func TestAssertInt64(t *testing.T) {
 	var value starlark.Value
 	value = starlark.MakeInt(1)
-	err := AssertInt64(value)
+	newvalue, err := AssertInt64(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
+	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
 	}
 
 	bint := big.NewInt(int64(^uint64(0) >> 1))
 	zint := big.NewInt(0)
 	value = starlark.MakeBigInt(zint.Add(bint, bint))
-	err = AssertInt64(value)
+	_, err = AssertInt64(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
 
 	value = starlark.String("")
-	err = AssertInt64(value)
+	_, err = AssertInt64(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
@@ -84,21 +96,24 @@ func TestAssertInt64(t *testing.T) {
 func TestAssertUint64(t *testing.T) {
 	var value starlark.Value
 	value = starlark.MakeUint64(1)
-	err := AssertUint64(value)
+	newvalue, err := AssertUint64(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
+	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
 	}
 
 	//bint := big.NewInt(int64(^uint64(0) >> 1))
 	zint := big.NewInt(-1)
 	value = starlark.MakeBigInt(zint)
-	err = AssertUint64(value)
+	_, err = AssertUint64(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
 
 	value = starlark.String("")
-	err = AssertUint64(value)
+	_, err = AssertUint64(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

@@ -15,16 +15,13 @@ func NoMaskFn(field string, value starlark.Value) string {
 	return value.String()
 }
 
-type FormatterFn func(starlark.Value) starlark.Value
-
 type EKValue struct {
-	valueType  string
-	attrs      []string
-	data       map[string]starlark.Value
-	validators map[string]ValidateFn
-	formatters map[string]FormatterFn
-	frozen     bool
-	mask       MaskFn
+	valueType     string
+	attrs         []string
+	data          map[string]starlark.Value
+	preprocessors map[string]PreProcessFn
+	frozen        bool
+	mask          MaskFn
 }
 
 // Important: the data map must comply with a number of requirements:
@@ -34,18 +31,16 @@ func NewEKValue(
 	valueType string,
 	attrs []string,
 	data map[string]starlark.Value,
-	validators map[string]ValidateFn,
-	formatters map[string]FormatterFn,
+	preprocessors map[string]PreProcessFn,
 	mask MaskFn,
 ) EKValue {
 	return EKValue{
-		valueType:  valueType,
-		attrs:      attrs,
-		data:       data,
-		validators: validators,
-		formatters: formatters,
-		frozen:     false,
-		mask:       mask,
+		valueType:     valueType,
+		attrs:         attrs,
+		data:          data,
+		preprocessors: preprocessors,
+		frozen:        false,
+		mask:          mask,
 	}
 }
 
@@ -164,13 +159,10 @@ func (ev *EKValue) SetField(name string, val starlark.Value) error {
 			fmt.Sprintf("type object '%s' has no attribute '%s'", ev.valueType, name),
 		)
 	}
-	formatter, ok := ev.formatters[name]
+	preproc, ok := ev.preprocessors[name]
+	var err error
 	if ok {
-		val = formatter(val)
-	}
-	validFn, ok := ev.validators[name]
-	if ok {
-		err := validFn(val)
+		val, err = preproc(val)
 		if err != nil {
 			return err
 		}
@@ -203,13 +195,10 @@ func (ev *EKValue) SetKey(k, v starlark.Value) error {
 	if !ok {
 		return fmt.Errorf("%s only accepts string keys; found: '%v'", ev.valueType, k)
 	}
-	formatter, ok := ev.formatters[ks]
+	preproc, ok := ev.preprocessors[ks]
+	var err error
 	if ok {
-		v = formatter(v)
-	}
-	validFn, ok := ev.validators[ks]
-	if ok {
-		err := validFn(v)
+		v, err = preproc(v)
 		if err != nil {
 			return err
 		}

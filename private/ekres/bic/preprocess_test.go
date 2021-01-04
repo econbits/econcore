@@ -8,24 +8,26 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func TestAssertBIC(t *testing.T) {
+func TestPreProcess(t *testing.T) {
 	var value starlark.Value
-	bicstr := "DEUTDEFFXXX"
-	value, err := Parse(bicstr)
-	if err != nil {
-		t.Fatalf("unexpected error %v", err)
-	}
 
-	newvalue, err := AssertBIC(value)
+	value = starlark.String("DEUTDEFFXXX")
+	newvalue, err := preprocess(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
 	if newvalue != value {
-		t.Fatalf("expected %v; got %v", value, newvalue)
+		t.Fatalf("expected %v, got %v", value, newvalue)
 	}
 
 	value = starlark.String("")
-	_, err = AssertBIC(value)
+	_, err = preprocess(value)
+	if err == nil {
+		t.Fatal("expected error; none found")
+	}
+
+	value = starlark.MakeInt(1)
+	_, err = preprocess(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

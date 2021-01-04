@@ -16,35 +16,16 @@ func TestAssertIBAN(t *testing.T) {
 		t.Fatalf("unexpected error %v", err)
 	}
 
-	err = AssertIBAN(value)
+	newvalue, err := AssertIBAN(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
-
-	value = starlark.String("")
-	err = AssertIBAN(value)
-	if err == nil {
-		t.Fatal("expected error; none found")
-	}
-}
-
-func TestAssertIBANString(t *testing.T) {
-	var value starlark.Value
-
-	value = format(starlark.String(SampleDE))
-	err := AssertIBANString(value)
-	if err != nil {
-		t.Fatalf("unexpected error %v", err)
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
 	}
 
 	value = starlark.String("")
-	err = AssertIBANString(value)
-	if err == nil {
-		t.Fatal("expected error; none found")
-	}
-
-	value = starlark.MakeInt(1)
-	err = AssertIBANString(value)
+	_, err = AssertIBAN(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

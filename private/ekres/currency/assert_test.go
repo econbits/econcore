@@ -15,13 +15,16 @@ func TestAssertCurrency(t *testing.T) {
 		t.Fatalf("unexpected error %v", err)
 	}
 
-	err = AssertCurrency(value)
+	newvalue, err := AssertCurrency(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
+	if newvalue != value {
+		t.Fatalf("expected %v; got %v", value, newvalue)
+	}
 
 	value = starlark.String("")
-	err = AssertCurrency(value)
+	_, err = AssertCurrency(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

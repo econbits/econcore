@@ -3,7 +3,6 @@
 package datetime
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/econbits/econkit/private/ekerrors"
@@ -52,11 +51,10 @@ func NewFromValues(layout starlark.String, value starlark.String, t time.Time) *
 				fLayout: layout,
 				fValue:  value,
 			},
-			map[string]eklark.ValidateFn{
+			map[string]eklark.PreProcessFn{
 				fLayout: eklark.AssertString,
 				fValue:  eklark.AssertString,
 			},
-			map[string]eklark.FormatterFn{},
 			eklark.NoMaskFn,
 		),
 		t,
@@ -88,14 +86,6 @@ func dateTimeFn(
 		)
 	}
 	return New(string(layout), string(value))
-}
-
-func AssertDateTime(v starlark.Value) error {
-	_, ok := v.(*DateTime)
-	if !ok {
-		return fmt.Errorf("'%v' is not a date", v)
-	}
-	return nil
 }
 
 func (dt *DateTime) Time() time.Time {

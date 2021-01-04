@@ -19,13 +19,8 @@ func getValueType(type_, attrname, attrvalue string) *TestValue {
 			type_,
 			[]string{attrname},
 			map[string]starlark.Value{},
-			map[string]ValidateFn{
+			map[string]PreProcessFn{
 				attrname: AssertString,
-			},
-			map[string]FormatterFn{
-				attrname: func(v starlark.Value) starlark.Value {
-					return v
-				},
 			},
 			NoMaskFn,
 		),
@@ -44,10 +39,9 @@ func getMapValueType(type_, attrname, attrvalue string) *TestValue {
 			map[string]starlark.Value{
 				attrname: starlark.String(attrvalue),
 			},
-			map[string]ValidateFn{
+			map[string]PreProcessFn{
 				attrname: AssertString,
 			},
-			map[string]FormatterFn{},
 			NoMaskFn,
 		),
 	}
@@ -309,10 +303,9 @@ func TestIntValidator(t *testing.T) {
 			type_,
 			[]string{attrname},
 			map[string]starlark.Value{},
-			map[string]ValidateFn{
+			map[string]PreProcessFn{
 				attrname: AssertInt,
 			},
-			map[string]FormatterFn{},
 			NoMaskFn,
 		),
 	}

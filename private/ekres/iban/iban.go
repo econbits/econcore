@@ -3,8 +3,6 @@
 package iban
 
 import (
-	"strings"
-
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/country"
@@ -31,19 +29,8 @@ var (
 	countryMU = country.MustGet("MU")
 )
 
-func format(value starlark.Value) starlark.Value {
-	vstr, ok := starlark.AsString(value)
-	if !ok {
-		return value
-	}
-	number := strings.ToUpper(string(vstr))
-	number = strings.ReplaceAll(number, " ", "")
-	return starlark.String(number)
-}
-
 func Parse(number string) (*IBAN, error) {
-	vnumber := format(starlark.String(number))
-	err := AssertIBANString(vnumber)
+	vnumber, err := preprocess(starlark.String(number))
 	if err != nil {
 		return nil, err
 	}
@@ -54,11 +41,8 @@ func Parse(number string) (*IBAN, error) {
 			map[string]starlark.Value{
 				fNumber: vnumber,
 			},
-			map[string]eklark.ValidateFn{
-				fNumber: AssertIBANString,
-			},
-			map[string]eklark.FormatterFn{
-				fNumber: format,
+			map[string]eklark.PreProcessFn{
+				fNumber: preprocess,
 			},
 			eklark.NoMaskFn,
 		),

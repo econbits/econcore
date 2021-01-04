@@ -35,12 +35,11 @@ func New(username string, pwd string, account string) *Credentials {
 				credPwd:      starlark.String(pwd),
 				credAccount:  starlark.String(account),
 			},
-			map[string]eklark.ValidateFn{
+			map[string]eklark.PreProcessFn{
 				credUsername: eklark.AssertString,
 				credPwd:      eklark.AssertString,
 				credAccount:  eklark.AssertString,
 			},
-			map[string]eklark.FormatterFn{},
 			maskSensitive,
 		),
 	}
