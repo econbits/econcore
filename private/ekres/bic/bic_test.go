@@ -17,7 +17,7 @@ func TestScripts(t *testing.T) {
 }
 
 func TestParse(t *testing.T) {
-	codes := []string{"DEUTDEFFXXX", "deutdeffXXX", "DEUTDEFF"}
+	codes := []string{SampleDE, "deutdeffXXX", "DEUTDEFF"}
 	for _, code := range codes {
 		bic := MustParse(code)
 		if bic.InstitutionCode() != "DEUT" {
@@ -74,10 +74,8 @@ func TestMustParseBICWrongLength(t *testing.T) {
 }
 
 func TestEqual(t *testing.T) {
-	code1 := "DEUTDEFFXXX"
-	code2 := "NEDSZAJJ"
-	bic1 := MustParse(code1)
-	bic2 := MustParse(code2)
+	bic1 := MustParse(SampleDE)
+	bic2 := MustParse(SampleZA)
 
 	if !bic1.Equal(bic1) {
 		t.Fatalf("%v should be equal to %v", bic1, bic1)

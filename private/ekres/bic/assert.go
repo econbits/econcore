@@ -15,3 +15,10 @@ func AssertBIC(v starlark.Value) (starlark.Value, error) {
 	}
 	return v, nil
 }
+
+func AssertOptionalBIC(v starlark.Value) (starlark.Value, error) {
+	if v == starlark.None {
+		return v, nil
+	}
+	return AssertBIC(v)
+}

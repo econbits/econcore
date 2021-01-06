@@ -22,6 +22,7 @@ type EKValue struct {
 	preprocessors map[string]PreProcessFn
 	frozen        bool
 	mask          MaskFn
+	alias         map[string]string
 }
 
 // Important: the data map must comply with a number of requirements:
@@ -41,6 +42,7 @@ func NewEKValue(
 		preprocessors: preprocessors,
 		frozen:        false,
 		mask:          mask,
+		alias:         map[string]string{},
 	}
 }
 
@@ -65,16 +67,17 @@ func cloneIfInt(v starlark.Value) starlark.Value {
 // Implementing starlark Value interface
 
 func (ev *EKValue) String() string {
-	fields := make([]string, len(ev.data))
+	fields := []string{}
 	if len(ev.attrs) > 0 {
-		for i, field := range ev.attrs {
-			fields[i] = fmt.Sprintf("%s=%v", field, ev.mask(field, ev.data[field]))
+		for _, field := range ev.attrs {
+			fields = append(fields, fmt.Sprintf("%s=%v", field, ev.mask(field, ev.data[field])))
+		}
+		for alias, field := range ev.alias {
+			fields = append(fields, fmt.Sprintf("%s=%v", alias, ev.mask(field, ev.data[field])))
 		}
 	} else {
-		i := 0
 		for field, value := range ev.data {
-			fields[i] = fmt.Sprintf("%s=%v", field, ev.mask(field, value))
-			i++
+			fields = append(fields, fmt.Sprintf("%s=%v", field, ev.mask(field, value)))
 		}
 	}
 	return fmt.Sprintf("%s{%s}", ev.valueType, strings.Join(fields, ", "))
@@ -118,6 +121,11 @@ func (ev *EKValue) isValidAttr(name string) bool {
 			return true
 		}
 	}
+	for alias, _ := range ev.alias {
+		if name == alias {
+			return true
+		}
+	}
 	return false
 }
 
@@ -130,7 +138,12 @@ func (ev *EKValue) Attr(name string) (starlark.Value, error) {
 	value, ok := ev.data[name]
 	if !ok {
 		// value not present
-		return nil, nil
+		// check first if it was an alias
+		ref, ok := ev.alias[name]
+		if !ok {
+			return nil, nil
+		}
+		return ev.Attr(ref)
 	}
 	return cloneIfInt(value), nil
 }
@@ -145,6 +158,19 @@ func (ev *EKValue) AttrNames() []string {
 		}
 		return attrs
 	}
+	if len(ev.alias) > 0 {
+		attrs := make([]string, len(ev.attrs)+len(ev.alias))
+		var i int
+		var attr string
+		for i, attr = range ev.attrs {
+			attrs[i] = attr
+		}
+		for attr, _ = range ev.alias {
+			i++
+			attrs[i] = attr
+		}
+		return attrs
+	}
 	return ev.attrs
 }
 
@@ -153,6 +179,10 @@ func (ev *EKValue) AttrNames() []string {
 func (ev *EKValue) SetField(name string, val starlark.Value) error {
 	if ev.frozen {
 		return fmt.Errorf("%s is frozen", ev.valueType)
+	}
+	ref, ok := ev.alias[name]
+	if ok {
+		return ev.SetField(ref, val)
 	}
 	if !ev.isValidAttr(name) {
 		return starlark.NoSuchAttrError(
@@ -180,7 +210,12 @@ func (ev *EKValue) Get(k starlark.Value) (v starlark.Value, found bool, err erro
 	}
 	v, found = ev.data[ks]
 	if !found {
-		return nil, false, nil
+		// check if it is an alias
+		ref, ok := ev.alias[ks]
+		if !ok {
+			return nil, false, nil
+		}
+		return ev.Get(starlark.String(ref))
 	}
 	return cloneIfInt(v), true, nil
 }
@@ -195,6 +230,10 @@ func (ev *EKValue) SetKey(k, v starlark.Value) error {
 	if !ok {
 		return fmt.Errorf("%s only accepts string keys; found: '%v'", ev.valueType, k)
 	}
+	ref, ok := ev.alias[ks]
+	if ok {
+		return ev.SetKey(starlark.String(ref), v)
+	}
 	preproc, ok := ev.preprocessors[ks]
 	var err error
 	if ok {
@@ -205,4 +244,16 @@ func (ev *EKValue) SetKey(k, v starlark.Value) error {
 	}
 	ev.data[ks] = cloneIfInt(v)
 	return nil
+}
+
+// Alias
+
+func (ev *EKValue) SetAlias(from, target string) error {
+	for _, attr := range ev.attrs {
+		if attr == target {
+			ev.alias[from] = target
+			return nil
+		}
+	}
+	return fmt.Errorf("target '%s' is not a valid attribute", target)
 }

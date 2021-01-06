@@ -33,6 +33,15 @@ func TestHasAttrsMustGetString(t *testing.T) {
 	if gotvalue != attrvalue {
 		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
 	}
+
+	gotvalue2 := HasAttrsMustGet(tv, attrname)
+	gotvalue, ok := gotvalue2.(starlark.String)
+	if !ok {
+		t.Fatalf("expected string; found '%T'", gotvalue2)
+	}
+	if gotvalue != attrvalue {
+		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
+	}
 }
 
 func TestHasAttrsMustGetStringWithInvalidType(t *testing.T) {
@@ -61,6 +70,20 @@ func TestHasAttrsMustGetStringWithInvalidAttrName(t *testing.T) {
 	}()
 
 	HasAttrsMustGetString(tv, "this attr name does not exist")
+}
+
+func TestHasAttrsMustGetWithInvalidAttrName(t *testing.T) {
+	attrname := "attr"
+	attrvalue := starlark.String("")
+	tv := getTestHasAttrsValue(attrname, attrvalue)
+
+	defer func() {
+		if e := recover(); e == nil {
+			t.Errorf("Expected error; none found")
+		}
+	}()
+
+	HasAttrsMustGet(tv, "this attr name does not exist")
 }
 
 func TestHasAttrsMustGetInt(t *testing.T) {

@@ -11,6 +11,14 @@ var (
 	hasAttrsErrorClass = ekerrors.MustRegisterClass("HasAttrsGetError")
 )
 
+func HasAttrsMustGet(ha starlark.HasAttrs, attrname string) starlark.Value {
+	value, err := ha.Attr(attrname)
+	if err != nil {
+		panic(err)
+	}
+	return value
+}
+
 func HasAttrsGetString(ha starlark.HasAttrs, attrname string) (starlark.String, error) {
 	value, err := ha.Attr(attrname)
 	if err != nil {
