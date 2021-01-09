@@ -36,7 +36,7 @@ func getTransactions(t *testing.T, fpath string) ([]*transaction.Transaction, er
 	return transactions, err
 }
 
-func Test_004_Errors(t *testing.T) {
+func Test_004_Scripts(t *testing.T) {
 	dpath := "../../test/ekm/vdefault/004_transactions/"
 	epilogue := starlark.StringDict{}
 	testscript.TestingRun(

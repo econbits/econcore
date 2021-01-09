@@ -20,9 +20,9 @@ import (
 var (
 	loadErrorClass            = ekerrors.MustRegisterClass("LoadError")
 	reservedVarErrorClass     = ekerrors.MustRegisterClass("ReservedVarError")
-	loginErrorClass           = ekerrors.MustRegisterClass("LoginError")
-	accountListErrorClass     = ekerrors.MustRegisterClass("AccountListError")
-	transactionListErrorClass = ekerrors.MustRegisterClass("TransactionListError")
+	loginErrorClass           = ekerrors.MustRegisterClass("LoginFunctionError")
+	accountListErrorClass     = ekerrors.MustRegisterClass("AccountsFunctionError")
+	transactionListErrorClass = ekerrors.MustRegisterClass("TransactionsFunctionError")
 )
 
 type Script struct {

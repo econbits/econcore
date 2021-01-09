@@ -25,7 +25,7 @@ func getAccounts(t *testing.T, fpath string) ([]*account.Account, error) {
 	return accounts, err
 }
 
-func Test_003_Errors(t *testing.T) {
+func Test_003_Scripts(t *testing.T) {
 	dpath := "../../test/ekm/vdefault/003_accounts/"
 	epilogue := starlark.StringDict{}
 	testscript.TestingRun(
