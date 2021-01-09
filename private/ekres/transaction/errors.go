@@ -1,0 +1,11 @@
+// Copyright (C) 2021  Germán Fuentes Capella
+
+package transaction
+
+import (
+	"github.com/econbits/econkit/private/ekerrors"
+)
+
+var (
+	errorClass = ekerrors.MustRegisterClass("TransactionError")
+)

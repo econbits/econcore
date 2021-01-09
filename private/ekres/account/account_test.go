@@ -56,10 +56,7 @@ func TestWalletAccount(t *testing.T) {
 	id := "id"
 	provider := "provider"
 	name := "test account"
-	acc, err := NewWalletAccount(id, name, provider)
-	if err != nil {
-		t.Fatalf("unexpected error %v", err)
-	}
+	acc := NewWalletAccount(id, name, provider)
 
 	if acc.Provider().String() != "\""+provider+"\"" {
 		t.Fatalf("expected %s; found %v", provider, acc.Provider())
@@ -87,10 +84,7 @@ func TestEqual(t *testing.T) {
 		t.Fatalf("unexpected error %v", err)
 	}
 
-	wacc, err := NewWalletAccount("id", "name2", "provider")
-	if err != nil {
-		t.Fatalf("unexpected error %v", err)
-	}
+	wacc := NewWalletAccount("id", "name2", "provider")
 
 	if !iacc.Equal(iacc) {
 		t.Fatalf("%v is not equal to itself", iacc)

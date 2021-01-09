@@ -1,9 +1,10 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package account
+package datetime
 
 import (
 	"testing"
+	"time"
 
 	"github.com/econbits/econkit/private/eklark"
 	"go.starlark.net/starlark"
@@ -29,20 +30,20 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 	return tv
 }
 
-func TestHasAttrsMustGetAccount(t *testing.T) {
+func TestHasAttrsMustGetDateTime(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := NewFromTime(time.Now())
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
-	gotvalue := HasAttrsMustGetAccount(tv, attrname)
+	gotvalue := HasAttrsMustGetDateTime(tv, attrname)
 	if !gotvalue.Equal(attrvalue) {
 		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
 	}
 }
 
-func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
+func TestHasAttrsMustGetDateTimeMissingAttr(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := NewFromTime(time.Now())
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
 
@@ -52,10 +53,10 @@ func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, "this attr does not exist")
+	HasAttrsMustGetDateTime(tv, "this attr does not exist")
 }
 
-func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
+func TestHasAttrsMustGetDateTimeNotADateTime(t *testing.T) {
 	attrname := "attr"
 	attrvalue := starlark.String("")
 
@@ -67,5 +68,5 @@ func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, attrname)
+	HasAttrsMustGetDateTime(tv, attrname)
 }

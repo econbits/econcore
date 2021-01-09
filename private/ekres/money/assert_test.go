@@ -1,18 +1,20 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package account
+package money
 
 import (
+	"math/big"
 	"testing"
 
+	"github.com/econbits/econkit/private/ekres/currency"
 	"go.starlark.net/starlark"
 )
 
-func TestAssertAccount(t *testing.T) {
+func TestAssertMoney(t *testing.T) {
 	var value starlark.Value
-	value = NewWalletAccount("id", "name", "provider")
+	value = New(big.NewInt(1), currency.MustGet("EUR"))
 
-	newvalue, err := AssertAccount(value)
+	newvalue, err := AssertMoney(value)
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -21,7 +23,7 @@ func TestAssertAccount(t *testing.T) {
 	}
 
 	value = starlark.String("")
-	_, err = AssertAccount(value)
+	_, err = AssertMoney(value)
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}

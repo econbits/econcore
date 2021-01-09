@@ -96,3 +96,7 @@ func (dt *DateTime) String() string {
 	str := eklark.HasAttrsMustGetString(dt, fValue)
 	return string(str)
 }
+
+func (dt *DateTime) Equal(odt *DateTime) bool {
+	return dt == odt || dt.Time().Equal(odt.Time())
+}

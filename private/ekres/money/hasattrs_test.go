@@ -1,11 +1,13 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package account
+package money
 
 import (
+	"math/big"
 	"testing"
 
 	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/ekres/currency"
 	"go.starlark.net/starlark"
 )
 
@@ -29,20 +31,20 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 	return tv
 }
 
-func TestHasAttrsMustGetAccount(t *testing.T) {
+func TestHasAttrsMustGetMoney(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := New(big.NewInt(1), currency.MustGet("EUR"))
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
-	gotvalue := HasAttrsMustGetAccount(tv, attrname)
+	gotvalue := HasAttrsMustGetMoney(tv, attrname)
 	if !gotvalue.Equal(attrvalue) {
 		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
 	}
 }
 
-func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
+func TestHasAttrsMustGetMoneyMissingAttr(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := New(big.NewInt(1), currency.MustGet("EUR"))
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
 
@@ -52,10 +54,10 @@ func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, "this attr does not exist")
+	HasAttrsMustGetMoney(tv, "this attr does not exist")
 }
 
-func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
+func TestHasAttrsMustGetMoneyNotMoney(t *testing.T) {
 	attrname := "attr"
 	attrvalue := starlark.String("")
 
@@ -67,5 +69,5 @@ func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, attrname)
+	HasAttrsMustGetMoney(tv, attrname)
 }

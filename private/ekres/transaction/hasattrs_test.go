@@ -1,11 +1,17 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package account
+package transaction
 
 import (
+	"math/big"
 	"testing"
+	"time"
 
 	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/ekres/currency"
+	"github.com/econbits/econkit/private/ekres/datetime"
+	"github.com/econbits/econkit/private/ekres/money"
 	"go.starlark.net/starlark"
 )
 
@@ -29,20 +35,36 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 	return tv
 }
 
-func TestHasAttrsMustGetAccount(t *testing.T) {
+func TestHasAttrsMustGetTransaction(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	wallet := account.NewWalletAccount("id", "name", "provider")
+	attrvalue := New(
+		wallet,
+		wallet,
+		money.New(big.NewInt(1), currency.MustGet("EUR")),
+		datetime.NewFromTime(time.Now()),
+		nil,
+		"purpose",
+	)
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
-	gotvalue := HasAttrsMustGetAccount(tv, attrname)
+	gotvalue := HasAttrsMustGetTransaction(tv, attrname)
 	if !gotvalue.Equal(attrvalue) {
 		t.Fatalf("Expected %v; found '%v'", attrvalue, gotvalue)
 	}
 }
 
-func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
+func TestHasAttrsMustGetTransactionMissingAttr(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	wallet := account.NewWalletAccount("id", "name", "provider")
+	attrvalue := New(
+		wallet,
+		wallet,
+		money.New(big.NewInt(1), currency.MustGet("EUR")),
+		datetime.NewFromTime(time.Now()),
+		nil,
+		"purpose",
+	)
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
 
@@ -52,7 +74,7 @@ func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, "this attr does not exist")
+	HasAttrsMustGetTransaction(tv, "this attr does not exist")
 }
 
 func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
@@ -67,5 +89,5 @@ func TestHasAttrsMustGetBICNotABIC(t *testing.T) {
 		}
 	}()
 
-	HasAttrsMustGetAccount(tv, attrname)
+	HasAttrsMustGetTransaction(tv, attrname)
 }
