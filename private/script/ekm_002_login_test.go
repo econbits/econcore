@@ -10,7 +10,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func Test_002_Errors(t *testing.T) {
+func Test_002_Scripts(t *testing.T) {
 	dpath := "../../test/ekm/vdefault/002_login/"
 	epilogue := starlark.StringDict{}
 	testscript.TestingRun(

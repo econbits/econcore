@@ -23,8 +23,6 @@ var (
 	loginErrorClass           = ekerrors.MustRegisterClass("LoginError")
 	accountListErrorClass     = ekerrors.MustRegisterClass("AccountListError")
 	transactionListErrorClass = ekerrors.MustRegisterClass("TransactionListError")
-	missingFunctionErrorClass = ekerrors.MustRegisterClass("MissingFunctionError")
-	functionCallErrorClass    = ekerrors.MustRegisterClass("FunctionCallError")
 )
 
 type Script struct {
@@ -105,7 +103,7 @@ func (s Script) Authors() []string {
 
 func (s Script) Login(cred *credentials.Credentials) (*session.Session, error) {
 	nameFn := "login"
-	value, err := s.runFn(nameFn, starlark.Tuple{cred})
+	value, err := s.runFn(nameFn, starlark.Tuple{cred}, loginErrorClass)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +119,7 @@ func (s Script) Login(cred *credentials.Credentials) (*session.Session, error) {
 
 func (s Script) Accounts(session *session.Session) ([]*account.Account, error) {
 	nameFn := "accounts"
-	value, err := s.runFn(nameFn, starlark.Tuple{session})
+	value, err := s.runFn(nameFn, starlark.Tuple{session}, accountListErrorClass)
 	if err != nil {
 		return nil, err
 	}
@@ -146,11 +144,15 @@ func (s Script) Accounts(session *session.Session) ([]*account.Account, error) {
 	return accounts, nil
 }
 
-func (s Script) runFn(nameFn string, params starlark.Tuple) (starlark.Value, error) {
+func (s Script) runFn(
+	nameFn string,
+	params starlark.Tuple,
+	classOnError *ekerrors.Class,
+) (starlark.Value, error) {
 	fn := s.globals[nameFn]
 	if fn == nil {
 		return nil, ekerrors.New(
-			missingFunctionErrorClass,
+			classOnError,
 			fmt.Sprintf("missing %s Function", nameFn),
 		)
 	}
@@ -162,7 +164,7 @@ func (s Script) runFn(nameFn string, params starlark.Tuple) (starlark.Value, err
 			return nil, err
 		}
 		return nil, ekerrors.Wrap(
-			functionCallErrorClass,
+			classOnError,
 			err.Error(),
 			err,
 		)
@@ -172,7 +174,7 @@ func (s Script) runFn(nameFn string, params starlark.Tuple) (starlark.Value, err
 
 func (s Script) Transactions(session *session.Session, account *account.Account, since time.Time) ([]*transaction.Transaction, error) {
 	nameFn := "transactions"
-	value, err := s.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)})
+	value, err := s.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)}, transactionListErrorClass)
 	if err != nil {
 		return nil, err
 	}
