@@ -36,7 +36,7 @@ var (
 	defAuthors = []string{}
 )
 
-func validateGlobalVars(g starlark.StringDict) error {
+func validateReservedVars(g starlark.StringDict) error {
 	for _, h := range stringHeaders {
 		field, ok := g[h]
 		if ok {

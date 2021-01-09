@@ -20,15 +20,6 @@ func IRtoVR(ilist []int) []starlark.Value {
 	return values
 }
 
-// Value to Integer Range
-func VtoIR(value starlark.Value) ([]int, error) {
-	vlist, ok := value.(*starlark.List)
-	if !ok {
-		return nil, fmt.Errorf("Expected *starlark.List; got %T", value)
-	}
-	return LtoIR(vlist)
-}
-
 // Value Range to Integer Range
 func VRtoIR(vlist []starlark.Value) ([]int, error) {
 	lv := len(vlist)
@@ -41,21 +32,6 @@ func VRtoIR(vlist []starlark.Value) ([]int, error) {
 		}
 	}
 	return ilist, nil
-}
-
-// List of Integers to Integer Range
-func LtoIR(list *starlark.List) ([]int, error) {
-	llist := list.Len()
-	nlist := make([]int, llist)
-	for i := 0; i < llist; i++ {
-		v := list.Index(i)
-		vi, err := starlark.AsInt32(v)
-		if err != nil {
-			return nil, err
-		}
-		nlist[i] = vi
-	}
-	return nlist, nil
 }
 
 // List of accounts to Account Range

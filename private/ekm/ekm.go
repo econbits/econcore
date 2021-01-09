@@ -25,36 +25,36 @@ var (
 	transactionListErrorClass = ekerrors.MustRegisterClass("TransactionsFunctionError")
 )
 
-type Script struct {
+type EKM struct {
 	tn      *starlark.Thread
 	fpath   string
 	globals starlark.StringDict
 }
 
-func New(fpath string) (Script, error) {
+func New(fpath string) (*EKM, error) {
 	name := slang.ScriptId(fpath)
 	thread := &starlark.Thread{Name: name}
 	globals, err := starlark.ExecFile(thread, fpath, nil, epilogue())
 	if err != nil {
-		return Script{}, ekerrors.Wrap(
+		return nil, ekerrors.Wrap(
 			loadErrorClass,
 			err.Error(),
 			err,
 		)
 	}
-	err = validateGlobalVars(globals)
+	err = validateReservedVars(globals)
 	if err != nil {
-		return Script{}, ekerrors.Wrap(
+		return nil, ekerrors.Wrap(
 			reservedVarErrorClass,
 			err.Error(),
 			err,
 		)
 	}
-	return Script{tn: thread, fpath: fpath, globals: globals}, nil
+	return &EKM{tn: thread, fpath: fpath, globals: globals}, nil
 }
 
-func (s Script) stringField(name string, defvalue string) string {
-	v, ok := s.globals[name]
+func (m EKM) stringField(name string, defvalue string) string {
+	v, ok := m.globals[name]
 	if !ok {
 		return defvalue
 	}
@@ -65,8 +65,8 @@ func (s Script) stringField(name string, defvalue string) string {
 	return sv
 }
 
-func (s Script) stringListField(name string, defvalue []string) []string {
-	v, ok := s.globals[name]
+func (m EKM) stringListField(name string, defvalue []string) []string {
+	v, ok := m.globals[name]
 	if !ok {
 		return defvalue
 	}
@@ -85,25 +85,25 @@ func (s Script) stringListField(name string, defvalue []string) []string {
 	return fields
 }
 
-func (s Script) Description() string {
-	return s.stringField(hDescription, defDescription)
+func (m EKM) Description() string {
+	return m.stringField(hDescription, defDescription)
 }
 
-func (s Script) URL() string {
-	return s.stringField(hURL, defUrl)
+func (m EKM) URL() string {
+	return m.stringField(hURL, defUrl)
 }
 
-func (s Script) License() string {
-	return s.stringField(hLicense, defLicense)
+func (m EKM) License() string {
+	return m.stringField(hLicense, defLicense)
 }
 
-func (s Script) Authors() []string {
-	return s.stringListField(hAuthors, defAuthors)
+func (m EKM) Authors() []string {
+	return m.stringListField(hAuthors, defAuthors)
 }
 
-func (s Script) Login(cred *credentials.Credentials) (*session.Session, error) {
+func (m EKM) Login(cred *credentials.Credentials) (*session.Session, error) {
 	nameFn := "login"
-	value, err := s.runFn(nameFn, starlark.Tuple{cred}, loginErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{cred}, loginErrorClass)
 	if err != nil {
 		return nil, err
 	}
@@ -117,9 +117,9 @@ func (s Script) Login(cred *credentials.Credentials) (*session.Session, error) {
 	return session, nil
 }
 
-func (s Script) Accounts(session *session.Session) ([]*account.Account, error) {
+func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
 	nameFn := "accounts"
-	value, err := s.runFn(nameFn, starlark.Tuple{session}, accountListErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{session}, accountListErrorClass)
 	if err != nil {
 		return nil, err
 	}
@@ -144,12 +144,12 @@ func (s Script) Accounts(session *session.Session) ([]*account.Account, error) {
 	return accounts, nil
 }
 
-func (s Script) runFn(
+func (m EKM) runFn(
 	nameFn string,
 	params starlark.Tuple,
 	classOnError *ekerrors.Class,
 ) (starlark.Value, error) {
-	fn := s.globals[nameFn]
+	fn := m.globals[nameFn]
 	if fn == nil {
 		return nil, ekerrors.New(
 			classOnError,
@@ -157,7 +157,7 @@ func (s Script) runFn(
 		)
 	}
 
-	value, err := starlark.Call(s.tn, fn, params, nil)
+	value, err := starlark.Call(m.tn, fn, params, nil)
 	if err != nil {
 		var kerr *ekerrors.EKError
 		if errors.As(err, &kerr) {
@@ -172,9 +172,9 @@ func (s Script) runFn(
 	return value, nil
 }
 
-func (s Script) Transactions(session *session.Session, account *account.Account, since time.Time) ([]*transaction.Transaction, error) {
+func (m EKM) Transactions(session *session.Session, account *account.Account, since time.Time) ([]*transaction.Transaction, error) {
 	nameFn := "transactions"
-	value, err := s.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)}, transactionListErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)}, transactionListErrorClass)
 	if err != nil {
 		return nil, err
 	}

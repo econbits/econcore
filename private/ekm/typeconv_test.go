@@ -23,26 +23,9 @@ func Test2IntRange(t *testing.T) {
 	}
 }
 
-func TestVtoIRError(t *testing.T) {
-	s := starlark.String("hello")
-	_, err := VtoIR(s)
-	if err == nil {
-		t.Errorf("Expected error, none found")
-	}
-}
-
 func TestVRtoIRError(t *testing.T) {
 	s := starlark.String("hello")
 	_, err := VRtoIR([]starlark.Value{s})
-	if err == nil {
-		t.Errorf("Expected error, none found")
-	}
-}
-
-func TestLtoIRError(t *testing.T) {
-	s := starlark.String("hello")
-	slist := starlark.NewList([]starlark.Value{s})
-	_, err := LtoIR(slist)
 	if err == nil {
 		t.Errorf("Expected error, none found")
 	}
