@@ -6,12 +6,12 @@ import (
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 func preprocessKind(v starlark.Value, types []string) (starlark.Value, error) {
-	v, err := eklark.AssertString(v)
+	v, err := slang.AssertString(v)
 	if err != nil {
 		return nil, err
 	}

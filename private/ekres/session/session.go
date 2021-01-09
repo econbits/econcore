@@ -6,12 +6,12 @@ import (
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Session struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -21,7 +21,7 @@ const (
 
 var (
 	sessionErrorClass = ekerrors.MustRegisterClass("SessionError")
-	SessionFn         = &eklark.Fn{
+	SessionFn         = &slang.Fn{
 		Name:     fnName,
 		Callback: sessionFn,
 	}
@@ -29,12 +29,12 @@ var (
 
 func New() *Session {
 	return &Session{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			sessionType,
 			[]string{},
 			map[string]starlark.Value{},
-			map[string]eklark.PreProcessFn{},
-			eklark.NoMaskFn,
+			map[string]slang.PreProcessFn{},
+			slang.NoMaskFn,
 		),
 	}
 }

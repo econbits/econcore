@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type DateTime struct {
-	eklark.EKValue
+	slang.EKValue
 	time time.Time
 }
 
@@ -24,7 +24,7 @@ const (
 
 var (
 	errorClass = ekerrors.MustRegisterClass("DateTimeError")
-	DateTimeFn = &eklark.Fn{
+	DateTimeFn = &slang.Fn{
 		Name:     fnName,
 		Callback: dateTimeFn,
 	}
@@ -44,18 +44,18 @@ func New(layout string, value string) (*DateTime, error) {
 
 func NewFromValues(layout starlark.String, value starlark.String, t time.Time) *DateTime {
 	return &DateTime{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{fLayout, fValue},
 			map[string]starlark.Value{
 				fLayout: layout,
 				fValue:  value,
 			},
-			map[string]eklark.PreProcessFn{
-				fLayout: eklark.AssertString,
-				fValue:  eklark.AssertString,
+			map[string]slang.PreProcessFn{
+				fLayout: slang.AssertString,
+				fValue:  slang.AssertString,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 		t,
 	}
@@ -93,7 +93,7 @@ func (dt *DateTime) Time() time.Time {
 }
 
 func (dt *DateTime) String() string {
-	str := eklark.HasAttrsMustGetString(dt, fValue)
+	str := slang.HasAttrsMustGetString(dt, fValue)
 	return string(str)
 }
 

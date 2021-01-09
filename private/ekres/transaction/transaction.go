@@ -4,15 +4,15 @@ package transaction
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/money"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Transaction struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -27,7 +27,7 @@ const (
 )
 
 var (
-	TransactionFn = &eklark.Fn{
+	TransactionFn = &slang.Fn{
 		Name:     fnName,
 		Callback: transactionFn,
 	}
@@ -45,7 +45,7 @@ func New(
 		valueDate = bookingDate
 	}
 	return &Transaction{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{
 				fSender,
@@ -63,15 +63,15 @@ func New(
 				fValueDate:   valueDate,
 				fPurpose:     purpose,
 			},
-			map[string]eklark.PreProcessFn{
+			map[string]slang.PreProcessFn{
 				fSender:      account.AssertAccount,
 				fReceiver:    account.AssertAccount,
 				fValue:       money.AssertMoney,
 				fBookingDate: datetime.AssertDateTime,
 				fValueDate:   datetime.AssertDateTime,
-				fPurpose:     eklark.AssertString,
+				fPurpose:     slang.AssertString,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 }
@@ -126,7 +126,7 @@ func (tx *Transaction) ValueDate() *datetime.DateTime {
 }
 
 func (tx *Transaction) Purpose() string {
-	p := eklark.HasAttrsMustGetString(tx, fPurpose)
+	p := slang.HasAttrsMustGetString(tx, fPurpose)
 	return string(p)
 }
 

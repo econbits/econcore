@@ -3,7 +3,6 @@
 package script
 
 import (
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/assert"
 	"github.com/econbits/econkit/private/ekres/bic"
@@ -14,11 +13,12 @@ import (
 	"github.com/econbits/econkit/private/ekres/money"
 	"github.com/econbits/econkit/private/ekres/session"
 	"github.com/econbits/econkit/private/ekres/transaction"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 var (
-	fns = []*eklark.Fn{
+	fns = []*slang.Fn{
 		account.IbanFn,
 		account.WalletFn,
 		assert.AssertFn,

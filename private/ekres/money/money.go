@@ -7,13 +7,13 @@ import (
 	"strings"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/currency"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Money struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -25,7 +25,7 @@ const (
 
 var (
 	errorClass = ekerrors.MustRegisterClass("MoneyError")
-	MoneyFn    = &eklark.Fn{
+	MoneyFn    = &slang.Fn{
 		Name:     fnName,
 		Callback: moneyFn,
 	}
@@ -36,7 +36,7 @@ func New(amount *big.Int, curr *currency.Currency) *Money {
 	zero := big.NewInt(0)
 	amount = zero.Add(zero, amount)
 	return &Money{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			moneyType,
 			[]string{
 				fAmount,
@@ -46,11 +46,11 @@ func New(amount *big.Int, curr *currency.Currency) *Money {
 				fAmount:   starlark.MakeBigInt(amount),
 				fCurrency: curr,
 			},
-			map[string]eklark.PreProcessFn{
-				fAmount:   eklark.AssertInt,
+			map[string]slang.PreProcessFn{
+				fAmount:   slang.AssertInt,
 				fCurrency: currency.AssertCurrency,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 }
@@ -76,7 +76,7 @@ func moneyFn(
 
 // It is safe to modify the returned *big.Int as it is a copy of the internal value
 func (m *Money) Amount() *big.Int {
-	intv := eklark.HasAttrsMustGetInt(m, fAmount)
+	intv := slang.HasAttrsMustGetInt(m, fAmount)
 	return intv.BigInt()
 }
 
@@ -85,7 +85,7 @@ func (m *Money) Currency() *currency.Currency {
 }
 
 func (m *Money) String() string {
-	amountstr := eklark.HasAttrsMustGetInt(m, fAmount).String()
+	amountstr := slang.HasAttrsMustGetInt(m, fAmount).String()
 	currency := currency.HasAttrsMustGetCurrency(m, fCurrency)
 	units := currency.Units()
 	if units == 0 {

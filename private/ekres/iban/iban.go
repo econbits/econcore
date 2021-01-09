@@ -4,13 +4,13 @@ package iban
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/country"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type IBAN struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	IBANFn = &eklark.Fn{
+	IBANFn = &slang.Fn{
 		Name:     fnName,
 		Callback: ibanFn,
 	}
@@ -35,16 +35,16 @@ func Parse(number string) (*IBAN, error) {
 		return nil, err
 	}
 	return &IBAN{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{fNumber},
 			map[string]starlark.Value{
 				fNumber: vnumber,
 			},
-			map[string]eklark.PreProcessFn{
+			map[string]slang.PreProcessFn{
 				fNumber: preprocess,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}, nil
 }
@@ -119,6 +119,6 @@ func (iban *IBAN) PrintedForm() string {
 }
 
 func (iban *IBAN) ElectronicForm() string {
-	number := eklark.HasAttrsMustGetString(iban, fNumber)
+	number := slang.HasAttrsMustGetString(iban, fNumber)
 	return string(number)
 }

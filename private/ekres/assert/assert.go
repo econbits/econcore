@@ -4,7 +4,7 @@ package assert
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
@@ -15,7 +15,7 @@ const (
 
 var (
 	fnErrorClass = ekerrors.MustRegisterClass("AssertionError")
-	AssertFn     = &eklark.Fn{
+	AssertFn     = &slang.Fn{
 		Name:     fnName,
 		Callback: assertCb,
 	}

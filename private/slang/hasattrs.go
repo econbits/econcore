@@ -1,6 +1,6 @@
 //Copyright (C) 2020  Germán Fuentes Capella
 
-package eklark
+package slang
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"

@@ -7,29 +7,29 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/currency"
 	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/money"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type TestValue struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.HasAttrs {
 	type_ := "TestValue"
 	tv := &TestValue{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			type_,
 			[]string{attrname},
 			map[string]starlark.Value{
 				attrname: attrvalue,
 			},
-			map[string]eklark.PreProcessFn{},
-			eklark.NoMaskFn,
+			map[string]slang.PreProcessFn{},
+			slang.NoMaskFn,
 		),
 	}
 	return tv

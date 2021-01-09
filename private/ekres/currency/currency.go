@@ -6,12 +6,12 @@ import (
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Currency struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -25,7 +25,7 @@ const (
 
 var (
 	currencyErrorClass = ekerrors.MustRegisterClass("CurrencyError")
-	CurrencyFn         = &eklark.Fn{
+	CurrencyFn         = &slang.Fn{
 		Name:     fnName,
 		Callback: currencyFn,
 	}
@@ -36,7 +36,7 @@ var (
 
 func new_(id int, code string, name string, units int) *Currency {
 	return &Currency{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			currencyType,
 			[]string{
 				fCurrencyName,
@@ -50,13 +50,13 @@ func new_(id int, code string, name string, units int) *Currency {
 				fCurrencyId:    starlark.MakeInt(id),
 				fCurrencyUnits: starlark.MakeInt(units),
 			},
-			map[string]eklark.PreProcessFn{
-				fCurrencyName:  eklark.AssertString,
-				fCurrencyCode:  eklark.AssertString,
-				fCurrencyId:    eklark.AssertInt32,
-				fCurrencyUnits: eklark.AssertInt32,
+			map[string]slang.PreProcessFn{
+				fCurrencyName:  slang.AssertString,
+				fCurrencyCode:  slang.AssertString,
+				fCurrencyId:    slang.AssertInt32,
+				fCurrencyUnits: slang.AssertInt32,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 }
@@ -99,21 +99,21 @@ func currencyFn(
 }
 
 func (c *Currency) Name() string {
-	str := eklark.HasAttrsMustGetString(c, fCurrencyName)
+	str := slang.HasAttrsMustGetString(c, fCurrencyName)
 	return string(str)
 }
 
 func (c *Currency) Code() string {
-	str := eklark.HasAttrsMustGetString(c, fCurrencyCode)
+	str := slang.HasAttrsMustGetString(c, fCurrencyCode)
 	return string(str)
 }
 
 func (c *Currency) Id() int {
-	return eklark.HasAttrsMustGetGoInt(c, fCurrencyId)
+	return slang.HasAttrsMustGetGoInt(c, fCurrencyId)
 }
 
 func (c *Currency) Units() int {
-	return eklark.HasAttrsMustGetGoInt(c, fCurrencyUnits)
+	return slang.HasAttrsMustGetGoInt(c, fCurrencyUnits)
 }
 
 func (c *Currency) Equal(oc *Currency) bool {

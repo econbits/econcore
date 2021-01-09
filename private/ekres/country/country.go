@@ -6,12 +6,12 @@ import (
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Country struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -23,7 +23,7 @@ const (
 
 var (
 	errorClass = ekerrors.MustRegisterClass("CountryError")
-	CountryFn  = &eklark.Fn{
+	CountryFn  = &slang.Fn{
 		Name:     fnName,
 		Callback: countryFn,
 	}
@@ -34,18 +34,18 @@ var (
 
 func new_(alpha2, name string) *Country {
 	return &Country{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{fName, fAlpha2},
 			map[string]starlark.Value{
 				fName:   starlark.String(name),
 				fAlpha2: starlark.String(alpha2),
 			},
-			map[string]eklark.PreProcessFn{
-				fName:   eklark.AssertString,
-				fAlpha2: eklark.AssertString,
+			map[string]slang.PreProcessFn{
+				fName:   slang.AssertString,
+				fAlpha2: slang.AssertString,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 }
@@ -92,12 +92,12 @@ func (c *Country) String() string {
 }
 
 func (c *Country) Alpha2() string {
-	alpha2 := eklark.HasAttrsMustGetString(c, fAlpha2)
+	alpha2 := slang.HasAttrsMustGetString(c, fAlpha2)
 	return string(alpha2)
 }
 
 func (c *Country) Name() string {
-	name := eklark.HasAttrsMustGetString(c, fName)
+	name := slang.HasAttrsMustGetString(c, fName)
 	return string(name)
 }
 

@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package eklark
+package slang
 
 import (
 	"testing"
@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	errorClass = ekerrors.MustRegisterClass("eklark/function_test")
+	errorClass = ekerrors.MustRegisterClass("slang/function_test")
 )
 
 func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {

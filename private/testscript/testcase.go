@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 )
 
 type TestCase struct {
@@ -24,7 +24,7 @@ var (
 )
 
 func ParseTestCase(fpath string) *TestCase {
-	name := eklark.ScriptId(fpath)
+	name := slang.ScriptId(fpath)
 	strs := strings.SplitN(name, "_", 2)
 
 	var abortErr error = nil

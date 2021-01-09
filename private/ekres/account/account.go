@@ -4,14 +4,14 @@ package account
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/bic"
 	"github.com/econbits/econkit/private/ekres/iban"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Account struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -27,11 +27,11 @@ const (
 )
 
 var (
-	IbanFn = &eklark.Fn{
+	IbanFn = &slang.Fn{
 		Name:     ibanFnName,
 		Callback: ibanFn,
 	}
-	WalletFn = &eklark.Fn{
+	WalletFn = &slang.Fn{
 		Name:     walletFnName,
 		Callback: walletFn,
 	}
@@ -53,7 +53,7 @@ func NewIbanAccountFromValues(in *iban.IBAN, name starlark.String, kind starlark
 		vbc = starlark.Value(bc)
 	}
 	acc := &Account{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{
 				fId,
@@ -67,13 +67,13 @@ func NewIbanAccountFromValues(in *iban.IBAN, name starlark.String, kind starlark
 				fKind:     vkind,
 				fProvider: vbc,
 			},
-			map[string]eklark.PreProcessFn{
+			map[string]slang.PreProcessFn{
 				fId:       iban.AssertIBAN,
-				fName:     eklark.AssertString,
+				fName:     slang.AssertString,
 				fKind:     preprocessIbanKind,
 				fProvider: bic.AssertOptionalBIC,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 	err = acc.SetAlias(fIban, fId)
@@ -101,7 +101,7 @@ func NewWalletAccountFromValues(
 	provider starlark.String,
 ) *Account {
 	return &Account{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{
 				fId,
@@ -115,13 +115,13 @@ func NewWalletAccountFromValues(
 				fKind:     starlark.String(walletType),
 				fProvider: provider,
 			},
-			map[string]eklark.PreProcessFn{
-				fId:       eklark.AssertString,
-				fName:     eklark.AssertString,
+			map[string]slang.PreProcessFn{
+				fId:       slang.AssertString,
+				fName:     slang.AssertString,
 				fKind:     preprocessWalletKind,
-				fProvider: eklark.AssertString,
+				fProvider: slang.AssertString,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}
 }
@@ -176,20 +176,20 @@ func walletFn(
 }
 
 func (acc *Account) Provider() starlark.Value {
-	return eklark.HasAttrsMustGet(acc, fProvider)
+	return slang.HasAttrsMustGet(acc, fProvider)
 }
 
 func (acc *Account) Id() starlark.Value {
-	return eklark.HasAttrsMustGet(acc, fId)
+	return slang.HasAttrsMustGet(acc, fId)
 }
 
 func (acc *Account) Name() string {
-	name := eklark.HasAttrsMustGetString(acc, fName)
+	name := slang.HasAttrsMustGetString(acc, fName)
 	return string(name)
 }
 
 func (acc *Account) Kind() string {
-	kind := eklark.HasAttrsMustGetString(acc, fKind)
+	kind := slang.HasAttrsMustGetString(acc, fKind)
 	return string(kind)
 }
 

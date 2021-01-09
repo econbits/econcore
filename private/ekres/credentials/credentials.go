@@ -3,12 +3,12 @@
 package credentials
 
 import (
-	"github.com/econbits/econkit/private/eklark"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type Credentials struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -27,7 +27,7 @@ func maskSensitive(field string, value starlark.Value) string {
 
 func New(username string, pwd string, account string) *Credentials {
 	return &Credentials{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			credentialsType,
 			[]string{credUsername, credPwd, credAccount},
 			map[string]starlark.Value{
@@ -35,10 +35,10 @@ func New(username string, pwd string, account string) *Credentials {
 				credPwd:      starlark.String(pwd),
 				credAccount:  starlark.String(account),
 			},
-			map[string]eklark.PreProcessFn{
-				credUsername: eklark.AssertString,
-				credPwd:      eklark.AssertString,
-				credAccount:  eklark.AssertString,
+			map[string]slang.PreProcessFn{
+				credUsername: slang.AssertString,
+				credPwd:      slang.AssertString,
+				credAccount:  slang.AssertString,
 			},
 			maskSensitive,
 		),

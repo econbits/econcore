@@ -1,6 +1,6 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package eklark
+package slang
 
 import (
 	"fmt"

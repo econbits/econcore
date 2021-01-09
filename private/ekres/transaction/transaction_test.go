@@ -7,18 +7,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/currency"
 	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/money"
+	"github.com/econbits/econkit/private/slang"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )
 
 func TestScripts(t *testing.T) {
 	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/transaction/"
-	fns := []*eklark.Fn{
+	fns := []*slang.Fn{
 		TransactionFn,
 		account.WalletFn,
 		currency.CurrencyFn,

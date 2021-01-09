@@ -4,13 +4,13 @@ package bic
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/country"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 type BIC struct {
-	eklark.EKValue
+	slang.EKValue
 }
 
 const (
@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	BICFn = &eklark.Fn{
+	BICFn = &slang.Fn{
 		Name:     fnName,
 		Callback: bicFn,
 	}
@@ -32,16 +32,16 @@ func Parse(code string) (*BIC, error) {
 		return nil, err
 	}
 	return &BIC{
-		eklark.NewEKValue(
+		slang.NewEKValue(
 			typeName,
 			[]string{fCode},
 			map[string]starlark.Value{
 				fCode: vcode,
 			},
-			map[string]eklark.PreProcessFn{
+			map[string]slang.PreProcessFn{
 				fCode: preprocess,
 			},
-			eklark.NoMaskFn,
+			slang.NoMaskFn,
 		),
 	}, nil
 }
@@ -77,7 +77,7 @@ func (bic *BIC) String() string {
 }
 
 func (bic *BIC) Code() string {
-	code := eklark.HasAttrsMustGetString(bic, fCode)
+	code := slang.HasAttrsMustGetString(bic, fCode)
 	return string(code)
 }
 

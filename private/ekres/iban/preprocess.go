@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/eklark"
 	"github.com/econbits/econkit/private/ekres/country"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
@@ -18,7 +18,7 @@ var (
 )
 
 func preprocess(v starlark.Value) (starlark.Value, error) {
-	v, err := eklark.AssertString(v)
+	v, err := slang.AssertString(v)
 	if err != nil {
 		return nil, err
 	}
