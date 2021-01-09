@@ -4,4 +4,4 @@ def login(cred):
     return session()
 
 def accounts(session):
-    return [account(name=1)]
+    return [iban_account(name=1)]

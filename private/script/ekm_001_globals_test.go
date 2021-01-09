@@ -6,15 +6,23 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )
 
 func Test_001_Errors(t *testing.T) {
-	root := "../../test/ekm/vdefault/001_globals/"
-	testErrorFiles(t, root, func(path string) error {
-		_, err := New(path)
-		return err
-	})
+	dpath := "../../test/ekm/vdefault/001_globals/"
+	epilogue := starlark.StringDict{}
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		func(path string, epilogue starlark.StringDict) error {
+			_, err := New(path)
+			return err
+		},
+		testscript.Fail,
+	)
 }
 
 func Test_001_Meta_Full(t *testing.T) {

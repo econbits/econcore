@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+// Most of the tests are implemented in the ekm_0*_test go files.
+
 func TestNewNoFile(t *testing.T) {
 	fpath := "this_file_does_not_exist.star"
 	_, err := New(fpath)

@@ -5,6 +5,8 @@ package script
 import (
 	"fmt"
 
+	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/ekres/transaction"
 	"go.starlark.net/starlark"
 )
 
@@ -57,12 +59,12 @@ func LtoIR(list *starlark.List) ([]int, error) {
 }
 
 // List of accounts to Account Range
-func LtoAR(list *starlark.List) ([]*Account, error) {
+func LtoAR(list *starlark.List) ([]*account.Account, error) {
 	llist := list.Len()
-	alist := make([]*Account, llist)
+	alist := make([]*account.Account, llist)
 	for i := 0; i < llist; i++ {
 		v := list.Index(i)
-		va, ok := v.(*Account)
+		va, ok := v.(*account.Account)
 		if !ok {
 			return nil, fmt.Errorf("Expected List of Accounts; found: %T", v)
 		}
@@ -72,12 +74,12 @@ func LtoAR(list *starlark.List) ([]*Account, error) {
 }
 
 // List of transactions to Transaction Range
-func LtoTR(list *starlark.List) ([]*Transaction, error) {
+func LtoTR(list *starlark.List) ([]*transaction.Transaction, error) {
 	llist := list.Len()
-	tlist := make([]*Transaction, llist)
+	tlist := make([]*transaction.Transaction, llist)
 	for i := 0; i < llist; i++ {
 		v := list.Index(i)
-		vt, ok := v.(*Transaction)
+		vt, ok := v.(*transaction.Transaction)
 		if !ok {
 			return nil, fmt.Errorf("Expected List of Transactions; found: %T", v)
 		}

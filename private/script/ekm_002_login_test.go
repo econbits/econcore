@@ -5,20 +5,29 @@ package script
 import (
 	"testing"
 
+	"github.com/econbits/econkit/private/ekres/credentials"
+	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )
 
 func Test_002_Errors(t *testing.T) {
-	root := "../../test/ekm/vdefault/002_login/"
-	testErrorFiles(t, root, func(path string) error {
-		sc, err := New(path)
-		if err != nil {
-			t.Fatalf("Unexpected error: %v", err)
-		}
-		cred := NewCredentials("mr_user", "a_password", "an_account")
-		_, err = sc.Login(cred)
-		return err
-	})
+	dpath := "../../test/ekm/vdefault/002_login/"
+	epilogue := starlark.StringDict{}
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		func(path string, epilogue starlark.StringDict) error {
+			sc, err := New(path)
+			if err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+			cred := credentials.New("mr_user", "a_password", "an_account")
+			_, err = sc.Login(cred)
+			return err
+		},
+		testscript.Fail,
+	)
 }
 
 func Test_002_Login_success(t *testing.T) {
@@ -27,7 +36,7 @@ func Test_002_Login_success(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	cred := NewCredentials("mr_user", "a_password", "an_account")
+	cred := credentials.New("mr_user", "a_password", "an_account")
 	session, err := sc.Login(cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -47,7 +56,7 @@ func Test_002_Login_Set_Session_Param(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)
 		}
-		cred := NewCredentials("mr_user", "a_password", "an_account")
+		cred := credentials.New("mr_user", "a_password", "an_account")
 		session, err := sc.Login(cred)
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)

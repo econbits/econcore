@@ -4,7 +4,7 @@ def login(cred):
     return session()
 
 def accounts(session):
-    return [account("test")]
+    return [wallet_account("walletid", "walletname", "walletprovider")]
 
 def transactions(session, account, since):
     pass

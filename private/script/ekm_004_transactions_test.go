@@ -3,18 +3,24 @@
 package script
 
 import (
+	"math/big"
 	"testing"
 	"time"
 
+	"github.com/econbits/econkit/private/ekres/credentials"
+	"github.com/econbits/econkit/private/ekres/currency"
+	"github.com/econbits/econkit/private/ekres/money"
+	"github.com/econbits/econkit/private/ekres/transaction"
+	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )
 
-func getTransactions(t *testing.T, fpath string) ([]*Transaction, error) {
+func getTransactions(t *testing.T, fpath string) ([]*transaction.Transaction, error) {
 	sc, err := New(fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	cred := NewCredentials("mr_user", "a_password", "an_account")
+	cred := credentials.New("mr_user", "a_password", "an_account")
 	session, err := sc.Login(cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -31,11 +37,18 @@ func getTransactions(t *testing.T, fpath string) ([]*Transaction, error) {
 }
 
 func Test_004_Errors(t *testing.T) {
-	root := "../../test/ekm/vdefault/004_transactions/"
-	testErrorFiles(t, root, func(path string) error {
-		_, err := getTransactions(t, path)
-		return err
-	})
+	dpath := "../../test/ekm/vdefault/004_transactions/"
+	epilogue := starlark.StringDict{}
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		func(path string, epilogue starlark.StringDict) error {
+			_, err := getTransactions(t, path)
+			return err
+		},
+		testscript.Fail,
+	)
 }
 
 func Test_004_Empty_List(t *testing.T) {
@@ -49,8 +62,8 @@ func Test_004_Empty_List(t *testing.T) {
 	}
 }
 
-func Test_004_Keyword_Params(t *testing.T) {
-	fpath := "../../test/ekm/vdefault/004_transactions/OK_keyword_params.ekm"
+func Test_004_OK_Transactions(t *testing.T) {
+	fpath := "../../test/ekm/vdefault/004_transactions/OK_transactions.ekm"
 	txs, err := getTransactions(t, fpath)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -58,13 +71,9 @@ func Test_004_Keyword_Params(t *testing.T) {
 	if len(txs) != 1 {
 		t.Fatalf("Expected transactions slice with length 1; found '%v'", txs)
 	}
-	expect := starlark.MakeInt(100)
-	got, err := txs[0].Attr(txAmount)
-	equal, err := starlark.Equal(got, expect)
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	if !equal {
+	expect := money.New(big.NewInt(1), currency.MustGet("EUR"))
+	got := txs[0].Value()
+	if !expect.Equal(got) {
 		t.Fatalf("Expected '%v'; got '%v'", expect, got)
 	}
 }

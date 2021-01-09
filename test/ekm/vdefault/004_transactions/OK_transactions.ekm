@@ -7,4 +7,9 @@ def accounts(session):
     return [wallet_account("walletid", "walletname", "walletprovider")]
 
 def transactions(session, account, since):
-    return [1]
+    eur = currency("EUR")
+    value = money(1, eur)
+    dt = datetime("2006-01-02", "2020-01-30")
+    tx = transaction(account, account, value, dt, dt, "purpose")
+    return [tx]
+
