@@ -5,9 +5,9 @@ package account
 import (
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/assert"
 	"github.com/econbits/econkit/private/ekres/bic"
 	"github.com/econbits/econkit/private/ekres/iban"
+	"github.com/econbits/econkit/private/lib/universe/assert"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )

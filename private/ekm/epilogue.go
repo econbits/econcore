@@ -4,7 +4,6 @@ package script
 
 import (
 	"github.com/econbits/econkit/private/ekres/account"
-	"github.com/econbits/econkit/private/ekres/assert"
 	"github.com/econbits/econkit/private/ekres/bic"
 	"github.com/econbits/econkit/private/ekres/country"
 	"github.com/econbits/econkit/private/ekres/currency"
@@ -13,6 +12,7 @@ import (
 	"github.com/econbits/econkit/private/ekres/money"
 	"github.com/econbits/econkit/private/ekres/session"
 	"github.com/econbits/econkit/private/ekres/transaction"
+	"github.com/econbits/econkit/private/lib/universe"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
@@ -21,7 +21,6 @@ var (
 	fns = []*slang.Fn{
 		account.IbanFn,
 		account.WalletFn,
-		assert.AssertFn,
 		bic.BICFn,
 		country.CountryFn,
 		currency.CurrencyFn,
@@ -36,6 +35,9 @@ var (
 func epilogue() starlark.StringDict {
 	sd := starlark.StringDict{}
 	for _, f := range fns {
+		sd[f.Name] = f.Builtin()
+	}
+	for _, f := range universe.Lib.Fns {
 		sd[f.Name] = f.Builtin()
 	}
 	return sd
