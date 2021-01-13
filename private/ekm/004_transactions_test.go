@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"math/big"
@@ -43,7 +43,8 @@ func Test_004_Scripts(t *testing.T) {
 		t,
 		dpath,
 		epilogue,
-		func(path string, epilogue starlark.StringDict) error {
+		testscript.LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load testscript.LoadFn) error {
 			_, err := getTransactions(t, path)
 			return err
 		},

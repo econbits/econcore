@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"testing"
@@ -17,7 +17,8 @@ func Test_002_Scripts(t *testing.T) {
 		t,
 		dpath,
 		epilogue,
-		func(path string, epilogue starlark.StringDict) error {
+		testscript.LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load testscript.LoadFn) error {
 			sc, err := New(path)
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)

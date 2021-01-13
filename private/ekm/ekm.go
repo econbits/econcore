@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"errors"
@@ -10,9 +10,9 @@ import (
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/credentials"
-	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/session"
 	"github.com/econbits/econkit/private/ekres/transaction"
+	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
@@ -33,7 +33,7 @@ type EKM struct {
 
 func New(fpath string) (*EKM, error) {
 	name := slang.ScriptId(fpath)
-	thread := &starlark.Thread{Name: name}
+	thread := &starlark.Thread{Name: name, Load: load}
 	globals, err := starlark.ExecFile(thread, fpath, nil, epilogue())
 	if err != nil {
 		return nil, ekerrors.Wrap(

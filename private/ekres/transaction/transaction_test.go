@@ -3,14 +3,16 @@
 package transaction
 
 import (
+	"fmt"
 	"math/big"
 	"testing"
 	"time"
 
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/currency"
-	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/money"
+	dtlib "github.com/econbits/econkit/private/lib/datetime"
+	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/slang"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
@@ -22,14 +24,25 @@ func TestScripts(t *testing.T) {
 		TransactionFn,
 		account.WalletFn,
 		currency.CurrencyFn,
-		datetime.DateTimeFn,
 		money.MoneyFn,
 	}
 	epilogue := starlark.StringDict{}
 	for _, fn := range fns {
 		epilogue[fn.Name] = fn.Builtin()
 	}
-	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
+			if module == dtlib.Lib.Name {
+				return dtlib.Lib.Load(), nil
+			}
+			return nil, fmt.Errorf("unknown module: %s", module)
+		},
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
 }
 
 func TestTransactionAttributes(t *testing.T) {

@@ -1,5 +1,7 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
+load("datetime", "datetime")
+
 def login(cred):
     return session()
 

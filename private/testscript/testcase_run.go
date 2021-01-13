@@ -14,16 +14,22 @@ var (
 	runTCErrorClass = ekerrors.MustRegisterClass("TestScript TestCase")
 )
 
-type TestFn func(path string, epilogue starlark.StringDict) error
+type LoadFn func(thread *starlark.Thread, module string) (starlark.StringDict, error)
 
-func ExecScriptFn(path string, epilogue starlark.StringDict) error {
-	thread := &starlark.Thread{Name: path}
+func LoadEmptyFn(_ *starlark.Thread, _ string) (starlark.StringDict, error) {
+	return starlark.StringDict{}, nil
+}
+
+type TestFn func(path string, epilogue starlark.StringDict, load LoadFn) error
+
+func ExecScriptFn(path string, epilogue starlark.StringDict, load LoadFn) error {
+	thread := &starlark.Thread{Name: path, Load: load}
 	_, err := starlark.ExecFile(thread, path, nil, epilogue)
 	return err
 }
 
-func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, testFn TestFn) {
-	err := testFn(testCase.FilePath, epilogue)
+func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, load LoadFn, testFn TestFn) {
+	err := testFn(testCase.FilePath, epilogue, load)
 	if testCase.ExpectedOK {
 		if err != nil {
 			testCase.AbortError = err

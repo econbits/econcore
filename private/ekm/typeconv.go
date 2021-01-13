@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"fmt"

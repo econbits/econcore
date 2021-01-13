@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"testing"
@@ -32,7 +32,8 @@ func Test_003_Scripts(t *testing.T) {
 		t,
 		dpath,
 		epilogue,
-		func(path string, epilogue starlark.StringDict) error {
+		testscript.LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load testscript.LoadFn) error {
 			_, err := getAccounts(t, path)
 			return err
 		},

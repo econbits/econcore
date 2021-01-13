@@ -1,6 +1,6 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"reflect"
@@ -17,7 +17,8 @@ func Test_001_Errors(t *testing.T) {
 		t,
 		dpath,
 		epilogue,
-		func(path string, epilogue starlark.StringDict) error {
+		testscript.LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load testscript.LoadFn) error {
 			_, err := New(path)
 			return err
 		},

@@ -9,8 +9,8 @@ import (
 
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/currency"
-	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/money"
+	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"go.starlark.net/starlark"
 )
 

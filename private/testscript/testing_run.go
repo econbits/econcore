@@ -18,12 +18,12 @@ func isScript(dirPath, filePath string) bool {
 	return strings.HasSuffix(filePath, ".ekm")
 }
 
-func testRunner(filePath string, epilogue starlark.StringDict, testFn TestFn) error {
+func testRunner(filePath string, epilogue starlark.StringDict, load LoadFn, testFn TestFn) error {
 	testCase := ParseTestCase(filePath)
 	if testCase.AbortError != nil {
 		return testCase.AbortError
 	}
-	RunTestCase(testCase, epilogue, testFn)
+	RunTestCase(testCase, epilogue, load, testFn)
 	return testCase.AbortError
 }
 
@@ -37,13 +37,14 @@ func TestingRun(
 	t *testing.T,
 	dirPath string,
 	epilogue starlark.StringDict,
+	load LoadFn,
 	testFn TestFn,
 	failFn func(t *testing.T, err error),
 ) {
 	filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
 		if isScript(dirPath, filePath) {
 			t.Run(filePath, func(t *testing.T) {
-				err := testRunner(filePath, epilogue, testFn)
+				err := testRunner(filePath, epilogue, load, testFn)
 				if err != nil {
 					failFn(t, err)
 				}

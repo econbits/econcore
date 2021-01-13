@@ -1,13 +1,12 @@
 // Copyright (C) 2020  Germán Fuentes Capella
 
-package script
+package ekm
 
 import (
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/bic"
 	"github.com/econbits/econkit/private/ekres/country"
 	"github.com/econbits/econkit/private/ekres/currency"
-	"github.com/econbits/econkit/private/ekres/datetime"
 	"github.com/econbits/econkit/private/ekres/iban"
 	"github.com/econbits/econkit/private/ekres/money"
 	"github.com/econbits/econkit/private/ekres/session"
@@ -24,7 +23,6 @@ var (
 		bic.BICFn,
 		country.CountryFn,
 		currency.CurrencyFn,
-		datetime.DateTimeFn,
 		iban.IBANFn,
 		money.MoneyFn,
 		session.SessionFn,

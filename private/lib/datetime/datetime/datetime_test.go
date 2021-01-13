@@ -11,10 +11,21 @@ import (
 )
 
 func TestScripts(t *testing.T) {
-	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/datetime/"
+	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/datetime/"
 	fn := DateTimeFn
-	epilogue := starlark.StringDict{fn.Name: fn.Builtin()}
-	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(
+		t,
+		dpath,
+		starlark.StringDict{},
+		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
+			sd := starlark.StringDict{
+				fn.Name: fn.Builtin(),
+			}
+			return sd, nil
+		},
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
 }
 
 func TestNewFromTime(t *testing.T) {

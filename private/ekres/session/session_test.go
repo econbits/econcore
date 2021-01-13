@@ -12,7 +12,14 @@ import (
 func TestScripts(t *testing.T) {
 	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/session/"
 	epilogue := starlark.StringDict{"session": SessionFn.Builtin()}
-	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		testscript.LoadEmptyFn,
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
 }
 
 func TestSessionFreeze(t *testing.T) {

@@ -25,7 +25,8 @@ func TestTestRunner(t *testing.T) {
 	err := testRunner(
 		"OK_script.ekm",
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load LoadFn) error {
 			return nil
 		})
 	if err != nil {
@@ -37,7 +38,8 @@ func TestTestRunnerOnErrorFile(t *testing.T) {
 	err := testRunner(
 		"script.ekm",
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load LoadFn) error {
 			return nil
 		})
 	if err == nil {
@@ -50,6 +52,7 @@ func TestSuccessfulTestRunScript(t *testing.T) {
 		t,
 		"../../test/ekm/vdefault/000_smalltests/testscript",
 		starlark.StringDict{},
+		LoadEmptyFn,
 		ExecScriptFn,
 		Fail,
 	)
@@ -62,7 +65,8 @@ func TestErrorTestRunScript(t *testing.T) {
 		t,
 		dpath,
 		starlark.StringDict{},
-		func(path string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load LoadFn) error {
 			return ekerrors.New(
 				testscriptErrorClass,
 				"Test Error",

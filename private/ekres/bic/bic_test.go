@@ -13,7 +13,14 @@ func TestScripts(t *testing.T) {
 	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/bic/"
 	fn := BICFn
 	epilogue := starlark.StringDict{fn.Name: fn.Builtin()}
-	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		testscript.LoadEmptyFn,
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
 }
 
 func TestParse(t *testing.T) {

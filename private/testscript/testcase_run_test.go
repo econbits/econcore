@@ -15,9 +15,11 @@ func TestSuccessOnRunOKFile(t *testing.T) {
 	if testCase.AbortError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.AbortError)
 	}
-	RunTestCase(testCase,
+	RunTestCase(
+		testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error { return nil },
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error { return nil },
 	)
 	if testCase.AbortError != nil {
 		t.Fatalf("Unexpected Error %v", testCase.AbortError)
@@ -32,7 +34,8 @@ func TestErrorOnRunOKFile(t *testing.T) {
 
 	RunTestCase(testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error {
 			return ekerrors.New(
 				testscriptErrorClass,
 				"Error",
@@ -53,7 +56,8 @@ func TestNonEKErrorOnRunErrorFile(t *testing.T) {
 
 	RunTestCase(testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error {
 			return fmt.Errorf("this is an error")
 		},
 	)
@@ -71,7 +75,8 @@ func TestErrorWrongTypeOnRunErrorFile(t *testing.T) {
 
 	RunTestCase(testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error {
 			return ekerrors.New(
 				altTestscriptErrorClass,
 				"Error",
@@ -92,7 +97,8 @@ func TestErrorOnRunErrorFile(t *testing.T) {
 
 	RunTestCase(testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error {
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error {
 			return ekerrors.New(
 				testscriptErrorClass,
 				"Error",
@@ -113,7 +119,8 @@ func TestNoErrorOnRunErrorFile(t *testing.T) {
 
 	RunTestCase(testCase,
 		starlark.StringDict{},
-		func(fpath string, epilogue starlark.StringDict) error { return nil },
+		LoadEmptyFn,
+		func(fpath string, epilogue starlark.StringDict, load LoadFn) error { return nil },
 	)
 
 	if testCase.AbortError == nil {
@@ -128,9 +135,21 @@ func TestErrorOnMissingFile(t *testing.T) {
 	}
 	RunTestCase(testCase,
 		starlark.StringDict{},
+		LoadEmptyFn,
 		ExecScriptFn,
 	)
 	if testCase.AbortError == nil {
 		t.Fatal("Expected Error; none found")
+	}
+}
+
+func TestLoadEmptyFn(t *testing.T) {
+	thread := &starlark.Thread{Name: "LoadTest", Load: LoadEmptyFn}
+	sd, err := LoadEmptyFn(thread, "package")
+	if err != nil {
+		t.Fatalf("unexpected error %v", err)
+	}
+	if len(sd) != 0 {
+		t.Fatalf("expected empty StringDict %v", sd)
 	}
 }

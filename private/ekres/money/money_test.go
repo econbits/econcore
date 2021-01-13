@@ -17,7 +17,14 @@ func TestScripts(t *testing.T) {
 		"money":    MoneyFn.Builtin(),
 		"currency": currency.CurrencyFn.Builtin(),
 	}
-	testscript.TestingRun(t, dpath, epilogue, testscript.ExecScriptFn, testscript.Fail)
+	testscript.TestingRun(
+		t,
+		dpath,
+		epilogue,
+		testscript.LoadEmptyFn,
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
 }
 
 func TestZeroString(t *testing.T) {
