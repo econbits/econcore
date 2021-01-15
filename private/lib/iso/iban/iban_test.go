@@ -5,24 +5,7 @@ package iban
 import (
 	"strings"
 	"testing"
-
-	"github.com/econbits/econkit/private/testscript"
-	"go.starlark.net/starlark"
 )
-
-func TestScripts(t *testing.T) {
-	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/iban/"
-	fn := IBANFn
-	epilogue := starlark.StringDict{fn.Name: fn.Builtin()}
-	testscript.TestingRun(
-		t,
-		dpath,
-		epilogue,
-		testscript.LoadEmptyFn,
-		testscript.ExecScriptFn,
-		testscript.Fail,
-	)
-}
 
 var (
 	ibans = []string{

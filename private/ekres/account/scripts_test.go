@@ -5,8 +5,8 @@ package account
 import (
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/iban"
 	"github.com/econbits/econkit/private/lib/iso/bic"
+	"github.com/econbits/econkit/private/lib/iso/iban"
 	"github.com/econbits/econkit/private/lib/universe"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"

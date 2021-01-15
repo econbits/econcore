@@ -5,8 +5,8 @@ package account
 import (
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/iban"
 	"github.com/econbits/econkit/private/lib/iso/bic"
+	"github.com/econbits/econkit/private/lib/iso/iban"
 )
 
 func TestIbanAccount(t *testing.T) {

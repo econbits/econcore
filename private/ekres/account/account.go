@@ -4,8 +4,8 @@ package account
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/ekres/iban"
 	"github.com/econbits/econkit/private/lib/iso/bic"
+	"github.com/econbits/econkit/private/lib/iso/iban"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
