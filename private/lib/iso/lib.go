@@ -3,6 +3,7 @@
 package iso
 
 import (
+	"github.com/econbits/econkit/private/lib/iso/bic"
 	"github.com/econbits/econkit/private/lib/iso/country"
 	"github.com/econbits/econkit/private/lib/iso/currency"
 	"github.com/econbits/econkit/private/slang"
@@ -14,6 +15,7 @@ var (
 		Fns: []*slang.Fn{
 			country.CountryFn,
 			currency.CurrencyFn,
+			bic.BICFn,
 		},
 	}
 )
