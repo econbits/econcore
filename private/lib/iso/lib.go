@@ -1,0 +1,17 @@
+// Copyright (C) 2021  Germán Fuentes Capella
+
+package iso
+
+import (
+	"github.com/econbits/econkit/private/lib/iso/country"
+	"github.com/econbits/econkit/private/slang"
+)
+
+var (
+	Lib = &slang.Lib{
+		Name: "iso",
+		Fns: []*slang.Fn{
+			country.CountryFn,
+		},
+	}
+)

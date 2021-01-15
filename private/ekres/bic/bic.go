@@ -4,7 +4,7 @@ package bic
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/ekres/country"
+	"github.com/econbits/econkit/private/lib/iso/country"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )

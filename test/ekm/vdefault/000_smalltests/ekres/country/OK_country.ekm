@@ -1,3 +1,5 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
+load("iso", "country")
+
 country("DE")

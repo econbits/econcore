@@ -5,7 +5,6 @@ package ekm
 import (
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/bic"
-	"github.com/econbits/econkit/private/ekres/country"
 	"github.com/econbits/econkit/private/ekres/currency"
 	"github.com/econbits/econkit/private/ekres/iban"
 	"github.com/econbits/econkit/private/ekres/money"
@@ -21,7 +20,6 @@ var (
 		account.IbanFn,
 		account.WalletFn,
 		bic.BICFn,
-		country.CountryFn,
 		currency.CurrencyFn,
 		iban.IBANFn,
 		money.MoneyFn,
