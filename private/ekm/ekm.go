@@ -9,10 +9,10 @@ import (
 
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/ekres/account"
-	"github.com/econbits/econkit/private/ekres/credentials"
 	"github.com/econbits/econkit/private/ekres/session"
 	"github.com/econbits/econkit/private/ekres/transaction"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
+	"github.com/econbits/econkit/private/lib/shadow/credentials"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )

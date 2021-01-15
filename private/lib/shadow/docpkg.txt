@@ -1,0 +1,7 @@
+// Copyright (C) 2021  Germán Fuentes Capella
+
+// This package provides functionality required for the scripts
+// but that is not possible to call directly from them.
+// Examples are the credentials that are passed on to the login
+// function, or the account object that gets instantiated through
+// iban_account or wallet_account functions

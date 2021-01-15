@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/ekres/credentials"
 	"github.com/econbits/econkit/private/ekres/currency"
 	"github.com/econbits/econkit/private/ekres/money"
 	"github.com/econbits/econkit/private/ekres/transaction"
+	"github.com/econbits/econkit/private/lib/shadow/credentials"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"
 )
