@@ -4,23 +4,7 @@ package currency
 
 import (
 	"testing"
-
-	"github.com/econbits/econkit/private/testscript"
-	"go.starlark.net/starlark"
 )
-
-func TestScripts(t *testing.T) {
-	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/currency/"
-	epilogue := starlark.StringDict{"currency": CurrencyFn.Builtin()}
-	testscript.TestingRun(
-		t,
-		dpath,
-		epilogue,
-		testscript.LoadEmptyFn,
-		testscript.ExecScriptFn,
-		testscript.Fail,
-	)
-}
 
 func TestEUR(t *testing.T) {
 	curr, err := Get("EUR")

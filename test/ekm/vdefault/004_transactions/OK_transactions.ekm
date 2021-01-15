@@ -1,6 +1,7 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
 load("datetime", "datetime")
+load("iso", "currency")
 
 def login(cred):
     return session()

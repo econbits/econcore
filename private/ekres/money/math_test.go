@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/currency"
+	"github.com/econbits/econkit/private/lib/iso/currency"
 )
 
 func TestAdd(t *testing.T) {

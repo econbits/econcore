@@ -17,7 +17,7 @@ var (
 
 const (
 	dataPath           = "../../configs/iso4217.xml"
-	goPath             = "../../private/ekres/currency/init_iso4217.go"
+	goPath             = "../../private/lib/iso/currency/init_iso4217.go"
 	currenciesTemplate = `// Copyright (C) 2020  Germán Fuentes Capella
 // This file is auto-generated. DO NOT EDIT
 

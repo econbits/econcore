@@ -1,3 +1,5 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
+load("iso", "currency")
+
 currency("this is not a valid currency code")

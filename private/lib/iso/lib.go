@@ -4,6 +4,7 @@ package iso
 
 import (
 	"github.com/econbits/econkit/private/lib/iso/country"
+	"github.com/econbits/econkit/private/lib/iso/currency"
 	"github.com/econbits/econkit/private/slang"
 )
 
@@ -12,6 +13,7 @@ var (
 		Name: "iso",
 		Fns: []*slang.Fn{
 			country.CountryFn,
+			currency.CurrencyFn,
 		},
 	}
 )

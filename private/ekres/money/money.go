@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/ekres/currency"
+	"github.com/econbits/econkit/private/lib/iso/currency"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
