@@ -18,7 +18,7 @@ func TestScripts(t *testing.T) {
 		IbanFn.Name:   IbanFn.Builtin(),
 		WalletFn.Name: WalletFn.Builtin(),
 		//
-		iban.IBANFn.Name: iban.IBANFn.Builtin(),
+		iban.Fn.Name: iban.Fn.Builtin(),
 	}
 	for name, builtin := range universe.Lib.Load() {
 		epilogue[name] = builtin
@@ -29,7 +29,7 @@ func TestScripts(t *testing.T) {
 		epilogue,
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			sd := starlark.StringDict{
-				bic.BICFn.Name: bic.BICFn.Builtin(),
+				bic.Fn.Name: bic.Fn.Builtin(),
 			}
 			return sd, nil
 		},

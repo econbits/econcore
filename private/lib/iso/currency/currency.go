@@ -25,7 +25,7 @@ const (
 
 var (
 	currencyErrorClass = ekerrors.MustRegisterClass("CurrencyError")
-	CurrencyFn         = &slang.Fn{
+	Fn                 = &slang.Fn{
 		Name:     fnName,
 		Callback: currencyFn,
 	}

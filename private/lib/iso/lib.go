@@ -14,10 +14,10 @@ var (
 	Lib = &slang.Lib{
 		Name: "iso",
 		Fns: []*slang.Fn{
-			country.CountryFn,
-			currency.CurrencyFn,
-			bic.BICFn,
-			iban.IBANFn,
+			country.Fn,
+			currency.Fn,
+			bic.Fn,
+			iban.Fn,
 		},
 	}
 )

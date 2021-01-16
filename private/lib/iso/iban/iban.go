@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	IBANFn = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: ibanFn,
 	}

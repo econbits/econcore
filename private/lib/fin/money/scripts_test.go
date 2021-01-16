@@ -18,8 +18,8 @@ func TestScripts(t *testing.T) {
 		starlark.StringDict{},
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			sd := starlark.StringDict{
-				MoneyFn.Name:             MoneyFn.Builtin(),
-				currency.CurrencyFn.Name: currency.CurrencyFn.Builtin(),
+				Fn.Name:          Fn.Builtin(),
+				currency.Fn.Name: currency.Fn.Builtin(),
 			}
 			return sd, nil
 		},

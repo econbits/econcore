@@ -23,7 +23,7 @@ const (
 
 var (
 	errorClass = ekerrors.MustRegisterClass("CountryError")
-	CountryFn  = &slang.Fn{
+	Fn         = &slang.Fn{
 		Name:     fnName,
 		Callback: countryFn,
 	}

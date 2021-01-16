@@ -21,7 +21,7 @@ const (
 
 var (
 	sessionErrorClass = ekerrors.MustRegisterClass("SessionError")
-	SessionFn         = &slang.Fn{
+	Fn                = &slang.Fn{
 		Name:     fnName,
 		Callback: sessionFn,
 	}

@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	BICFn = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: bicFn,
 	}

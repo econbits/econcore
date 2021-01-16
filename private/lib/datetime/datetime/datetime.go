@@ -24,7 +24,7 @@ const (
 
 var (
 	errorClass = ekerrors.MustRegisterClass("DateTimeError")
-	DateTimeFn = &slang.Fn{
+	Fn         = &slang.Fn{
 		Name:     fnName,
 		Callback: dateTimeFn,
 	}

@@ -15,7 +15,7 @@ const (
 
 var (
 	fnErrorClass = ekerrors.MustRegisterClass("AssertionError")
-	AssertFn     = &slang.Fn{
+	Fn           = &slang.Fn{
 		Name:     fnName,
 		Callback: assertCb,
 	}

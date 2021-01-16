@@ -11,7 +11,7 @@ var (
 	Lib = &slang.Lib{
 		Name: "datetime",
 		Fns: []*slang.Fn{
-			datetime.DateTimeFn,
+			datetime.Fn,
 		},
 	}
 )

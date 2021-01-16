@@ -11,7 +11,7 @@ var (
 	Lib = &slang.Lib{
 		Name: "universe",
 		Fns: []*slang.Fn{
-			assert.AssertFn,
+			assert.Fn,
 		},
 	}
 )

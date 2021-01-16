@@ -11,14 +11,13 @@ import (
 
 func TestScripts(t *testing.T) {
 	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/currency/"
-	fn := CurrencyFn
 	testscript.TestingRun(
 		t,
 		dpath,
 		starlark.StringDict{},
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			sd := starlark.StringDict{
-				fn.Name: fn.Builtin(),
+				Fn.Name: Fn.Builtin(),
 			}
 			return sd, nil
 		},

@@ -27,7 +27,7 @@ const (
 )
 
 var (
-	TransactionFn = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: transactionFn,
 	}

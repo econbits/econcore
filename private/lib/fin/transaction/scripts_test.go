@@ -34,8 +34,8 @@ func TestScripts(t *testing.T) {
 				&slang.Lib{
 					Name: "fin",
 					Fns: []*slang.Fn{
-						money.MoneyFn,
-						TransactionFn,
+						money.Fn,
+						Fn,
 					},
 				},
 				iso.Lib,

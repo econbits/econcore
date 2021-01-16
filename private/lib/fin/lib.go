@@ -12,8 +12,8 @@ var (
 	Lib = &slang.Lib{
 		Name: "fin",
 		Fns: []*slang.Fn{
-			money.MoneyFn,
-			transaction.TransactionFn,
+			money.Fn,
+			transaction.Fn,
 		},
 	}
 )

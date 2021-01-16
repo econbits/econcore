@@ -11,7 +11,7 @@ var (
 	Lib = &slang.Lib{
 		Name: "auth",
 		Fns: []*slang.Fn{
-			session.SessionFn,
+			session.Fn,
 		},
 	}
 )
