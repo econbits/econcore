@@ -2,7 +2,7 @@
 
 load("auth", "session")
 load("datetime", "datetime")
-load("fin", "money")
+load("fin", "money", "transaction")
 load("iso", "currency")
 
 def login(cred):

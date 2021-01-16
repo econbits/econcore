@@ -1,6 +1,8 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
 load("datetime", "datetime")
+load("fin", "transaction", "money")
+load("iso", "currency")
 
 acc = wallet_account("id", "name", "provider")
 eur = currency("EUR")

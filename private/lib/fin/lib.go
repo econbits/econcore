@@ -4,6 +4,7 @@ package fin
 
 import (
 	"github.com/econbits/econkit/private/lib/fin/money"
+	"github.com/econbits/econkit/private/lib/fin/transaction"
 	"github.com/econbits/econkit/private/slang"
 )
 
@@ -12,6 +13,7 @@ var (
 		Name: "fin",
 		Fns: []*slang.Fn{
 			money.MoneyFn,
+			transaction.TransactionFn,
 		},
 	}
 )

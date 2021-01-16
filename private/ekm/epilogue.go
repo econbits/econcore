@@ -4,7 +4,6 @@ package ekm
 
 import (
 	"github.com/econbits/econkit/private/ekres/account"
-	"github.com/econbits/econkit/private/ekres/transaction"
 	"github.com/econbits/econkit/private/lib/universe"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
@@ -14,7 +13,6 @@ var (
 	fns = []*slang.Fn{
 		account.IbanFn,
 		account.WalletFn,
-		transaction.TransactionFn,
 	}
 )
 
