@@ -1,5 +1,7 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
+load("auth", "session")
+
 session()
 session(k="1")
 session(k=1)

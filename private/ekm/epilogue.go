@@ -5,7 +5,6 @@ package ekm
 import (
 	"github.com/econbits/econkit/private/ekres/account"
 	"github.com/econbits/econkit/private/ekres/money"
-	"github.com/econbits/econkit/private/ekres/session"
 	"github.com/econbits/econkit/private/ekres/transaction"
 	"github.com/econbits/econkit/private/lib/universe"
 	"github.com/econbits/econkit/private/slang"
@@ -17,7 +16,6 @@ var (
 		account.IbanFn,
 		account.WalletFn,
 		money.MoneyFn,
-		session.SessionFn,
 		transaction.TransactionFn,
 	}
 )

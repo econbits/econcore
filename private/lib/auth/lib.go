@@ -3,12 +3,15 @@
 package auth
 
 import (
+	"github.com/econbits/econkit/private/lib/auth/session"
 	"github.com/econbits/econkit/private/slang"
 )
 
 var (
 	Lib = &slang.Lib{
 		Name: "auth",
-		Fns:  []*slang.Fn{},
+		Fns: []*slang.Fn{
+			session.SessionFn,
+		},
 	}
 )

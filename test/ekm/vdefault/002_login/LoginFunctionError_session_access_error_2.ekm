@@ -1,5 +1,7 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
+load("auth", "session")
+
 def login(cred):
     s = session()
     s["a"]
