@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/ekres/money"
 	"github.com/econbits/econkit/private/ekres/transaction"
 	"github.com/econbits/econkit/private/lib/auth/credentials"
+	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso/currency"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"

@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/econbits/econkit/private/ekres/account"
-	"github.com/econbits/econkit/private/ekres/money"
 	dtlib "github.com/econbits/econkit/private/lib/datetime"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
+	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso/currency"
 	"github.com/econbits/econkit/private/slang"
 	"github.com/econbits/econkit/private/testscript"

@@ -7,19 +7,23 @@ import (
 
 	"github.com/econbits/econkit/private/lib/auth"
 	"github.com/econbits/econkit/private/lib/datetime"
+	"github.com/econbits/econkit/private/lib/fin"
 	"github.com/econbits/econkit/private/lib/iso"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
 func load(thread *starlark.Thread, module string) (starlark.StringDict, error) {
-	if module == auth.Lib.Name {
-		return auth.Lib.Load(), nil
+	libs := []*slang.Lib{
+		auth.Lib,
+		datetime.Lib,
+		fin.Lib,
+		iso.Lib,
 	}
-	if module == datetime.Lib.Name {
-		return datetime.Lib.Load(), nil
-	}
-	if module == iso.Lib.Name {
-		return iso.Lib.Load(), nil
+	for _, lib := range libs {
+		if module == lib.Name {
+			return lib.Load(), nil
+		}
 	}
 	return nil, fmt.Errorf("unknown module: %s", module)
 }

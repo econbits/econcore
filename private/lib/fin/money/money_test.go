@@ -7,25 +7,7 @@ import (
 	"testing"
 
 	"github.com/econbits/econkit/private/lib/iso/currency"
-	"github.com/econbits/econkit/private/testscript"
-	"go.starlark.net/starlark"
 )
-
-func TestScripts(t *testing.T) {
-	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/money/"
-	epilogue := starlark.StringDict{
-		"money":    MoneyFn.Builtin(),
-		"currency": currency.CurrencyFn.Builtin(),
-	}
-	testscript.TestingRun(
-		t,
-		dpath,
-		epilogue,
-		testscript.LoadEmptyFn,
-		testscript.ExecScriptFn,
-		testscript.Fail,
-	)
-}
 
 func TestZeroString(t *testing.T) {
 	zero := big.NewInt(0)
