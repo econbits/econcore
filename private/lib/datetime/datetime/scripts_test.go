@@ -1,0 +1,28 @@
+// Copyright (C) 2021  Germán Fuentes Capella
+
+package datetime
+
+import (
+	"testing"
+
+	"github.com/econbits/econkit/private/testscript"
+	"go.starlark.net/starlark"
+)
+
+func TestScripts(t *testing.T) {
+	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/datetime/"
+	fn := DateTimeFn
+	testscript.TestingRun(
+		t,
+		dpath,
+		starlark.StringDict{},
+		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
+			sd := starlark.StringDict{
+				fn.Name: fn.Builtin(),
+			}
+			return sd, nil
+		},
+		testscript.ExecScriptFn,
+		testscript.Fail,
+	)
+}
