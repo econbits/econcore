@@ -4,7 +4,7 @@ package transaction
 
 import (
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/account"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/slang"

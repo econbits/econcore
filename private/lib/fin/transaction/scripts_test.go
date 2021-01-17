@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account"
 	"github.com/econbits/econkit/private/lib/datetime"
 	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso"
@@ -17,19 +17,13 @@ import (
 
 func TestScripts(t *testing.T) {
 	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/transaction/"
-	fns := []*slang.Fn{
-		account.WalletFn,
-	}
-	epilogue := starlark.StringDict{}
-	for _, fn := range fns {
-		epilogue[fn.Name] = fn.Builtin()
-	}
 	testscript.TestingRun(
 		t,
 		dpath,
-		epilogue,
+		starlark.StringDict{},
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			libs := []*slang.Lib{
+				account.Lib,
 				datetime.Lib,
 				&slang.Lib{
 					Name: "fin",

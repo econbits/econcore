@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/walletaccount"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso/currency"
@@ -15,7 +15,7 @@ import (
 )
 
 func TestTransactionAttributes(t *testing.T) {
-	acc := account.NewWalletAccount("id", "name", "provider")
+	acc := walletaccount.New("id", "name", "provider")
 	value := money.New(big.NewInt(100), currency.MustGet("EUR"))
 	dt := datetime.NewFromTime(time.Now())
 	purpose := "purpose"

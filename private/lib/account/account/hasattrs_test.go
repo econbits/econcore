@@ -31,7 +31,7 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 
 func TestHasAttrsMustGetAccount(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := NewFromStringValues("id", "name", "wallet", "provider")
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
 	gotvalue := HasAttrsMustGetAccount(tv, attrname)
@@ -42,7 +42,7 @@ func TestHasAttrsMustGetAccount(t *testing.T) {
 
 func TestHasAttrsMustGetAccountMissingAttr(t *testing.T) {
 	attrname := "attr"
-	attrvalue := NewWalletAccount("id", "name", "provider")
+	attrvalue := NewFromStringValues("id", "name", "wallet", "provider")
 
 	tv := getTestHasAttrsValue(attrname, attrvalue)
 

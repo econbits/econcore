@@ -1,7 +1,8 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("iso", "bic")
+load("account", "iban_account")
+load("iso", "bic", "iban")
 
 i = iban("DE91 1000 0000 0123 4567 89")
 b = bic("DEUTDEFFXXX")
-iban_account(i, "name", "wrong kind", b)
+iban_account(i, "name", 1, b)

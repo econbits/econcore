@@ -10,7 +10,7 @@ import (
 
 func TestAssertAccount(t *testing.T) {
 	var value starlark.Value
-	value = NewWalletAccount("id", "name", "provider")
+	value = NewFromStringValues("id", "name", "wallet", "provider")
 
 	newvalue, err := AssertAccount(value)
 	if err != nil {

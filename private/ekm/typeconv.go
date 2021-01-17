@@ -5,7 +5,7 @@ package ekm
 import (
 	"fmt"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/account"
 	"github.com/econbits/econkit/private/lib/fin/transaction"
 	"go.starlark.net/starlark"
 )

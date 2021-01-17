@@ -8,11 +8,12 @@ import (
 	"time"
 
 	"github.com/econbits/econkit/private/ekerrors"
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/account"
 	"github.com/econbits/econkit/private/lib/auth/credentials"
 	"github.com/econbits/econkit/private/lib/auth/session"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/lib/fin/transaction"
+	"github.com/econbits/econkit/private/lib/universe"
 	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
@@ -34,7 +35,7 @@ type EKM struct {
 func New(fpath string) (*EKM, error) {
 	name := slang.ScriptId(fpath)
 	thread := &starlark.Thread{Name: name, Load: load}
-	globals, err := starlark.ExecFile(thread, fpath, nil, epilogue())
+	globals, err := starlark.ExecFile(thread, fpath, nil, universe.Lib.Load())
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			loadErrorClass,

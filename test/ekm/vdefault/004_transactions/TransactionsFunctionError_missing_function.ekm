@@ -1,5 +1,6 @@
 # Copyright (C) 2020  Germán Fuentes Capella
 
+load("account", "wallet_account")
 load("auth", "session")
 
 def login(cred):

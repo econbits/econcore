@@ -5,7 +5,7 @@ package ekm
 import (
 	"testing"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/account"
 	"github.com/econbits/econkit/private/lib/auth/credentials"
 	"github.com/econbits/econkit/private/testscript"
 	"go.starlark.net/starlark"

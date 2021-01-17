@@ -1,5 +1,6 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
+load("account", "wallet_account")
 load("datetime", "datetime")
 load("fin", "transaction", "money")
 load("iso", "currency")

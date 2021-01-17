@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/walletaccount"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso/currency"
@@ -37,7 +37,7 @@ func getTestHasAttrsValue(attrname string, attrvalue starlark.Value) starlark.Ha
 
 func TestHasAttrsMustGetTransaction(t *testing.T) {
 	attrname := "attr"
-	wallet := account.NewWalletAccount("id", "name", "provider")
+	wallet := walletaccount.New("id", "name", "provider")
 	attrvalue := New(
 		wallet,
 		wallet,
@@ -56,7 +56,7 @@ func TestHasAttrsMustGetTransaction(t *testing.T) {
 
 func TestHasAttrsMustGetTransactionMissingAttr(t *testing.T) {
 	attrname := "attr"
-	wallet := account.NewWalletAccount("id", "name", "provider")
+	wallet := walletaccount.New("id", "name", "provider")
 	attrvalue := New(
 		wallet,
 		wallet,

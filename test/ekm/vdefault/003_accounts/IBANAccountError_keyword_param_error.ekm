@@ -1,6 +1,7 @@
-# Copyright (C) 2020  Germán Fuentes Capella
+# Copyright (C) 2021  Germán Fuentes Capella
 
 load("auth", "session")
+load("account", "iban_account")
 
 def login(cred):
     return session()

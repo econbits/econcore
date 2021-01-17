@@ -1,3 +1,5 @@
 # Copyright (C) 2021  Germán Fuentes Capella
+#
+load("account", "wallet_account")
 
 wallet_account(1)

@@ -1,6 +1,6 @@
 // Copyright (C) 2021  Germán Fuentes Capella
 
-package account
+package ibanaccount
 
 import (
 	"testing"
@@ -13,23 +13,16 @@ import (
 )
 
 func TestScripts(t *testing.T) {
-	dpath := "../../../test/ekm/vdefault/000_smalltests/ekres/account/"
-	epilogue := starlark.StringDict{
-		IbanFn.Name:   IbanFn.Builtin(),
-		WalletFn.Name: WalletFn.Builtin(),
-		//
-		iban.Fn.Name: iban.Fn.Builtin(),
-	}
-	for name, builtin := range universe.Lib.Load() {
-		epilogue[name] = builtin
-	}
+	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/iban_account/"
 	testscript.TestingRun(
 		t,
 		dpath,
-		epilogue,
+		universe.Lib.Load(),
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			sd := starlark.StringDict{
-				bic.Fn.Name: bic.Fn.Builtin(),
+				bic.Fn.Name:  bic.Fn.Builtin(),
+				Fn.Name:      Fn.Builtin(),
+				iban.Fn.Name: iban.Fn.Builtin(),
 			}
 			return sd, nil
 		},

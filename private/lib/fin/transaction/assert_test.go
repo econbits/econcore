@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/econbits/econkit/private/ekres/account"
+	"github.com/econbits/econkit/private/lib/account/walletaccount"
 	"github.com/econbits/econkit/private/lib/datetime/datetime"
 	"github.com/econbits/econkit/private/lib/fin/money"
 	"github.com/econbits/econkit/private/lib/iso/currency"
@@ -16,7 +16,7 @@ import (
 
 func TestAssertTransaction(t *testing.T) {
 	var value starlark.Value
-	wallet := account.NewWalletAccount("id", "name", "provider")
+	wallet := walletaccount.New("id", "name", "provider")
 	value = New(
 		wallet,
 		wallet,

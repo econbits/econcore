@@ -5,6 +5,7 @@ package ekm
 import (
 	"fmt"
 
+	"github.com/econbits/econkit/private/lib/account"
 	"github.com/econbits/econkit/private/lib/auth"
 	"github.com/econbits/econkit/private/lib/datetime"
 	"github.com/econbits/econkit/private/lib/fin"
@@ -15,6 +16,7 @@ import (
 
 func load(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 	libs := []*slang.Lib{
+		account.Lib,
 		auth.Lib,
 		datetime.Lib,
 		fin.Lib,
