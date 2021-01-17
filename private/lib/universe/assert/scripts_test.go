@@ -10,7 +10,7 @@ import (
 )
 
 func TestScripts(t *testing.T) {
-	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/assert/"
+	dpath := "000_smalltests/lib/universe/assert/"
 	epilogue := starlark.StringDict{Fn.Name: Fn.Builtin()}
 	testscript.TestingRun(
 		t,

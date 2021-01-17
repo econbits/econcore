@@ -16,7 +16,7 @@ import (
 )
 
 func TestScripts(t *testing.T) {
-	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/transaction/"
+	dpath := "000_smalltests/lib/fin/transaction/"
 	testscript.TestingRun(
 		t,
 		dpath,

@@ -58,8 +58,28 @@ func TestSuccessfulTestRunScript(t *testing.T) {
 	)
 }
 
+func TestErrorTestRunScriptWrongPath(t *testing.T) {
+	dpath := "this-path-does-not-exist"
+	failed := false
+	TestingRun(
+		t,
+		dpath,
+		starlark.StringDict{},
+		LoadEmptyFn,
+		func(path string, epilogue starlark.StringDict, load LoadFn) error {
+			return nil
+		},
+		func(t *testing.T, err error) {
+			failed = true
+		},
+	)
+	if !failed {
+		t.Fatal("Expected test failure; it succeeded")
+	}
+}
+
 func TestErrorTestRunScript(t *testing.T) {
-	dpath := "../../test/ekm/vdefault/000_smalltests/testscript/"
+	dpath := "000_smalltests/testscript/"
 	failed := false
 	TestingRun(
 		t,

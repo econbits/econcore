@@ -10,7 +10,7 @@ import (
 )
 
 func TestScripts(t *testing.T) {
-	dpath := "../../../../test/ekm/vdefault/000_smalltests/ekres/datetime/"
+	dpath := "000_smalltests/lib/datetime/datetime/"
 	testscript.TestingRun(
 		t,
 		dpath,

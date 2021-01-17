@@ -33,6 +33,23 @@ func Fail(t *testing.T, err error) {
 	t.Fatal(err.Error())
 }
 
+func resolvePath(dirPath string) (string, error) {
+	_, err := os.Stat(dirPath)
+	if err != nil {
+		dirPath = filepath.Join("test", "ekm", "vdefault", dirPath)
+		// in this case, we try to find the full path
+		for i := 0; i < 5; i++ {
+			dirPath = filepath.Join("..", dirPath)
+			_, err := os.Stat(dirPath)
+			if err == nil {
+				return dirPath, nil
+			}
+		}
+		return "", err
+	}
+	return dirPath, nil
+}
+
 func TestingRun(
 	t *testing.T,
 	dirPath string,
@@ -41,6 +58,10 @@ func TestingRun(
 	testFn TestFn,
 	failFn func(t *testing.T, err error),
 ) {
+	dirPath, err := resolvePath(dirPath)
+	if err != nil {
+		failFn(t, err)
+	}
 	filepath.Walk(dirPath, func(filePath string, info os.FileInfo, err error) error {
 		if isScript(dirPath, filePath) {
 			t.Run(filePath, func(t *testing.T) {
