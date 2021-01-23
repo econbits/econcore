@@ -24,8 +24,7 @@ const (
 )
 
 var (
-	errorClass = ekerrors.MustRegisterClass("MoneyError")
-	Fn         = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: moneyFn,
 	}
@@ -62,16 +61,19 @@ func moneyFn(
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
 	var amount starlark.Int
-	var currency *currency.Currency
-	err := starlark.UnpackArgs(builtin.Name(), args, kwargs, fAmount, &amount, fCurrency, &currency)
+	var curr *currency.Currency
+	err := starlark.UnpackArgs(builtin.Name(), args, kwargs, fAmount, &amount, fCurrency, &curr)
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{
+				FormatError,
+				currency.FormatError,
+			},
 		)
 	}
-	return New(amount.BigInt(), currency), nil
+	return New(amount.BigInt(), curr), nil
 }
 
 // It is safe to modify the returned *big.Int as it is a copy of the internal value

@@ -11,7 +11,9 @@ import (
 )
 
 var (
-	runTCErrorClass = ekerrors.MustRegisterClass("TestScript TestCase")
+	nilError        = ekerrors.MustRegisterClass("NilError")
+	mismatchError   = ekerrors.MustRegisterClass("MismatchError")
+	unexpectedError = ekerrors.MustRegisterClass("UnexpectedError")
 )
 
 type LoadFn func(thread *starlark.Thread, module string) (starlark.StringDict, error)
@@ -37,7 +39,7 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, load LoadFn, 
 	} else {
 		if err == nil {
 			testCase.AbortError = ekerrors.New(
-				runTCErrorClass,
+				nilError,
 				fmt.Sprintf(
 					"[%s] Expected Error Type %v; none found",
 					testCase.FilePath,
@@ -49,7 +51,7 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, load LoadFn, 
 			if errors.As(err, &ekerr) {
 				if !ekerr.HasClass(testCase.ExpectedErrorClass) {
 					testCase.AbortError = ekerrors.New(
-						runTCErrorClass,
+						mismatchError,
 						fmt.Sprintf(
 							"[%s] Expected Error '%v'; found '%v')",
 							testCase.FilePath,
@@ -60,14 +62,9 @@ func RunTestCase(testCase *TestCase, epilogue starlark.StringDict, load LoadFn, 
 				}
 			} else {
 				testCase.AbortError = ekerrors.Wrap(
-					runTCErrorClass,
-					fmt.Sprintf(
-						"[%s] Expected Error Type %v; found %v",
-						testCase.FilePath,
-						testCase.ExpectedErrorClass,
-						err,
-					),
+					unexpectedError,
 					err,
+					nil,
 				)
 			}
 		}

@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/account/wallet_account/WalletAccountError_wallet_invalid_fields.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+#
+load("account", "wallet_account")
+
+wallet_account(1)
+
+
+ERRORS:
+
+[WalletAccountError] wallet_account: for parameter id: got int, want string
+.wallet_account: for parameter id: got int, want string

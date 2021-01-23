@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/auth/session/SessionError_positional_args.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+session("a")
+
+
+ERRORS:
+
+[SessionError] unnamed arguments are not allowed: ("a",)

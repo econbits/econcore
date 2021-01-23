@@ -1,0 +1,13 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_numbermsg.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+assert(False, msg=1)
+
+
+ERRORS:
+
+[AssertionError] assert: for parameter "msg": got int, want string
+.assert: for parameter "msg": got int, want string

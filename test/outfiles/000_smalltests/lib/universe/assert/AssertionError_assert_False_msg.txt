@@ -1,0 +1,12 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_False_msg.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+assert(False, msg='a msg')
+
+
+ERRORS:
+
+[AssertionError] a msg

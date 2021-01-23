@@ -15,7 +15,7 @@ func HasAttrsGetCurrency(ha starlark.HasAttrs, attrname string) (*Currency, erro
 	c, ok := value.(*Currency)
 	if !ok {
 		return nil, ekerrors.New(
-			currencyErrorClass,
+			errorClass,
 			attrname+" is not of type currency",
 		)
 	}

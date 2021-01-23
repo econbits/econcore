@@ -2,6 +2,8 @@
 
 package ekerrors
 
+type Format func(msg string) string
+
 type EKError struct {
 	class   *Class
 	msg     string
@@ -12,7 +14,13 @@ func New(class *Class, msg string) *EKError {
 	return &EKError{class: class, msg: msg, wrapped: nil}
 }
 
-func Wrap(class *Class, msg string, err error) *EKError {
+func Wrap(class *Class, err error, formatters []Format) *EKError {
+	msg := err.Error()
+	if formatters != nil {
+		for _, format := range formatters {
+			msg = format(msg)
+		}
+	}
 	return &EKError{class: class, msg: msg, wrapped: err}
 }
 

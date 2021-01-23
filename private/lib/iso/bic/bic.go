@@ -65,8 +65,8 @@ func bicFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return Parse(string(code))

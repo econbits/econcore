@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/currency/CurrencyError_invalid_code_type.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("iso", "currency")
+
+currency(1)
+
+
+ERRORS:
+
+[CurrencyError] currency: for parameter code: got int, want string
+.currency: for parameter code: got int, want string

@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/iban/OK_iban.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("iso", "iban")
+
+iban("CH56 0483 5012 3456 7800 9")
+
+
+ERRORS:
+
+None

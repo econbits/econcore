@@ -20,8 +20,8 @@ const (
 )
 
 var (
-	sessionErrorClass = ekerrors.MustRegisterClass("SessionError")
-	Fn                = &slang.Fn{
+	errorClass = ekerrors.MustRegisterClass("SessionError")
+	Fn         = &slang.Fn{
 		Name:     fnName,
 		Callback: sessionFn,
 	}
@@ -47,7 +47,7 @@ func sessionFn(
 ) (starlark.Value, error) {
 	if len(args) > 0 {
 		return nil, ekerrors.New(
-			sessionErrorClass,
+			errorClass,
 			fmt.Sprintf("unnamed arguments are not allowed: %v", args),
 		)
 	}

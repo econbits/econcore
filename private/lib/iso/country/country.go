@@ -22,8 +22,7 @@ const (
 )
 
 var (
-	errorClass = ekerrors.MustRegisterClass("CountryError")
-	Fn         = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: countryFn,
 	}
@@ -80,8 +79,8 @@ func countryFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return Get(string(alpha2))

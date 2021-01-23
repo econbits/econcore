@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/fin/money/MoneyError_invalid_currency.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("fin", "money")
+
+money(1, "eur")
+
+
+ERRORS:
+
+[MoneyError] money: for parameter currency: got string, want currency
+.money: for parameter currency: got string, want *currency.Currency

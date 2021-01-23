@@ -14,7 +14,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func load(thread *starlark.Thread, module string) (starlark.StringDict, error) {
+func Load(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 	libs := []*slang.Lib{
 		account.Lib,
 		auth.Lib,

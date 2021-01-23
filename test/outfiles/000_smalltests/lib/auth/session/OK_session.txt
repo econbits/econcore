@@ -1,0 +1,16 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/auth/session/OK_session.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+session()
+session(k="1")
+session(k=1)
+
+
+ERRORS:
+
+None

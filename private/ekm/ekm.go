@@ -34,21 +34,21 @@ type EKM struct {
 
 func New(fpath string) (*EKM, error) {
 	name := slang.ScriptId(fpath)
-	thread := &starlark.Thread{Name: name, Load: load}
+	thread := &starlark.Thread{Name: name, Load: Load}
 	globals, err := starlark.ExecFile(thread, fpath, nil, universe.Lib.Load())
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			loadErrorClass,
-			err.Error(),
 			err,
+			nil,
 		)
 	}
 	err = validateReservedVars(globals)
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			reservedVarErrorClass,
-			err.Error(),
 			err,
+			nil,
 		)
 	}
 	return &EKM{tn: thread, fpath: fpath, globals: globals}, nil
@@ -112,7 +112,7 @@ func (m EKM) Login(cred *credentials.Credentials) (*session.Session, error) {
 	if !ok {
 		return nil, ekerrors.New(
 			loginErrorClass,
-			fmt.Sprintf("login Function returned object of type '%T' instead of a session", value),
+			fmt.Sprintf("%s Function returned object of type '%T' instead of a session", nameFn, value),
 		)
 	}
 	return session, nil
@@ -138,8 +138,8 @@ func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			accountListErrorClass,
-			err.Error(),
 			err,
+			nil,
 		)
 	}
 	return accounts, nil
@@ -166,8 +166,8 @@ func (m EKM) runFn(
 		}
 		return nil, ekerrors.Wrap(
 			classOnError,
-			err.Error(),
 			err,
+			nil,
 		)
 	}
 	return value, nil
@@ -190,8 +190,8 @@ func (m EKM) Transactions(session *session.Session, account *account.Account, si
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			transactionListErrorClass,
-			err.Error(),
 			err,
+			nil,
 		)
 	}
 	return txs, nil

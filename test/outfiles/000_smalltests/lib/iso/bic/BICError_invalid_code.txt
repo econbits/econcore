@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/bic/BICError_invalid_code.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("iso", "bic")
+
+bic(1)
+
+
+ERRORS:
+
+[BICError] bic: for parameter code: got int, want string
+.bic: for parameter code: got int, want string

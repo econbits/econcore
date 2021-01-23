@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/account/wallet_account/OK_wallet_account.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("account", "wallet_account")
+
+wallet_account("id", "name", "provider")
+
+
+ERRORS:
+
+None

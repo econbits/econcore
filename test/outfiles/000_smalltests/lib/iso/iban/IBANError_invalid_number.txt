@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/iban/IBANError_invalid_number.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("iso", "iban")
+
+iban(1)
+
+
+ERRORS:
+
+[IBANError] iban: for parameter number: got int, want string
+.iban: for parameter number: got int, want string

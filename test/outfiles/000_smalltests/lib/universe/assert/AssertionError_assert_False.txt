@@ -1,0 +1,12 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_False.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+assert(False)
+
+
+ERRORS:
+
+[AssertionError] Assertion Error

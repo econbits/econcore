@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/bic/OK_bic.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("iso", "bic")
+
+bic("DEUTDEFFXXX")
+
+
+ERRORS:
+
+None

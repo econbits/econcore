@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/fin/transaction/TransactionError_invalid_arg.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+#
+load("fin", "transaction")
+
+transaction(1)
+
+
+ERRORS:
+
+[TransactionError] transaction: for parameter sender: got int, want account
+.transaction: for parameter sender: got int, want *account.Account

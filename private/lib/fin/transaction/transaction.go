@@ -98,8 +98,13 @@ func transactionFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{
+				FormatError,
+				account.FormatError,
+				datetime.FormatError,
+				money.FormatError,
+			},
 		)
 	}
 	return New(sender, receiver, value, bookingDate, valueDate, purpose), nil

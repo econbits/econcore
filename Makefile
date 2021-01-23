@@ -20,13 +20,24 @@ gen: ## auto generates ISO4217 country list
 > go generate github.com/econbits/econkit/...
 
 test: ## run tests
-> go test github.com/econbits/econkit/...
+> go test github.com/econbits/econkit/private/...
 
 cov: ## gets the test coverage for the code and fails if minimum level is not reached
-> go test -coverprofile=coverage.out github.com/econbits/econkit/...
+> go test -coverprofile=coverage.out github.com/econbits/econkit/private/...
 > go tool cover -html=coverage.out
 
 test-all: gen test vet cov ## runs all the checks to run before pushing to github
+
+updates:
+> go list -u -m all
+
+gentests:
+> rm -Rf tests/outfiles
+> go run github.com/econbits/econkit/tools/gentests
+
+depup:
+> go get -u ./... 
+> go mod tidy
 
 docs: ## generate documentation
 > go doc -all

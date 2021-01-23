@@ -12,8 +12,8 @@ import (
 )
 
 func TestLoadMissingImport(t *testing.T) {
-	thread := &starlark.Thread{Name: "TestThread", Load: load}
-	_, err := load(thread, "import-does-not-exist")
+	thread := &starlark.Thread{Name: "TestThread", Load: Load}
+	_, err := Load(thread, "import-does-not-exist")
 	if err == nil {
 		t.Fatal("expected error; none found")
 	}
@@ -26,8 +26,8 @@ func TestLoadLib(t *testing.T) {
 	}
 
 	for libname, fns := range libs {
-		thread := &starlark.Thread{Name: "TestThread", Load: load}
-		sd, err := load(thread, libname)
+		thread := &starlark.Thread{Name: "TestThread", Load: Load}
+		sd, err := Load(thread, libname)
 		if err != nil {
 			t.Fatalf("unexpected error %v", err)
 		}

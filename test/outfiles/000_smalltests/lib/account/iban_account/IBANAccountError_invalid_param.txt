@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/account/iban_account/IBANAccountError_invalid_param.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("account", "iban_account")
+
+iban_account(1)
+
+
+ERRORS:
+
+[IBANAccountError] iban_account: for parameter iban: got int, want iban
+.iban_account: for parameter iban: got int, want *iban.IBAN

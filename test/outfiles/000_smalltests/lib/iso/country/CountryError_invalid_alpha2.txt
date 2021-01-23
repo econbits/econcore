@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/country/CountryError_invalid_alpha2.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("iso", "country")
+
+country(1)
+
+
+ERRORS:
+
+[CountryError] country: for parameter alpha2: got int, want string
+.country: for parameter alpha2: got int, want string

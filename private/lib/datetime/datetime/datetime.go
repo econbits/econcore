@@ -23,8 +23,7 @@ const (
 )
 
 var (
-	errorClass = ekerrors.MustRegisterClass("DateTimeError")
-	Fn         = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: dateTimeFn,
 	}
@@ -35,8 +34,8 @@ func New(layout string, value string) (*DateTime, error) {
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return NewFromValues(starlark.String(layout), starlark.String(value), t), nil
@@ -81,8 +80,8 @@ func dateTimeFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return New(string(layout), string(value))

@@ -60,8 +60,8 @@ func walletFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return NewFromValues(id, name, provider), nil

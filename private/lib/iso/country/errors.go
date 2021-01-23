@@ -1,0 +1,17 @@
+// Copyright (C) 2021  Germán Fuentes Capella
+
+package country
+
+import (
+	"strings"
+
+	"github.com/econbits/econkit/private/ekerrors"
+)
+
+var (
+	errorClass = ekerrors.MustRegisterClass("CountryError")
+)
+
+func FormatError(msg string) string {
+	return strings.ReplaceAll(msg, "*country.Country", "country")
+}

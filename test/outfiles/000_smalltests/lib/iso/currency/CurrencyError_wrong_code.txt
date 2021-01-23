@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/currency/CurrencyError_wrong_code.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("iso", "currency")
+
+currency("this is not a valid currency code")
+
+
+ERRORS:
+
+[CurrencyError] Currency with code 'this is not a valid currency code' not found

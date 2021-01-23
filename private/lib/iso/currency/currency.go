@@ -24,8 +24,7 @@ const (
 )
 
 var (
-	currencyErrorClass = ekerrors.MustRegisterClass("CurrencyError")
-	Fn                 = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: currencyFn,
 	}
@@ -65,8 +64,8 @@ func Get(code string) (*Currency, error) {
 	currency, exists := currencies[code]
 	if !exists {
 		return nil, ekerrors.New(
-			currencyErrorClass,
-			fmt.Sprintf("Currency with code %s not found", code),
+			errorClass,
+			fmt.Sprintf("Currency with code '%s' not found", code),
 		)
 	}
 	return currency, nil
@@ -90,9 +89,9 @@ func currencyFn(
 	err := starlark.UnpackArgs(builtin.Name(), args, kwargs, fCurrencyCode, &code)
 	if err != nil {
 		return nil, ekerrors.Wrap(
-			currencyErrorClass,
-			err.Error(),
+			errorClass,
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	return Get(string(code))

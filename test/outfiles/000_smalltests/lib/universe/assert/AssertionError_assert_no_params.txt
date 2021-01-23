@@ -1,0 +1,13 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_no_params.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+assert()
+
+
+ERRORS:
+
+[AssertionError] assert: missing argument for ok
+.assert: missing argument for ok

@@ -80,8 +80,12 @@ func ibanFn(
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			errorClass,
-			err.Error(),
 			err,
+			[]ekerrors.Format{
+				FormatError,
+				iban.FormatError,
+				bic.FormatError,
+			},
 		)
 	}
 	return NewFromValues(in, name, kind, bc)

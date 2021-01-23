@@ -14,8 +14,7 @@ const (
 )
 
 var (
-	fnErrorClass = ekerrors.MustRegisterClass("AssertionError")
-	Fn           = &slang.Fn{
+	Fn = &slang.Fn{
 		Name:     fnName,
 		Callback: assertCb,
 	}
@@ -32,20 +31,20 @@ func assertCb(
 	err := starlark.UnpackArgs(builtin.Name(), args, kwargs, "ok", &ok, "msg?", &msg)
 	if err != nil {
 		return nil, ekerrors.Wrap(
-			fnErrorClass,
-			err.Error(),
+			errorClass,
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 	if !ok.Truth() {
 		if !msg.Truth() {
 			return nil, ekerrors.New(
-				fnErrorClass,
+				errorClass,
 				defaultMsg,
 			)
 		}
 		return nil, ekerrors.New(
-			fnErrorClass,
+			errorClass,
 			string(msg),
 		)
 	}

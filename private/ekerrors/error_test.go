@@ -25,11 +25,20 @@ func TestWrapped(t *testing.T) {
 	class := MustRegisterClass(sclass)
 	defer delete(registry, sclass)
 
-	werr := errors.New("Test")
-	err := Wrap(class, msg, werr)
+	format := func(msg string) string {
+		return "changed"
+	}
+
+	werr := errors.New(msg)
+	err := Wrap(class, werr, []Format{format})
 
 	if err.Unwrap() != werr {
 		t.Fatalf("Expected '%v'; got '%v'", werr, err.Unwrap())
+	}
+
+	errstr := "[ERROR] changed"
+	if err.Error() != errstr {
+		t.Fatalf("Expected '%s'; got '%s'", errstr, err.Error())
 	}
 }
 

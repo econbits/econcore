@@ -96,8 +96,8 @@ func Parse(moneystr string) (*Money, error) {
 	if err != nil {
 		return nil, ekerrors.Wrap(
 			moneyParseCurrencyError,
-			err.Error(),
 			err,
+			[]ekerrors.Format{FormatError},
 		)
 	}
 

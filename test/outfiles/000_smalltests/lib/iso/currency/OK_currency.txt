@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/iso/currency/OK_currency.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("iso", "currency")
+
+currency("EUR")
+
+
+ERRORS:
+
+None

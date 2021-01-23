@@ -1,0 +1,15 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/datetime/datetime/DateTimeError_invalid_args.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("datetime", "datetime")
+
+datetime("2020-01-31", 1)
+
+
+ERRORS:
+
+[DateTimeError] datetime: for parameter value: got int, want string
+.datetime: for parameter value: got int, want string

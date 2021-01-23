@@ -1,0 +1,22 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/fin/transaction/OK_transaction.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("datetime", "datetime")
+load("fin", "transaction", "money")
+load("iso", "currency")
+
+acc = wallet_account("id", "name", "provider")
+eur = currency("EUR")
+value = money(1, eur)
+dt = datetime("2006-01-02", "2020-01-30")
+
+transaction(acc, acc, value, dt, dt, "purpose")
+
+
+ERRORS:
+
+None
