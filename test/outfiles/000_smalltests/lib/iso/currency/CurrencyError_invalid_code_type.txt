@@ -9,7 +9,15 @@ load("iso", "currency")
 currency(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/iso/currency/CurrencyError_invalid_code_type.ekm:5:9: in <toplevel>
+  <builtin>: in currency
+
+
 ERRORS:
 
-[CurrencyError] currency: for parameter code: got int, want string
-.currency: for parameter code: got int, want string
+ [*starlark.EvalError] CurrencyError: currency: for parameter code: got int, want string
+	 [*ekerrors.EKError] CurrencyError: currency: for parameter code: got int, want string
+		 [*errors.errorString] currency: for parameter code: got int, want string

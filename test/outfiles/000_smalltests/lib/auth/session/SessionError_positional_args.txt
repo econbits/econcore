@@ -9,6 +9,14 @@ load("auth", "session")
 session("a")
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/auth/session/SessionError_positional_args.ekm:5:8: in <toplevel>
+  <builtin>: in session
+
+
 ERRORS:
 
-[SessionError] unnamed arguments are not allowed: ("a",)
+ [*starlark.EvalError] SessionError: unnamed arguments are not allowed: ("a",)
+	 [*ekerrors.EKError] SessionError: unnamed arguments are not allowed: ("a",)

@@ -9,7 +9,15 @@ load("fin", "money")
 money(1, "eur")
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/fin/money/MoneyError_invalid_currency.ekm:5:6: in <toplevel>
+  <builtin>: in money
+
+
 ERRORS:
 
-[MoneyError] money: for parameter currency: got string, want currency
-.money: for parameter currency: got string, want *currency.Currency
+ [*starlark.EvalError] MoneyError: money: for parameter currency: got string, want currency
+	 [*ekerrors.EKError] MoneyError: money: for parameter currency: got string, want currency
+		 [*errors.errorString] money: for parameter currency: got string, want *currency.Currency

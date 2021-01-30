@@ -7,6 +7,14 @@ SCRIPT:
 assert(False, msg='a msg')
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_False_msg.ekm:3:7: in <toplevel>
+  <builtin>: in assert
+
+
 ERRORS:
 
-[AssertionError] a msg
+ [*starlark.EvalError] AssertionError: a msg
+	 [*ekerrors.EKError] AssertionError: a msg

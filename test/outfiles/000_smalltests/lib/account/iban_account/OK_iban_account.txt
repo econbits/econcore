@@ -17,8 +17,6 @@ assert(acc1.provider == acc1.bic)
 acc2 = iban_account(i, "name", "checking")
 
 assert(acc2.provider == None)
-
-
 ERRORS:
 
 None

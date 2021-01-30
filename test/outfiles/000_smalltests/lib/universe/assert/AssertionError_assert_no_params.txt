@@ -7,7 +7,15 @@ SCRIPT:
 assert()
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_no_params.ekm:3:7: in <toplevel>
+  <builtin>: in assert
+
+
 ERRORS:
 
-[AssertionError] assert: missing argument for ok
-.assert: missing argument for ok
+ [*starlark.EvalError] AssertionError: assert: missing argument for ok
+	 [*ekerrors.EKError] AssertionError: assert: missing argument for ok
+		 [*errors.errorString] assert: missing argument for ok

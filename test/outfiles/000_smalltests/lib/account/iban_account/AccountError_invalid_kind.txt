@@ -12,6 +12,14 @@ b = bic("DEUTDEFFXXX")
 iban_account(i, "name", "wrong kind", b)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/account/iban_account/AccountError_invalid_kind.ekm:8:13: in <toplevel>
+  <builtin>: in iban_account
+
+
 ERRORS:
 
-[AccountError] 'wrong kind' is not a valid account type
+ [*starlark.EvalError] AccountError: 'wrong kind' is not a valid account type
+	 [*ekerrors.EKError] AccountError: 'wrong kind' is not a valid account type

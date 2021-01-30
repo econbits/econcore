@@ -3,8 +3,6 @@ FILE: test/ekm/vdefault/000_smalltests/testscript/OK_empty.ekm
 SCRIPT:
 
 # Copyright (C) 2020  Germán Fuentes Capella
-
-
 ERRORS:
 
 None

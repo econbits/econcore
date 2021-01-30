@@ -25,7 +25,7 @@ func call(args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) 
 			var arg starlark.Value
 			err := starlark.UnpackArgs(builtin.Name(), args, kwargs, "arg1", &arg)
 			if err != nil {
-				return nil, err
+				return nil, ekerrors.Wrap(errorClass, err, []ekerrors.Format{})
 			}
 			return arg, nil
 		},

@@ -9,6 +9,14 @@ load("iso", "currency")
 currency("this is not a valid currency code")
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/iso/currency/CurrencyError_wrong_code.ekm:5:9: in <toplevel>
+  <builtin>: in currency
+
+
 ERRORS:
 
-[CurrencyError] Currency with code 'this is not a valid currency code' not found
+ [*starlark.EvalError] CurrencyError: Currency with code 'this is not a valid currency code' not found
+	 [*ekerrors.EKError] CurrencyError: Currency with code 'this is not a valid currency code' not found

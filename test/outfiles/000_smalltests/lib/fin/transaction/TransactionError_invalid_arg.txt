@@ -9,7 +9,15 @@ load("fin", "transaction")
 transaction(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/fin/transaction/TransactionError_invalid_arg.ekm:5:12: in <toplevel>
+  <builtin>: in transaction
+
+
 ERRORS:
 
-[TransactionError] transaction: for parameter sender: got int, want account
-.transaction: for parameter sender: got int, want *account.Account
+ [*starlark.EvalError] TransactionError: transaction: for parameter sender: got int, want account
+	 [*ekerrors.EKError] TransactionError: transaction: for parameter sender: got int, want account
+		 [*errors.errorString] transaction: for parameter sender: got int, want *account.Account

@@ -9,7 +9,15 @@ load("iso", "country")
 country(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/iso/country/CountryError_invalid_alpha2.ekm:5:8: in <toplevel>
+  <builtin>: in country
+
+
 ERRORS:
 
-[CountryError] country: for parameter alpha2: got int, want string
-.country: for parameter alpha2: got int, want string
+ [*starlark.EvalError] CountryError: country: for parameter alpha2: got int, want string
+	 [*ekerrors.EKError] CountryError: country: for parameter alpha2: got int, want string
+		 [*errors.errorString] country: for parameter alpha2: got int, want string

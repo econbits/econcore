@@ -7,8 +7,6 @@ SCRIPT:
 load("iso", "bic")
 
 bic("DEUTDEFFXXX")
-
-
 ERRORS:
 
 None

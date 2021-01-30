@@ -15,8 +15,6 @@ value = money(1, eur)
 dt = datetime("2006-01-02", "2020-01-30")
 
 transaction(acc, acc, value, dt, dt, "purpose")
-
-
 ERRORS:
 
 None

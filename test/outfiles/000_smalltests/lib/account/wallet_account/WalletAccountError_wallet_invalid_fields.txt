@@ -9,7 +9,15 @@ load("account", "wallet_account")
 wallet_account(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/account/wallet_account/WalletAccountError_wallet_invalid_fields.ekm:5:15: in <toplevel>
+  <builtin>: in wallet_account
+
+
 ERRORS:
 
-[WalletAccountError] wallet_account: for parameter id: got int, want string
-.wallet_account: for parameter id: got int, want string
+ [*starlark.EvalError] WalletAccountError: wallet_account: for parameter id: got int, want string
+	 [*ekerrors.EKError] WalletAccountError: wallet_account: for parameter id: got int, want string
+		 [*errors.errorString] wallet_account: for parameter id: got int, want string

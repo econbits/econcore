@@ -9,8 +9,6 @@ load("iso", "currency")
 
 eur = currency("EUR")
 money(1, eur)
-
-
 ERRORS:
 
 None

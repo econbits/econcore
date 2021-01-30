@@ -7,8 +7,6 @@ SCRIPT:
 load("account", "wallet_account")
 
 wallet_account("id", "name", "provider")
-
-
 ERRORS:
 
 None

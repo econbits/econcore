@@ -5,6 +5,8 @@ package ekerrors
 import (
 	"errors"
 	"testing"
+
+	"go.starlark.net/starlark"
 )
 
 func TestNew(t *testing.T) {
@@ -14,7 +16,7 @@ func TestNew(t *testing.T) {
 
 	err := New(class, msg)
 
-	errstr := "[ERROR] msg"
+	errstr := "ERROR: msg"
 	if err.Error() != errstr {
 		t.Fatalf("Expected '%s'; got '%s'", errstr, err.Error())
 	}
@@ -36,7 +38,7 @@ func TestWrapped(t *testing.T) {
 		t.Fatalf("Expected '%v'; got '%v'", werr, err.Unwrap())
 	}
 
-	errstr := "[ERROR] changed"
+	errstr := "ERROR: changed"
 	if err.Error() != errstr {
 		t.Fatalf("Expected '%s'; got '%s'", errstr, err.Error())
 	}
@@ -68,5 +70,21 @@ func TestDifferentClass(t *testing.T) {
 
 	if err.HasClass(class2) {
 		t.Fatal("Expected false; got true")
+	}
+}
+
+func TestCallStack(t *testing.T) {
+	sclass := "ERROR"
+	class := MustRegisterClass(sclass)
+	defer delete(registry, sclass)
+
+	err := New(class, "msg")
+
+	for _, cs := range []starlark.CallStack{nil, starlark.CallStack{}} {
+		err.LinkCS(cs)
+
+		if err.Backtrace() != "" {
+			t.Fatalf("expected %s; got %s", "", err.Backtrace())
+		}
 	}
 }

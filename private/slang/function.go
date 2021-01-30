@@ -3,6 +3,7 @@
 package slang
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
@@ -43,6 +44,13 @@ func validatedCb(cb Callback) Callback {
 				)
 			}
 		}
-		return cb(thread, builtin, args, kwargs)
+		val, err := cb(thread, builtin, args, kwargs)
+		if err != nil {
+			var ekerr *ekerrors.EKError
+			if errors.As(err, &ekerr) {
+				ekerr.LinkCS(thread.CallStack())
+			}
+		}
+		return val, err
 	}
 }

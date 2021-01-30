@@ -2,16 +2,21 @@
 
 package ekerrors
 
+import (
+	"go.starlark.net/starlark"
+)
+
 type Format func(msg string) string
 
 type EKError struct {
 	class   *Class
 	msg     string
 	wrapped error
+	cs      starlark.CallStack
 }
 
 func New(class *Class, msg string) *EKError {
-	return &EKError{class: class, msg: msg, wrapped: nil}
+	return &EKError{class: class, msg: msg, wrapped: nil, cs: nil}
 }
 
 func Wrap(class *Class, err error, formatters []Format) *EKError {
@@ -21,11 +26,11 @@ func Wrap(class *Class, err error, formatters []Format) *EKError {
 			msg = format(msg)
 		}
 	}
-	return &EKError{class: class, msg: msg, wrapped: err}
+	return &EKError{class: class, msg: msg, wrapped: err, cs: nil}
 }
 
 func (err *EKError) Error() string {
-	return "[" + err.class.s + "] " + err.msg
+	return err.class.s + ": " + err.msg
 }
 
 func (err *EKError) Unwrap() error {
@@ -34,4 +39,15 @@ func (err *EKError) Unwrap() error {
 
 func (err *EKError) HasClass(class *Class) bool {
 	return err.class.s == class.s
+}
+
+func (err *EKError) LinkCS(cs starlark.CallStack) {
+	err.cs = cs
+}
+
+func (err *EKError) Backtrace() string {
+	if err.cs == nil {
+		return ""
+	}
+	return err.cs.String()
 }

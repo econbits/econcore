@@ -9,8 +9,6 @@ load("auth", "session")
 session()
 session(k="1")
 session(k=1)
-
-
 ERRORS:
 
 None

@@ -9,7 +9,15 @@ load("account", "iban_account")
 iban_account(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/account/iban_account/IBANAccountError_invalid_param.ekm:5:13: in <toplevel>
+  <builtin>: in iban_account
+
+
 ERRORS:
 
-[IBANAccountError] iban_account: for parameter iban: got int, want iban
-.iban_account: for parameter iban: got int, want *iban.IBAN
+ [*starlark.EvalError] IBANAccountError: iban_account: for parameter iban: got int, want iban
+	 [*ekerrors.EKError] IBANAccountError: iban_account: for parameter iban: got int, want iban
+		 [*errors.errorString] iban_account: for parameter iban: got int, want *iban.IBAN

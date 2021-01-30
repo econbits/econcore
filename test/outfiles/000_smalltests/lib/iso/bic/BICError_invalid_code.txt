@@ -9,7 +9,15 @@ load("iso", "bic")
 bic(1)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/iso/bic/BICError_invalid_code.ekm:5:4: in <toplevel>
+  <builtin>: in bic
+
+
 ERRORS:
 
-[BICError] bic: for parameter code: got int, want string
-.bic: for parameter code: got int, want string
+ [*starlark.EvalError] BICError: bic: for parameter code: got int, want string
+	 [*ekerrors.EKError] BICError: bic: for parameter code: got int, want string
+		 [*errors.errorString] bic: for parameter code: got int, want string

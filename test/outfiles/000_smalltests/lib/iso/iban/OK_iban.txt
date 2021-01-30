@@ -7,8 +7,6 @@ SCRIPT:
 load("iso", "iban")
 
 iban("CH56 0483 5012 3456 7800 9")
-
-
 ERRORS:
 
 None

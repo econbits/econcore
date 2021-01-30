@@ -7,6 +7,14 @@ SCRIPT:
 assert(False)
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/universe/assert/AssertionError_assert_False.ekm:3:7: in <toplevel>
+  <builtin>: in assert
+
+
 ERRORS:
 
-[AssertionError] Assertion Error
+ [*starlark.EvalError] AssertionError: Assertion Error
+	 [*ekerrors.EKError] AssertionError: Assertion Error

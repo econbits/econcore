@@ -9,7 +9,15 @@ load("datetime", "datetime")
 datetime("2006", "2020-01-31")
 
 
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/datetime/datetime/DateTimeError_invalid_layout.ekm:5:9: in <toplevel>
+  <builtin>: in datetime
+
+
 ERRORS:
 
-[DateTimeError] parsing time "2020-01-31": extra text: "-01-31"
-.parsing time "2020-01-31": extra text: "-01-31"
+ [*starlark.EvalError] DateTimeError: parsing time "2020-01-31": extra text: "-01-31"
+	 [*ekerrors.EKError] DateTimeError: parsing time "2020-01-31": extra text: "-01-31"
+		 [*time.ParseError] parsing time "2020-01-31": extra text: "-01-31"

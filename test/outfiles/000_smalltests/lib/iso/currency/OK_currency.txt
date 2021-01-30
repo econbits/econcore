@@ -7,8 +7,6 @@ SCRIPT:
 load("iso", "currency")
 
 currency("EUR")
-
-
 ERRORS:
 
 None

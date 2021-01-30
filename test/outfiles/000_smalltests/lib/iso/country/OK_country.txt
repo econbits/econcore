@@ -7,8 +7,6 @@ SCRIPT:
 load("iso", "country")
 
 country("DE")
-
-
 ERRORS:
 
 None
