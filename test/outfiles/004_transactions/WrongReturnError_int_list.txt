@@ -1,0 +1,28 @@
+FILE: test/ekm/vdefault/004_transactions/WrongReturnError_int_list.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [wallet_account("walletid", "walletname", "walletprovider")]
+
+def transactions(session, account, since):
+    return [1]
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/004_transactions/WrongReturnError_int_list.ekm:12:1: in transactions
+
+
+ERRORS:
+
+ [*ekerrors.EKError] WrongReturnError: transactions: expected transaction, got: int

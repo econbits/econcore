@@ -1,0 +1,26 @@
+FILE: test/ekm/vdefault/003_accounts/FunctionCallError_too_many_params.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts(a, b, c):
+    pass
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/003_accounts/FunctionCallError_too_many_params.ekm:8:1: in accounts
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: function accounts missing 2 arguments (b, c)
+	 [*starlark.EvalError] function accounts missing 2 arguments (b, c)
+		 [*errors.errorString] function accounts missing 2 arguments (b, c)

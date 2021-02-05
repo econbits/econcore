@@ -1,0 +1,28 @@
+FILE: test/ekm/vdefault/004_transactions/OK_transactions.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("auth", "session")
+load("datetime", "datetime")
+load("fin", "money", "transaction")
+load("iso", "currency")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [wallet_account("walletid", "walletname", "walletprovider")]
+
+def transactions(session, account, since):
+    eur = currency("EUR")
+    value = money(1, eur)
+    dt = datetime("2006-01-02", "2020-01-30")
+    tx = transaction(account, account, value, dt, dt, "purpose")
+    return [tx]
+
+ERRORS:
+
+None

@@ -1,0 +1,19 @@
+FILE: test/ekm/vdefault/002_login/WrongReturnError_wrong_return_type.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login(cred):
+    return 1
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/WrongReturnError_wrong_return_type.ekm:3:1: in login
+
+
+ERRORS:
+
+ [*ekerrors.EKError] WrongReturnError: login function returned object of type 'int' instead of 'session'

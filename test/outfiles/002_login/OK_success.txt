@@ -1,0 +1,19 @@
+FILE: test/ekm/vdefault/002_login/OK_success.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] MissingFunctionError: missing accounts function

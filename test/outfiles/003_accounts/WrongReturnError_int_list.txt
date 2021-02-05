@@ -1,0 +1,24 @@
+FILE: test/ekm/vdefault/003_accounts/WrongReturnError_int_list.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [1]
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/003_accounts/WrongReturnError_int_list.ekm:8:1: in accounts
+
+
+ERRORS:
+
+ [*ekerrors.EKError] WrongReturnError: accounts: expected 'account', got: int

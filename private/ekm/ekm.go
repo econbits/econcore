@@ -19,11 +19,11 @@ import (
 )
 
 var (
-	loadErrorClass            = ekerrors.MustRegisterClass("LoadError")
-	reservedVarErrorClass     = ekerrors.MustRegisterClass("ReservedVarError")
-	loginErrorClass           = ekerrors.MustRegisterClass("LoginFunctionError")
-	accountListErrorClass     = ekerrors.MustRegisterClass("AccountsFunctionError")
-	transactionListErrorClass = ekerrors.MustRegisterClass("TransactionsFunctionError")
+	loadErrorClass        = ekerrors.MustRegisterClass("LoadError")
+	reservedVarErrorClass = ekerrors.MustRegisterClass("ReservedVarError")
+	missingFuncErrorClass = ekerrors.MustRegisterClass("MissingFunctionError")
+	wrongReturnErrorClass = ekerrors.MustRegisterClass("WrongReturnError")
+	funcCallErrorClass    = ekerrors.MustRegisterClass("FunctionCallError")
 )
 
 type EKM struct {
@@ -102,45 +102,74 @@ func (m EKM) Authors() []string {
 	return m.stringListField(hAuthors, defAuthors)
 }
 
+func (m EKM) linkCS(nameFn string, ekerr *ekerrors.EKError) {
+	fn := m.globals[nameFn]
+	fnv, ok := fn.(*starlark.Function)
+	if ok {
+		ekerr.LinkCS(
+			starlark.CallStack{
+				starlark.CallFrame{
+					Name: nameFn,
+					Pos:  fnv.Position(),
+				},
+			},
+		)
+	}
+}
+
 func (m EKM) Login(cred *credentials.Credentials) (*session.Session, error) {
 	nameFn := "login"
-	value, err := m.runFn(nameFn, starlark.Tuple{cred}, loginErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{cred})
 	if err != nil {
 		return nil, err
 	}
 	session, ok := value.(*session.Session)
 	if !ok {
-		return nil, ekerrors.New(
-			loginErrorClass,
-			fmt.Sprintf("%s Function returned object of type '%T' instead of a session", nameFn, value),
+		ekerr := ekerrors.New(
+			wrongReturnErrorClass,
+			fmt.Sprintf(
+				"%s function returned object of type '%s' instead of 'session'",
+				nameFn,
+				value.Type(),
+			),
 		)
+		m.linkCS(nameFn, ekerr)
+		return nil, ekerr
 	}
 	return session, nil
 }
 
 func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
 	nameFn := "accounts"
-	value, err := m.runFn(nameFn, starlark.Tuple{session}, accountListErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{session})
 	if err != nil {
 		return nil, err
 	}
-	accountList, ok := value.(*starlark.List)
+	vlist, ok := value.(*starlark.List)
 	if !ok {
-		return nil, ekerrors.New(
-			accountListErrorClass,
+		ekerr := ekerrors.New(
+			wrongReturnErrorClass,
 			fmt.Sprintf(
-				"account Function returned object of type '%T' instead of a list of accounts",
-				value,
+				"%s: expected 'list', got '%s'",
+				nameFn,
+				value.Type(),
 			),
 		)
+		m.linkCS(nameFn, ekerr)
+		return nil, ekerr
 	}
-	accounts, err := LtoAR(accountList)
-	if err != nil {
-		return nil, ekerrors.Wrap(
-			accountListErrorClass,
-			err,
-			nil,
+	accounts, ok := LtoAR(vlist)
+	if !ok {
+		ekerr := ekerrors.New(
+			wrongReturnErrorClass,
+			fmt.Sprintf(
+				"%s: expected 'account', got: %s",
+				nameFn,
+				vlist.Index(0).Type(),
+			),
 		)
+		m.linkCS(nameFn, ekerr)
+		return nil, ekerr
 	}
 	return accounts, nil
 }
@@ -148,13 +177,12 @@ func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
 func (m EKM) runFn(
 	nameFn string,
 	params starlark.Tuple,
-	classOnError *ekerrors.Class,
 ) (starlark.Value, error) {
 	fn := m.globals[nameFn]
 	if fn == nil {
 		return nil, ekerrors.New(
-			classOnError,
-			fmt.Sprintf("missing %s Function", nameFn),
+			missingFuncErrorClass,
+			fmt.Sprintf("missing %s function", nameFn),
 		)
 	}
 
@@ -164,35 +192,55 @@ func (m EKM) runFn(
 		if errors.As(err, &kerr) {
 			return nil, err
 		}
-		return nil, ekerrors.Wrap(
-			classOnError,
+
+		oerr := ekerrors.Wrap(
+			funcCallErrorClass,
 			err,
 			nil,
 		)
+
+		var serr *starlark.EvalError
+		if errors.As(err, &serr) {
+			oerr.LinkCS(serr.CallStack)
+		}
+
+		return nil, oerr
 	}
 	return value, nil
 }
 
 func (m EKM) Transactions(session *session.Session, account *account.Account, since time.Time) ([]*transaction.Transaction, error) {
 	nameFn := "transactions"
-	value, err := m.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)}, transactionListErrorClass)
+	value, err := m.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)})
 	if err != nil {
 		return nil, err
 	}
 	txList, ok := value.(*starlark.List)
 	if !ok {
-		return nil, ekerrors.New(
-			transactionListErrorClass,
-			fmt.Sprintf("account Function returned object of type '%T' instead of a list of accounts", value),
+		ekerr := ekerrors.New(
+			wrongReturnErrorClass,
+			fmt.Sprintf(
+				"%s: expected 'list', got '%s'",
+				nameFn,
+				value.Type(),
+			),
 		)
+		m.linkCS(nameFn, ekerr)
+		return nil, ekerr
 	}
-	txs, err := LtoTR(txList)
-	if err != nil {
-		return nil, ekerrors.Wrap(
-			transactionListErrorClass,
-			err,
-			nil,
+
+	txs, ok := LtoTR(txList)
+	if !ok {
+		ekerr := ekerrors.New(
+			wrongReturnErrorClass,
+			fmt.Sprintf(
+				"%s: expected transaction, got: %s",
+				nameFn,
+				txList.Index(0).Type(),
+			),
 		)
+		m.linkCS(nameFn, ekerr)
+		return nil, ekerr
 	}
 	return txs, nil
 }

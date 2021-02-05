@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/001_globals/OK_empty.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] MissingFunctionError: missing login function

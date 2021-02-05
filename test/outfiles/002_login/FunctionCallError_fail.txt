@@ -1,0 +1,22 @@
+FILE: test/ekm/vdefault/002_login/FunctionCallError_fail.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login(cred):
+    fail("[" + cred.username + "] ups, an error")
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/FunctionCallError_fail.ekm:4:9: in login
+  <builtin>: in fail
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: fail: [mr_user] ups, an error
+	 [*starlark.EvalError] fail: [mr_user] ups, an error
+		 [*errors.errorString] fail: [mr_user] ups, an error

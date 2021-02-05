@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/001_globals/ReservedVarError_authors_error_1.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+AUTHORS = 1
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] ReservedVarError: 'AUTHORS' must be of type list
+	 [*errors.errorString] 'AUTHORS' must be of type list

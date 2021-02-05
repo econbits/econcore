@@ -1,0 +1,19 @@
+FILE: test/ekm/vdefault/003_accounts/MissingFunctionError_missing_function.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] MissingFunctionError: missing accounts function

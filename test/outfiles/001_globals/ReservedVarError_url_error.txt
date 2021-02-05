@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/001_globals/ReservedVarError_url_error.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+URL = 1
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] ReservedVarError: 'URL' must be of type string
+	 [*errors.errorString] 'URL' must be of type string

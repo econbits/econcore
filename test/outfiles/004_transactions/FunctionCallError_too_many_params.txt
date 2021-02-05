@@ -1,0 +1,31 @@
+FILE: test/ekm/vdefault/004_transactions/FunctionCallError_too_many_params.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+
+def accounts(session):
+    return [wallet_account("walletid", "walletname", "walletprovider")]
+
+def transactions(session, account, since, d, e, f):
+    pass
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/004_transactions/FunctionCallError_too_many_params.ekm:13:1: in transactions
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: function transactions missing 3 arguments (d, e, f)
+	 [*starlark.EvalError] function transactions missing 3 arguments (d, e, f)
+		 [*errors.errorString] function transactions missing 3 arguments (d, e, f)

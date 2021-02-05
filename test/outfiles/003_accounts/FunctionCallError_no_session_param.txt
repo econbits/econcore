@@ -1,0 +1,26 @@
+FILE: test/ekm/vdefault/003_accounts/FunctionCallError_no_session_param.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts():
+    pass
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/003_accounts/FunctionCallError_no_session_param.ekm:8:1: in accounts
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: function accounts accepts no arguments (1 given)
+	 [*starlark.EvalError] function accounts accepts no arguments (1 given)
+		 [*errors.errorString] function accounts accepts no arguments (1 given)

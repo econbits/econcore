@@ -32,7 +32,7 @@ updates:
 > go list -u -m all
 
 gentests:
-> rm -Rf tests/outfiles
+> cd test ; rm -Rf outfiles
 > go run github.com/econbits/econkit/tools/gentests
 
 depup:

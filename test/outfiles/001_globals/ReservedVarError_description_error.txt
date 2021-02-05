@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/001_globals/ReservedVarError_description_error.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+DESCRIPTION = 1
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] ReservedVarError: 'DESCRIPTION' must be of type string
+	 [*errors.errorString] 'DESCRIPTION' must be of type string

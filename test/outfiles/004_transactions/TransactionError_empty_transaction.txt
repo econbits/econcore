@@ -1,0 +1,32 @@
+FILE: test/ekm/vdefault/004_transactions/TransactionError_empty_transaction.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("auth", "session")
+load("fin", "money", "transaction")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [wallet_account("walletid", "walletname", "walletprovider")]
+
+def transactions(session, account, since):
+    return [transaction()]
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/004_transactions/TransactionError_empty_transaction.ekm:14:24: in transactions
+  <builtin>: in transaction
+
+
+ERRORS:
+
+ [*starlark.EvalError] TransactionError: transaction: missing argument for sender
+	 [*ekerrors.EKError] TransactionError: transaction: missing argument for sender
+		 [*errors.errorString] transaction: missing argument for sender

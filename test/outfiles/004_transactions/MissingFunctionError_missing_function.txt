@@ -1,0 +1,23 @@
+FILE: test/ekm/vdefault/004_transactions/MissingFunctionError_missing_function.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("account", "wallet_account")
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return [wallet_account("walletid", "walletname", "walletprovider")]
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] MissingFunctionError: missing transactions function

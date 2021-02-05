@@ -1,0 +1,21 @@
+FILE: test/ekm/vdefault/002_login/FunctionCallError_no_params.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login():
+    pass
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/FunctionCallError_no_params.ekm:3:1: in login
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: function login accepts no arguments (1 given)
+	 [*starlark.EvalError] function login accepts no arguments (1 given)
+		 [*errors.errorString] function login accepts no arguments (1 given)

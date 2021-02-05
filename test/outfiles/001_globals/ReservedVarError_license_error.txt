@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/001_globals/ReservedVarError_license_error.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+LICENSE = 1
+
+
+BACKTRACE:
+
+
+
+ERRORS:
+
+ [*ekerrors.EKError] ReservedVarError: 'LICENSE' must be of type string
+	 [*errors.errorString] 'LICENSE' must be of type string

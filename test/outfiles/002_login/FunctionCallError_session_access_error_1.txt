@@ -1,0 +1,24 @@
+FILE: test/ekm/vdefault/002_login/FunctionCallError_session_access_error_1.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    s = session()
+    s[1]
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/FunctionCallError_session_access_error_1.ekm:7:6: in login
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: Session only accepts string keys; found: '1'
+	 [*starlark.EvalError] Session only accepts string keys; found: '1'
+		 [*errors.errorString] Session only accepts string keys; found: '1'

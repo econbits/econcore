@@ -10,9 +10,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/econbits/econkit/private/ekerrors"
 	"github.com/econbits/econkit/private/ekm"
+	"github.com/econbits/econkit/private/lib/auth/credentials"
 	"github.com/econbits/econkit/private/lib/universe"
 	"go.starlark.net/starlark"
 )
@@ -85,6 +87,29 @@ func write(path string, scripterr error) error {
 	return nil
 }
 
+func loadNRun(fpath string) error {
+	sc, err := ekm.New(fpath)
+	if err != nil {
+		return err
+	}
+	cred := credentials.New("mr_user", "a_password", "an_account")
+	session, err := sc.Login(cred)
+	if err != nil {
+		return err
+	}
+	accounts, err := sc.Accounts(session)
+	if err != nil {
+		return err
+	}
+	for _, account := range accounts {
+		_, err := sc.Transactions(session, account, time.Now())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func main() {
 	err := filepath.Walk(testPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -96,6 +121,10 @@ func main() {
 		if strings.Contains(path, "/000_smalltests/") {
 			thread := &starlark.Thread{Name: path, Load: ekm.Load}
 			_, err = starlark.ExecFile(thread, path, nil, universe.Lib.Load())
+			return write(path, err)
+		}
+		if strings.Contains(path, "/00") {
+			err := loadNRun(path)
 			return write(path, err)
 		}
 		return nil

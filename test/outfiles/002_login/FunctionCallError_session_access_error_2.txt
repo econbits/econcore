@@ -1,0 +1,24 @@
+FILE: test/ekm/vdefault/002_login/FunctionCallError_session_access_error_2.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    s = session()
+    s["a"]
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/FunctionCallError_session_access_error_2.ekm:7:6: in login
+
+
+ERRORS:
+
+ [*ekerrors.EKError] FunctionCallError: key "a" not in Session
+	 [*starlark.EvalError] key "a" not in Session
+		 [*errors.errorString] key "a" not in Session

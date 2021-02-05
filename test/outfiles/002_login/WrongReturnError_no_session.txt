@@ -1,0 +1,19 @@
+FILE: test/ekm/vdefault/002_login/WrongReturnError_no_session.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+def login(cred):
+    pass
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/002_login/WrongReturnError_no_session.ekm:3:1: in login
+
+
+ERRORS:
+
+ [*ekerrors.EKError] WrongReturnError: login function returned object of type 'NoneType' instead of 'session'

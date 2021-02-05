@@ -1,0 +1,16 @@
+FILE: test/ekm/vdefault/003_accounts/OK_empty_list.ekm
+
+SCRIPT:
+
+# Copyright (C) 2020  Germán Fuentes Capella
+
+load("auth", "session")
+
+def login(cred):
+    return session()
+
+def accounts(session):
+    return []
+ERRORS:
+
+None
