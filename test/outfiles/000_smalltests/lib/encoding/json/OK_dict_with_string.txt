@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/OK_dict_with_string.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json('{"value": "v"}')
+
+assert(len(j) == 1, msg=str(j))
+assert(j["value"] == "v", msg=str(j))
+
+
+ERRORS:
+
+None

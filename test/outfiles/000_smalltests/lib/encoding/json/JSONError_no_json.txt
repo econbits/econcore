@@ -1,0 +1,23 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_no_json.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+json()
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_no_json.ekm:5:5: in <toplevel>
+  <builtin>: in json
+
+
+ERRORS:
+
+ [*starlark.EvalError] JSONError: json: missing argument for text
+	 [*ekerrors.EKError] JSONError: json: missing argument for text
+		 [*errors.errorString] json: missing argument for text

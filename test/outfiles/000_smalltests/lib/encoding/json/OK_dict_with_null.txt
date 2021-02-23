@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/OK_dict_with_null.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json('{"value": null}')
+
+assert(len(j) == 1, msg=str(j))
+assert(j["value"] == None, msg=str(j))
+
+
+ERRORS:
+
+None

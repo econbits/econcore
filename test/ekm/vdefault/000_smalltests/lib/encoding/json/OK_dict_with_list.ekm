@@ -1,0 +1,12 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json('[1, 2, 3]')
+
+assert(len(j) == 3, msg=str(j))
+assert(j[0] == 1, msg=str(j))
+assert(j[1] == 2, msg=str(j))
+assert(j[2] == 3, msg=str(j))
+
+

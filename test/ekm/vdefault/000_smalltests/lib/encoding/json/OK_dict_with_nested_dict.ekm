@@ -1,0 +1,10 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json('{"dict": {"value": 1}}')
+
+assert(len(j) == 1, msg=str(j))
+assert(j["dict"]["value"] == 1, msg=str(j))
+
+

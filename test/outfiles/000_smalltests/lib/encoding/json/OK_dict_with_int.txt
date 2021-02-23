@@ -1,0 +1,17 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/OK_dict_with_int.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json('{"value": 1}')
+
+assert(len(j) == 1, msg=str(j))
+assert(j["value"] == 1, msg=str(j))
+
+
+ERRORS:
+
+None

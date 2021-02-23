@@ -8,6 +8,7 @@ import (
 	"github.com/econbits/econkit/private/lib/account"
 	"github.com/econbits/econkit/private/lib/auth"
 	"github.com/econbits/econkit/private/lib/datetime"
+	"github.com/econbits/econkit/private/lib/encoding"
 	"github.com/econbits/econkit/private/lib/fin"
 	"github.com/econbits/econkit/private/lib/iso"
 	"github.com/econbits/econkit/private/slang"
@@ -19,6 +20,7 @@ func Load(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 		account.Lib,
 		auth.Lib,
 		datetime.Lib,
+		encoding.Lib,
 		fin.Lib,
 		iso.Lib,
 	}

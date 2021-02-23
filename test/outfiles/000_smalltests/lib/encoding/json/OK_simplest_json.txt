@@ -1,0 +1,14 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/OK_simplest_json.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json")
+
+j = json("")
+
+assert(j=="")
+ERRORS:
+
+None
