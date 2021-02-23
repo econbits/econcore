@@ -1,8 +1,8 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("encoding", "json")
+load("encoding", "json_decode")
 
-j = json('[1, 2, 3]')
+j = json_decode('[1, 2, 3]')
 
 assert(len(j) == 3, msg=str(j))
 assert(j[0] == 1, msg=str(j))

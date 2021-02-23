@@ -20,7 +20,7 @@ func TestScripts(t *testing.T) {
 		func(thread *starlark.Thread, module string) (starlark.StringDict, error) {
 			if module == "encoding" {
 				sd := starlark.StringDict{
-					Fn.Name: Fn.Builtin(),
+					DecFn.Name: DecFn.Builtin(),
 				}
 				return sd, nil
 			}

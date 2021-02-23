@@ -4,20 +4,20 @@ SCRIPT:
 
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("encoding", "json")
+load("encoding", "json_decode")
 
-json()
+json_decode()
 
 
 BACKTRACE:
 
 Traceback (most recent call last):
-  test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_no_json.ekm:5:5: in <toplevel>
-  <builtin>: in json
+  test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_no_json.ekm:5:12: in <toplevel>
+  <builtin>: in json_decode
 
 
 ERRORS:
 
- [*starlark.EvalError] JSONError: json: missing argument for text
-	 [*ekerrors.EKError] JSONError: json: missing argument for text
-		 [*errors.errorString] json: missing argument for text
+ [*starlark.EvalError] JSONError: json_decode: missing argument for text
+	 [*ekerrors.EKError] JSONError: json_decode: missing argument for text
+		 [*errors.errorString] json_decode: missing argument for text

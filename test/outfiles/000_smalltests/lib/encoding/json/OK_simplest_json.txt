@@ -4,9 +4,9 @@ SCRIPT:
 
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("encoding", "json")
+load("encoding", "json_decode")
 
-j = json("")
+j = json_decode("")
 
 assert(j=="")
 ERRORS:

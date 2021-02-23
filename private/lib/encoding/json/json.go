@@ -14,13 +14,13 @@ import (
 )
 
 const (
-	fnName = "json"
+	decFnNameme = "json_decode"
 )
 
 var (
-	Fn = &slang.Fn{
-		Name:     fnName,
-		Callback: jsonFn,
+	DecFn = &slang.Fn{
+		Name:     decFnNameme,
+		Callback: decodeFn,
 	}
 )
 
@@ -75,7 +75,7 @@ func parse(i interface{}) (starlark.Value, error) {
 	}
 }
 
-func jsonFn(
+func decodeFn(
 	thread *starlark.Thread,
 	builtin *starlark.Builtin,
 	args starlark.Tuple,

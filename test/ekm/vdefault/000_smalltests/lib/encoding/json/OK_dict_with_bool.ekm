@@ -1,8 +1,8 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("encoding", "json")
+load("encoding", "json_decode")
 
-j = json('{"value": true}')
+j = json_decode('{"value": true}')
 
 assert(len(j) == 1, msg=str(j))
 assert(j.get("value") == True, msg=str(j))

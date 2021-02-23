@@ -11,7 +11,7 @@ var (
 	Lib = &slang.Lib{
 		Name: "encoding",
 		Fns: []*slang.Fn{
-			json.Fn,
+			json.DecFn,
 		},
 	}
 )
