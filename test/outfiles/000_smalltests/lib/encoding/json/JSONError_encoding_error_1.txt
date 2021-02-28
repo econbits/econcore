@@ -1,0 +1,24 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_encoding_error_1.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json_encode")
+
+d = {1: 1}
+json_encode(d)
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_encoding_error_1.ekm:6:12: in <toplevel>
+  <builtin>: in json_encode
+
+
+ERRORS:
+
+ [*starlark.EvalError] JSONError: key 1 should be of type string
+	 [*ekerrors.EKError] JSONError: key 1 should be of type string
+		 [*errors.errorString] key 1 should be of type string

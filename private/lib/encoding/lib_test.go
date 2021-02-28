@@ -18,6 +18,7 @@ func TestLib(t *testing.T) {
 			dirs += 1
 		}
 	}
+	dirs = 2 * dirs // *_encode & *_decode
 	if len(Lib.Fns) != dirs {
 		t.Fatalf("expected %d Fns; got %v", dirs, Lib.Fns)
 	}

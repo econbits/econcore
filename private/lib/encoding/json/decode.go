@@ -40,11 +40,11 @@ func parse(i interface{}) (starlark.Value, error) {
 		if val.Kind() == reflect.Map {
 			jd := starlark.NewDict(10)
 			for _, k := range val.MapKeys() {
-				v := val.MapIndex(k)
 				kvalue, err := parse(k.Interface())
 				if err != nil {
 					return nil, err
 				}
+				v := val.MapIndex(k)
 				vvalue, err := parse(v.Interface())
 				if err != nil {
 					return nil, err
@@ -92,9 +92,6 @@ func decodeFn(
 			err,
 			[]ekerrors.Format{},
 		)
-	}
-	if text == starlark.String("") {
-		return text, nil
 	}
 	var j interface{}
 	err = pjson.Unmarshal([]byte(text), &j)

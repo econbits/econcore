@@ -12,6 +12,7 @@ var (
 		Name: "encoding",
 		Fns: []*slang.Fn{
 			json.DecFn,
+			json.EncFn,
 		},
 	}
 )

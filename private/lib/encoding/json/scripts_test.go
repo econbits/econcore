@@ -21,6 +21,7 @@ func TestScripts(t *testing.T) {
 			if module == "encoding" {
 				sd := starlark.StringDict{
 					DecFn.Name: DecFn.Builtin(),
+					EncFn.Name: EncFn.Builtin(),
 				}
 				return sd, nil
 			}

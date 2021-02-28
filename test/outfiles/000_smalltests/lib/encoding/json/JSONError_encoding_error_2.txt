@@ -1,0 +1,27 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_encoding_error_2.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json_encode")
+
+def f():
+    pass
+
+d = {"abc": f}
+json_encode(d)
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/encoding/json/JSONError_encoding_error_2.ekm:9:12: in <toplevel>
+  <builtin>: in json_encode
+
+
+ERRORS:
+
+ [*starlark.EvalError] JSONError: can't convert function to a json valid type
+	 [*ekerrors.EKError] JSONError: can't convert function to a json valid type
+		 [*errors.errorString] can't convert function to a json valid type

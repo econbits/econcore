@@ -1,0 +1,9 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "json_encode")
+
+def f():
+    pass
+
+d = {"abc": f}
+json_encode(d)

@@ -1,12 +1,14 @@
 # Copyright (C) 2021  Germán Fuentes Capella
 
-load("encoding", "json_decode")
+load("encoding", "json_decode", "json_encode")
 
-j = json_decode('[1, 2, 3]')
+jstr = '[1,2,3]'
+j = json_decode(jstr)
 
 assert(len(j) == 3, msg=str(j))
 assert(j[0] == 1, msg=str(j))
 assert(j[1] == 2, msg=str(j))
 assert(j[2] == 3, msg=str(j))
 
-
+ret = json_encode(j)
+assert(jstr == ret, msg=jstr + " != " + ret)
