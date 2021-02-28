@@ -1,0 +1,23 @@
+FILE: test/ekm/vdefault/000_smalltests/lib/encoding/base64/Base64Error_decode_invalid_base64.ekm
+
+SCRIPT:
+
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("encoding", "base64_decode")
+
+base64_decode("this is not valid base64")
+
+
+BACKTRACE:
+
+Traceback (most recent call last):
+  test/ekm/vdefault/000_smalltests/lib/encoding/base64/Base64Error_decode_invalid_base64.ekm:5:14: in <toplevel>
+  <builtin>: in base64_decode
+
+
+ERRORS:
+
+ [*starlark.EvalError] Base64Error: illegal base64 data at input byte 4
+	 [*ekerrors.EKError] Base64Error: illegal base64 data at input byte 4
+		 [base64.CorruptInputError] illegal base64 data at input byte 4

@@ -2,9 +2,9 @@
 
 // This package provides the starlark functions:
 //
-// def json_decode(text):
+// def base64_decode(text):
 //     pass
 //
-// def json_encode(obj):
+// def base64_encode(text):
 //     pass
-package json
+package base64
