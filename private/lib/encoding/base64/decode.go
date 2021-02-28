@@ -47,5 +47,5 @@ func decodeFn(
 			[]ekerrors.Format{},
 		)
 	}
-	return starlark.String(data), nil
+	return starlark.Bytes(data), nil
 }

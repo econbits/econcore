@@ -18,6 +18,6 @@ Traceback (most recent call last):
 
 ERRORS:
 
- [*starlark.EvalError] Base64Error: base64_encode: for parameter text: got int, want string
-	 [*ekerrors.EKError] Base64Error: base64_encode: for parameter text: got int, want string
-		 [*errors.errorString] base64_encode: for parameter text: got int, want string
+ [*starlark.EvalError] Base64Error: base64_encode: for parameter bytes: got int, want bytes
+	 [*ekerrors.EKError] Base64Error: base64_encode: for parameter bytes: got int, want bytes
+		 [*errors.errorString] base64_encode: for parameter bytes: got int, want bytes

@@ -27,10 +27,10 @@ func encodeFn(
 	args starlark.Tuple,
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
-	var text starlark.String
+	var bytes starlark.Bytes
 	err := starlark.UnpackArgs(
 		builtin.Name(), args, kwargs,
-		"text", &text,
+		"bytes", &bytes,
 	)
 	if err != nil {
 		return nil, ekerrors.Wrap(
@@ -39,6 +39,6 @@ func encodeFn(
 			[]ekerrors.Format{},
 		)
 	}
-	str := pbase64.StdEncoding.EncodeToString([]byte(text))
+	str := pbase64.StdEncoding.EncodeToString([]byte(bytes))
 	return starlark.String(str), nil
 }

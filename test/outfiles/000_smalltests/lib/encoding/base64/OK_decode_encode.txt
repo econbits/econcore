@@ -9,7 +9,7 @@ load("encoding", "base64_decode", "base64_encode")
 b64 = "YW55ICsgb2xkICYgZGF0YQ=="
 bdata = base64_decode(b64)
 
-assert(bdata == "any + old & data")
+assert(bdata == bytes("any + old & data"))
 
 ret = base64_encode(bdata)
 assert(b64 == ret, msg=b64 + " != " + ret)
