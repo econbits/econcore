@@ -5,6 +5,6 @@
 // def base64_decode(text):
 //     pass
 //
-// def base64_encode(text):
+// def base64_encode(bytes):
 //     pass
 package base64
