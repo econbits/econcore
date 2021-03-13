@@ -21,7 +21,7 @@ func roundTripFn(req *http.Request) (*http.Response, error) {
 	if req.URL.Host == "econkit.org" {
 		if req.URL.Path == "/ok" {
 			header := http.Header{}
-			header.Add("key", "value")
+			header.Add("Key", "value")
 			resp := &http.Response{
 				Status:     "200 OK",
 				StatusCode: 200,
