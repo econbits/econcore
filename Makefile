@@ -24,6 +24,10 @@ test: ## run tests
 
 cov: ## gets the test coverage for the code and fails if minimum level is not reached
 > go test -coverprofile=coverage.out github.com/econbits/econkit/private/...
+> go tool cover -func=coverage.out > cov-summary.txt
+> git diff cov-summary.txt
+
+htmlcov:
 > go tool cover -html=coverage.out
 
 test-all: gen test vet cov ## runs all the checks to run before pushing to github

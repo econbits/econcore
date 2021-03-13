@@ -3,6 +3,7 @@
 package ekm
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -117,9 +118,9 @@ func (m EKM) linkCS(nameFn string, ekerr *ekerrors.EKError) {
 	}
 }
 
-func (m EKM) Login(cred *credentials.Credentials) (*session.Session, error) {
+func (m EKM) Login(ctx context.Context, cred *credentials.Credentials) (*session.Session, error) {
 	nameFn := "login"
-	value, err := m.runFn(nameFn, starlark.Tuple{cred})
+	value, err := m.runFn(ctx, nameFn, starlark.Tuple{cred})
 	if err != nil {
 		return nil, err
 	}
@@ -139,9 +140,9 @@ func (m EKM) Login(cred *credentials.Credentials) (*session.Session, error) {
 	return session, nil
 }
 
-func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
+func (m EKM) Accounts(ctx context.Context, session *session.Session) ([]*account.Account, error) {
 	nameFn := "accounts"
-	value, err := m.runFn(nameFn, starlark.Tuple{session})
+	value, err := m.runFn(ctx, nameFn, starlark.Tuple{session})
 	if err != nil {
 		return nil, err
 	}
@@ -175,6 +176,7 @@ func (m EKM) Accounts(session *session.Session) ([]*account.Account, error) {
 }
 
 func (m EKM) runFn(
+	ctx context.Context,
 	nameFn string,
 	params starlark.Tuple,
 ) (starlark.Value, error) {
@@ -186,6 +188,7 @@ func (m EKM) runFn(
 		)
 	}
 
+	slang.SetLocalContext(m.tn, ctx)
 	value, err := starlark.Call(m.tn, fn, params, nil)
 	if err != nil {
 		var kerr *ekerrors.EKError
@@ -209,9 +212,14 @@ func (m EKM) runFn(
 	return value, nil
 }
 
-func (m EKM) Transactions(session *session.Session, account *account.Account, since time.Time) ([]*transaction.Transaction, error) {
+func (m EKM) Transactions(
+	ctx context.Context,
+	session *session.Session,
+	account *account.Account,
+	since time.Time,
+) ([]*transaction.Transaction, error) {
 	nameFn := "transactions"
-	value, err := m.runFn(nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)})
+	value, err := m.runFn(ctx, nameFn, starlark.Tuple{session, account, datetime.NewFromTime(since)})
 	if err != nil {
 		return nil, err
 	}

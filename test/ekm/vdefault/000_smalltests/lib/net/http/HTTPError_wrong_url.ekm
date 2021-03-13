@@ -1,0 +1,5 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("net", "http")
+
+http("GET", "https://this_domain_does_not_exist")

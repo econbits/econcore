@@ -3,6 +3,7 @@
 package ekm
 
 import (
+	"context"
 	"testing"
 
 	"github.com/econbits/econkit/private/lib/auth/credentials"
@@ -23,8 +24,9 @@ func Test_002_Scripts(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
 			}
+			ctx := context.Background()
 			cred := credentials.New("mr_user", "a_password", "an_account")
-			_, err = sc.Login(cred)
+			_, err = sc.Login(ctx, cred)
 			return err
 		},
 		testscript.Fail,
@@ -37,8 +39,9 @@ func Test_002_Login_success(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
+	ctx := context.Background()
 	cred := credentials.New("mr_user", "a_password", "an_account")
-	session, err := sc.Login(cred)
+	session, err := sc.Login(ctx, cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -57,8 +60,9 @@ func Test_002_Login_Set_Session_Param(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)
 		}
+		ctx := context.Background()
 		cred := credentials.New("mr_user", "a_password", "an_account")
-		session, err := sc.Login(cred)
+		session, err := sc.Login(ctx, cred)
 		if err != nil {
 			t.Fatalf("Unexpected error: %v", err)
 		}

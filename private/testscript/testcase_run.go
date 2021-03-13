@@ -3,10 +3,12 @@
 package testscript
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
 	"github.com/econbits/econkit/private/ekerrors"
+	"github.com/econbits/econkit/private/slang"
 	"go.starlark.net/starlark"
 )
 
@@ -26,6 +28,7 @@ type TestFn func(path string, epilogue starlark.StringDict, load LoadFn) error
 
 func ExecScriptFn(path string, epilogue starlark.StringDict, load LoadFn) error {
 	thread := &starlark.Thread{Name: path, Load: load}
+	slang.SetLocalContext(thread, context.Background())
 	_, err := starlark.ExecFile(thread, path, nil, epilogue)
 	return err
 }

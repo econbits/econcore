@@ -1,0 +1,7 @@
+# Copyright (C) 2021  Germán Fuentes Capella
+
+load("net", "http")
+
+r = http("GET", "https://econkit.org/ok")
+assert(r.text ==  "OK", msg=r.text + " is not 'OK'")
+assert(r.headers.get("Key") ==  ["value"], msg=str(r.headers)+ " do not contain 'Key' with ['value']")

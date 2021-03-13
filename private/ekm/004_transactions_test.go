@@ -3,6 +3,7 @@
 package ekm
 
 import (
+	"context"
 	"math/big"
 	"testing"
 	"time"
@@ -20,19 +21,20 @@ func getTransactions(t *testing.T, fpath string) ([]*transaction.Transaction, er
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
+	ctx := context.Background()
 	cred := credentials.New("mr_user", "a_password", "an_account")
-	session, err := sc.Login(cred)
+	session, err := sc.Login(ctx, cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	accounts, err := sc.Accounts(session)
+	accounts, err := sc.Accounts(ctx, session)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 	if len(accounts) != 1 {
 		t.Fatalf("Expected 1 account; found: %v", accounts)
 	}
-	transactions, err := sc.Transactions(session, accounts[0], time.Now())
+	transactions, err := sc.Transactions(ctx, session, accounts[0], time.Now())
 	return transactions, err
 }
 

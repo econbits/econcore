@@ -3,6 +3,7 @@
 package ekm
 
 import (
+	"context"
 	"testing"
 
 	"github.com/econbits/econkit/private/lib/account/account"
@@ -16,12 +17,14 @@ func getAccounts(t *testing.T, fpath string) ([]*account.Account, error) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
+
+	ctx := context.Background()
 	cred := credentials.New("mr_user", "a_password", "an_account")
-	session, err := sc.Login(cred)
+	session, err := sc.Login(ctx, cred)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	accounts, err := sc.Accounts(session)
+	accounts, err := sc.Accounts(ctx, session)
 	return accounts, err
 }
 
